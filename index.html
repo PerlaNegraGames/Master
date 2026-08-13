@@ -418,7 +418,13 @@ window.cerrarSesion = () => { sessionStorage.clear(); location.reload(); };
 
 async function cargarMod(m) { 
     const p = document.getElementById('panel-juego'); 
-    const rutaModulo = `./modulos/admin_${m}.js?v=${Date.now()}`;
+    if (!m) return;
+
+    // 1. Limpiamos cualquier espacio invisible o caracter especial
+    const juegoLimpio = String(m).trim();
+    
+    // 2. Construimos la ruta asegurando codificación correcta de URL
+    const rutaModulo = `./modulos/admin_${encodeURIComponent(juegoLimpio)}.js?v=${Date.now()}`;
     
     try { 
         const mod = await import(rutaModulo); 
@@ -426,14 +432,16 @@ async function cargarMod(m) {
             p.innerHTML = ''; 
             mod.iniciar(p, db, miCarpeta, rtdb); 
         } else {
-            p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ El módulo "admin_${m}.js" no tiene una función "iniciar" exportada.</div>`;
+            p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ El módulo "admin_${juegoLimpio}.js" no exporta la función "iniciar".</div>`;
         }
     } catch(e) { 
-        console.error("Error detallado al importar el módulo:", e);
+        console.error("Error detallado al cargar el módulo:", e);
         p.innerHTML = `
             <div style="color:var(--rojo); text-align:center; padding:20px; border: 1px dashed var(--rojo); border-radius:10px; margin:20px;">
-                ⚠️ <b>Error al cargar el módulo:</b> admin_${m}.js<br>
-                <small style="color:#bbb; display:block; margin-top:8px;">Detalle: ${e.message}</small>
+                ⚠️ <b>No se pudo cargar el módulo:</b> admin_${juegoLimpio}.js<br>
+                <small style="color:#bbb; display:block; margin-top:8px;">
+                    Verifica que el archivo exista en <code>/modulos/admin_${juegoLimpio}.js</code> y no tenga errores de sintaxis.
+                </small>
             </div>`;
     }
 }
