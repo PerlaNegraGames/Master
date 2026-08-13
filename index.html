@@ -97,6 +97,8 @@
             <div class="logo-main">JUGA<span style="color:var(--cian)">PRO</span></div>
             <div style="display:flex; gap:8px;">
                 <button class="btn-efecto" onclick="window.abrirModalFondo()" style="border-color: #FFFF00; color: #FFFF00;" title="CAMBIAR FONDO">🎨 DISEÑO</button>
+                <!-- BOTÓN NUEVO PARA ABRIR PANTALLA JUGADOR -->
+                <button class="btn-efecto" onclick="window.abrirPantallaJugador()" style="border-color: #00ffff; color: #00ffff;" title="PANTALLA JUGADOR">📺 JUGADOR</button>
                 <button class="btn-efecto" onclick="window.abrirModalPin()" style="border-color: #C71585; color: #C71585;" title="CAMBIAR CLAVE">⚙️ CLAVE</button>
                 <button onclick="cerrarSesion()" class="btn-efecto" style="border-color: #A020F0; color: #A020F0;" title="CERRAR SESIÓN"><i class="fas fa-power-off"></i> SALIR</button>
             </div>
@@ -360,6 +362,11 @@ window.crearUsuarioAdmin = async () => {
 
 window.abrirModalFondo = () => document.getElementById('modal-fondo').style.display = 'flex';
 window.cerrarModalFondo = () => document.getElementById('modal-fondo').style.display = 'none';
+
+window.abrirPantallaJugador = () => {
+    window.open(`pantalla_jugador.html?p=${miCarpeta}`, "PantallaJugador", "width=1100,height=850");
+};
+
 window.guardarNuevoFondo = async () => { 
     const url = document.getElementById('input-url-fondo').value.trim(); 
     if(url) { await updateDoc(doc(db, "proyectos", miCarpeta), { fondoPersonalizado: url }); cerrarModalFondo(); } 
