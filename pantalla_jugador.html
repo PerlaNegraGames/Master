@@ -412,7 +412,9 @@
             const grid = document.getElementById('grid-tablero');
             grid.innerHTML = Array.from({length: totalElementos}, (_, i) => `<div id="box-${i+1}" class="num-box">${i+1}</div>`).join('');
 
-            referenciaSorteoActual = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
+            // Escuchamos la ruta de Realtime Database unificada
+            const rutaAlternativa = codJuego.length <= 3 && !codJuego.startsWith('bingo') ? `bingo${codJuego}` : codJuego;
+            referenciaSorteoActual = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${rutaAlternativa}`);
             let ultimoProcesado = null;
 
             onValue(referenciaSorteoActual, (snapshot) => {
