@@ -246,7 +246,6 @@
 </head>
 <body>
 
-    <!-- CAPA LOGIN JUGADOR -->
     <div id="capa-login-jugador">
         <div class="card-login">
             <div style="width: 60px; height: 60px; background: rgba(0, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border: 1px solid var(--cian);">
@@ -266,7 +265,6 @@
         </div>
     </div>
 
-    <!-- PANTALLA TRANSMISIÓN -->
     <div id="contenido-jugador">
         <div class="header-jugador">
             <div id="user-info" class="user-tag">
@@ -399,9 +397,12 @@
 
             const CONFIG_LIMITES = {
                 "50": 50, "72": 72, "90": 90, "100": 100,
-                "inv": 90, "bingocartones": 90, "terna": 120,
+                "inv": 90, "bingocartones": 90, "terna": 120, "bingo120": 120,
                 "mex": 54, "pokemon": 151, "romanos90": 90,
-                "bingo50": 50, "bingo72": 72, "bingo90": 90, "bingo100": 100, "bingo120": 120
+                "bingo50": 50, "bingo72": 72, "bingo90": 90, "bingo100": 100,
+                "lm": 54, "paises": 100, "power": 90, "novelas": 90, "fiesta": 90,
+                "simpsons": 54, "bebidas": 54, "comidas": 54, "comiveneca": 54,
+                "pitufos": 54, "abcdario": 27, "autos": 54
             };
 
             const totalElementos = CONFIG_LIMITES[codJuego] || 90;
@@ -416,8 +417,6 @@
 
             onValue(referenciaSorteoActual, (snapshot) => {
                 const data = snapshot.val() || {};
-                
-                // Conversión robusta que soporta tanto Arrays como Objetos devueltos por RTDB
                 const rawSacados = data.sacados || [];
                 const sacadosArray = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
                 const sacados = sacadosArray.map(val => Number(val)).filter(val => !isNaN(val));

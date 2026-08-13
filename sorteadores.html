@@ -130,6 +130,21 @@
     <div id="modalRegistrados" class="modal">
         <div class="modal-contenido">
             <h3>👥 Jugadores Registrados</h3>
+            
+            <div style="background:#2a2a2a; padding:12px; border-radius:8px; margin-bottom:15px; border:1px solid #ffcc00;">
+                <h4 style="color:#ffcc00; margin:0 0 8px 0; font-size:13px;">➕ CREAR NUEVO USUARIO</h4>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <input type="text" id="sort-nuevo-nick" placeholder="NICK" style="flex:1; padding:8px; font-size:12px; text-transform:uppercase;">
+                    <input type="text" id="sort-nuevo-pin" placeholder="PIN" style="width:80px; padding:8px; font-size:12px; text-align:center;">
+                    <select id="sort-nuevo-sexo" style="padding:8px; font-size:12px;">
+                        <option value="H">♂ HOMBRE</option>
+                        <option value="M">♀ MUJER</option>
+                    </select>
+                    <button class="btn-panel" style="background:#4CAF50; padding:8px 14px; font-size:12px;" onclick="crearUsuarioDesdeSorteador()">Crear</button>
+                </div>
+                <div id="sort-err-usr" style="color:#f44336; font-size:11px; margin-top:5px; font-weight:bold;"></div>
+            </div>
+
             <p><strong>Total:</strong> <span id="cntTotal">0</span> | ♂ Hombres: <span id="cntH">0</span> | ♀ Mujeres: <span id="cntM">0</span></p>
             <hr>
             <div id="listaRegistrados">Cargando lista...</div>
@@ -142,7 +157,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { 
             getFirestore, doc, onSnapshot, collection, 
-            updateDoc, deleteDoc 
+            updateDoc, deleteDoc, setDoc 
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -186,7 +201,7 @@
                 }
 
                 if (data.juegoActivo && window.juegoActual !== data.juegoActivo) {
-                    cargarModuloJuego(data.juegoActivo, false); // Evita bucle infinito al sincronizar
+                    cargarModuloJuego(data.juegoActivo, false);
                 }
             });
 
@@ -221,7 +236,6 @@
             if (!idJuego) return;
             window.juegoActual = idJuego;
             
-            // Sincronizar el cambio de juego en Firestore para que la pantalla del jugador lo detecte
             if (actualizarFirestore) {
                 try {
                     await updateDoc(doc(db, "proyectos", idProyecto), { juegoActivo: idJuego });
@@ -250,6 +264,35 @@
 
         window.cambiarSorteador = function(val) {
             if (val) window.cargarModuloJuego(val);
+        };
+
+        window.crearUsuarioDesdeSorteador = async function() {
+            const nick = document.getElementById('sort-nuevo-nick').value.trim().toUpperCase();
+            const pin = document.getElementById('sort-nuevo-pin').value.trim();
+            const sexo = document.getElementById('sort-nuevo-sexo').value;
+            const errDiv = document.getElementById('sort-err-usr');
+
+            if (!nick || !pin) {
+                errDiv.innerText = "Completa nick y PIN";
+                return;
+            }
+
+            try {
+                await setDoc(doc(db, "proyectos", idProyecto, "registrados", nick), {
+                    nick: nick,
+                    pin: pin,
+                    sexo: sexo,
+                    genero: sexo === 'H' ? 'HOMBRE' : 'MUJER',
+                    creado: Date.now()
+                });
+                document.getElementById('sort-nuevo-nick').value = '';
+                document.getElementById('sort-nuevo-pin').value = '';
+                errDiv.innerText = "";
+                alert("Usuario creado correctamente");
+            } catch (e) {
+                errDiv.innerText = "Error al crear usuario";
+                console.error(e);
+            }
         };
 
         function escucharRegistrados() {
