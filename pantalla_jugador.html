@@ -201,7 +201,6 @@
             ]
         };
 
-        // Escuchamos el documento principal del proyecto para saber qué juego está activo en tiempo real
         const docRef = doc(db, "proyectos", miCarpeta);
         let unsubscribeJuego = null;
 
@@ -210,26 +209,26 @@
                 const data = docSnap.data();
                 const juegoActivo = juegoForzadoURL || data.juegoActivo || '50';
 
-                // Escuchamos también el documento específico del juego activo si está guardado en una subcolección o ruta dedicada
                 const juegoDocRef = doc(db, `proyectos/${miCarpeta}/juegosData`, juegoActivo);
                 
-                if (unsubscribeJuego) unsubscribeJuego(); // Limpiamos la escucha anterior
+                if (unsubscribeJuego) unsubscribeJuego();
 
                 unsubscribeJuego = onSnapshot(juegoDocRef, (juegoSnap) => {
                     let infoJuego = {};
                     if (juegoSnap.exists()) {
                         infoJuego = juegoSnap.data();
                     } else {
-                        // Fallback por si los datos están directamente en el documento principal
                         infoJuego = (data.juegosData && data.juegosData[juegoActivo]) || 
                                       (data.sorteos && data.sorteos[juegoActivo]) || 
                                       data[juegoActivo] || 
                                       data;
                     }
 
-                    const rawSacados = infoJuego.sacados || data.sacados || [];
+                    // Fusión inteligente para extraer los datos de sacados sin importar en qué propiedad del documento o subcolección estén
+                    const rawSacados = infoJuego.sacados || infoJuego[juegoActivo]?.sacados || data.sacados || data[juegoActivo]?.sacados || [];
                     const sacadosList = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
-                    const ultimoElemento = infoJuego.ultimo || data.ultimo || sacadosList[sacadosList.length - 1] || "--";
+                    
+                    const ultimoElemento = infoJuego.ultimo || infoJuego[juegoActivo]?.ultimo || data.ultimo || sacadosList[sacadosList.length - 1] || "--";
 
                     document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${juegoActivo.toUpperCase()}`;
                     document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
@@ -252,7 +251,6 @@
 
             const juegoLower = String(juego).toLowerCase();
 
-            // 1. Si es un juego basado en texto / cartas predefinidas
             if (listasJuegos[juegoLower]) {
                 const elementos = listasJuegos[juegoLower];
                 let html = '';
@@ -266,7 +264,6 @@
                 return;
             }
 
-            // 2. Si es un juego numérico tradicional
             let totalNums = 0;
             let columnas = 10;
 
@@ -281,7 +278,7 @@
             if (totalNums > 0) {
                 let htmlNum = '';
                 for (let i = 1; i <= totalNums; i++) {
-                    const marcado = sacados.includes(i) || sacados.includes(String(i));
+                    const marcado = sacados.includes(i) || sacados.includes(String(i)) || sacados.includes(Number(i));
                     const textoCelda = juegoLower === 'bingocartones' ? `#${i}` : (juegoLower === 'eliminatorias' ? `P${i}` : i);
                     htmlNum += `<div class="celda-num ${marcado ? 'marcada' : ''}">${textoCelda}</div>`;
                 }
@@ -290,7 +287,6 @@
                 return;
             }
 
-            // 3. Juegos dinámicos personalizados de texto u otros
             let htmlDinamic = '';
             if (sacados.length === 0) {
                 htmlDinamic = `<div style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">Esperando elementos...</div>`;
