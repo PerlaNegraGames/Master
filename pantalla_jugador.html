@@ -246,6 +246,7 @@
 </head>
 <body>
 
+    <!-- CAPA LOGIN JUGADOR -->
     <div id="capa-login-jugador">
         <div class="card-login">
             <div style="width: 60px; height: 60px; background: rgba(0, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border: 1px solid var(--cian);">
@@ -265,6 +266,7 @@
         </div>
     </div>
 
+    <!-- PANTALLA TRANSMISIÓN -->
     <div id="contenido-jugador">
         <div class="header-jugador">
             <div id="user-info" class="user-tag">
@@ -293,7 +295,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, off } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getFirestore, doc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -312,10 +314,10 @@
         const db = getFirestore(app);
 
         const params = new URLSearchParams(window.location.search);
-        const codJuego = (params.get('c') || 'bingo90').toLowerCase().trim();
         const miCarpeta = params.get('p') || 'gh';
-
         const sesionJugador = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+
+        let referenciaSorteoActual = null;
 
         document.getElementById('btn-login-jugador').onclick = async () => {
             const nickIn = document.getElementById('j-nick').value.trim().toUpperCase();
@@ -368,10 +370,38 @@
             document.getElementById('contenido-jugador').style.display = 'flex';
             document.getElementById('nombre-jugador').innerText = nickUsuario;
 
+            let juegoActualEnEspera = null;
+
+            onSnapshot(doc(db, "proyectos", miCarpeta), (snap) => {
+                if (!snap.exists()) return;
+                const data = snap.data();
+
+                if (data.fondoPersonalizado) {
+                    const fondo = data.fondoPersonalizado;
+                    document.body.style.background = fondo.includes('http') 
+                        ? `url('${fondo}') center/cover no-repeat fixed` 
+                        : fondo;
+                }
+
+                const nuevoJuegoActivo = (data.juegoActivo || params.get('c') || '90').toLowerCase().trim();
+
+                if (juegoActualEnEspera !== nuevoJuegoActivo) {
+                    juegoActualEnEspera = nuevoJuegoActivo;
+                    conectarSorteoRealtime(nuevoJuegoActivo);
+                }
+            });
+        }
+
+        function conectarSorteoRealtime(codJuego) {
+            if (referenciaSorteoActual) {
+                off(referenciaSorteoActual);
+            }
+
             const CONFIG_LIMITES = {
-                "bingo50": 50, "bingo72": 72, "bingo75": 75, "bingo80": 80,
-                "bingo90": 90, "bingo100": 100, "bingo120": 120, "romanos90": 90,
-                "mexicana": 54, "pokemon": 151, "emoji": 54, "millonaria": 100
+                "50": 50, "72": 72, "90": 90, "100": 100,
+                "inv": 90, "bingocartones": 90, "terna": 120,
+                "mex": 54, "pokemon": 151, "romanos90": 90,
+                "bingo50": 50, "bingo72": 72, "bingo90": 90, "bingo100": 100, "bingo120": 120
             };
 
             const totalElementos = CONFIG_LIMITES[codJuego] || 90;
@@ -381,21 +411,17 @@
             const grid = document.getElementById('grid-tablero');
             grid.innerHTML = Array.from({length: totalElementos}, (_, i) => `<div id="box-${i+1}" class="num-box">${i+1}</div>`).join('');
 
-            onSnapshot(doc(db, "proyectos", miCarpeta), (snap) => {
-                if (snap.exists() && snap.data().fondoPersonalizado) {
-                    const fondo = snap.data().fondoPersonalizado;
-                    document.body.style.background = fondo.includes('http') 
-                        ? `url('${fondo}') center/cover no-repeat fixed` 
-                        : fondo;
-                }
-            });
-
-            const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
+            referenciaSorteoActual = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
             let ultimoProcesado = null;
 
-            onValue(sorteoRef, (snapshot) => {
+            onValue(referenciaSorteoActual, (snapshot) => {
                 const data = snapshot.val() || {};
-                const sacados = data.sacados || [];
+                
+                // Conversión robusta que soporta tanto Arrays como Objetos devueltos por RTDB
+                const rawSacados = data.sacados || [];
+                const sacadosArray = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
+                const sacados = sacadosArray.map(val => Number(val)).filter(val => !isNaN(val));
+
                 const estado = data.estado || 'detenido';
                 const ultimaBola = sacados.length > 0 ? sacados[sacados.length - 1] : '--';
 
