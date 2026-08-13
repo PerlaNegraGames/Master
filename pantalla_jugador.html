@@ -235,6 +235,7 @@
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
 
+            // 1. Juegos con tablero estático de texto/cartas predefinido
             if (listasJuegos[juego]) {
                 const elementos = listasJuegos[juego];
                 let html = '';
@@ -248,21 +249,40 @@
                 return;
             }
 
-            let totalNums = 90;
+            // 2. Juegos numéricos tradicionales
+            let totalNums = 0;
             let columnas = 10;
             if (juego === '50') { totalNums = 50; }
             else if (juego === '72') { totalNums = 72; columnas = 9; }
-            else if (juego === '100') { totalNums = 100; }
+            else if (juego === '90' || juego === 'bingo90') { totalNums = 90; }
+            else if (juego === '100' || juego === 'bingo100') { totalNums = 100; }
             else if (juego === 'bingocartones') { totalNums = 50; }
+            else if (juego === 'killernum') { totalNums = 50; }
+            else if (juego === 'eliminatorias') { totalNums = 30; columnas = 6; }
 
-            let htmlNum = '';
-            for (let i = 1; i <= totalNums; i++) {
-                const marcado = sacados.includes(i) || sacados.includes(String(i));
-                const textoCelda = juego === 'bingocartones' ? `#${i}` : i;
-                htmlNum += `<div class="celda-num ${marcado ? 'marcada' : ''}">${textoCelda}</div>`;
+            if (totalNums > 0) {
+                let htmlNum = '';
+                for (let i = 1; i <= totalNums; i++) {
+                    const marcado = sacados.includes(i) || sacados.includes(String(i));
+                    const textoCelda = juego === 'bingocartones' ? `#${i}` : (juego === 'eliminatorias' ? `P${i}` : i);
+                    htmlNum += `<div class="celda-num ${marcado ? 'marcada' : ''}">${textoCelda}</div>`;
+                }
+                grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
+                grid.innerHTML = htmlNum;
+                return;
             }
-            grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
-            grid.innerHTML = htmlNum;
+
+            // 3. Juegos dinámicos de texto/combos (inv, terna, power, bomba, parejasuma, nuevo, killer, etc.)
+            let htmlDinamic = '';
+            if (sacados.length === 0) {
+                htmlDinamic = `<div style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">Esperando elementos...</div>`;
+            } else {
+                sacados.forEach((item) => {
+                    htmlDinamic += `<div class="celda-texto marcada" style="font-size: 13px; padding: 12px;">${item}</div>`;
+                });
+            }
+            grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(140px, 1fr))";
+            grid.innerHTML = htmlDinamic;
         }
     </script>
 </body>
