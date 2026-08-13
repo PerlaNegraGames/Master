@@ -41,7 +41,6 @@
             font-weight: bold;
             letter-spacing: 1px;
         }
-        /* Bola de Sorteo Principal */
         .bola-contenedor {
             background: radial-gradient(circle, #222 0%, #000 80%);
             border: 4px solid var(--verde);
@@ -57,13 +56,12 @@
             padding: 15px;
         }
         #ultimo-elemento-vivo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 900;
             color: var(--amarillo);
             word-break: break-word;
             line-height: 1.2;
         }
-        /* Estado de Pausa / Alerta */
         #aviso-estado {
             font-size: 14px;
             font-weight: bold;
@@ -73,7 +71,6 @@
             display: none;
             text-transform: uppercase;
         }
-        /* Tablero Dinámico */
         .panel-tablero {
             background: var(--panel);
             border: 1px solid #222;
@@ -95,7 +92,6 @@
             display: grid;
             gap: 5px;
         }
-        /* Estilos de Celdas Numéricas */
         .celda-num {
             background: #111;
             color: #777;
@@ -111,7 +107,6 @@
             color: #000;
             box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
         }
-        /* Estilos de Celdas de Texto / Cartas */
         .celda-texto {
             background: #111;
             color: #888;
@@ -156,22 +151,20 @@
         <div id="tablero-grid-jugador"></div>
     </div>
 
-    <!-- SDKs de Firebase Firebase v10 Realtime Database -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Configuración Firebase (Asegúrate de colocar tu propia config o la que usa tu proyecto)
+        // Configuración de Firebase Realtime Database
         const firebaseConfig = {
-            databaseURL: "https://PROYECTO-DEFAULT-RTDBS.firebaseio.com" // Sustituye con tu URL si es necesario o usa tu objeto de configuración
+            databaseURL: "https://PROYECTO-DEFAULT-RTDBS.firebaseio.com" // Asegúrate de que coincida con tu base de datos
         };
 
-        // Si ya tienes un archivo de configuración externo, puedes importarlo, aquí inicializamos por parámetros de URL o genérico
         const urlParams = new URLSearchParams(window.location.search);
         const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'default';
-        let codJuego = urlParams.get('juego') || urlParams.get('s') || '90';
+        const codJuego = urlParams.get('juego') || urlParams.get('s') || '90';
 
-        // Listas maestras de elementos para juegos que no son numéricos
+        // Listas maestras completas para renderizar texto y cartas correctamente
         const listasJuegos = {
             "mex": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"],
             "lm": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol"],
@@ -205,12 +198,8 @@
             ]
         };
 
-        // Inicialización de Firebase Realtime Database
-        // Nota: Si usas una instancia global compartida con tu app principal, ajusta la inicialización de app según tu entorno.
         const app = initializeApp(firebaseConfig);
         const rtdb = getDatabase(app);
-
-        // Referencia al sorteo actual en tiempo real
         const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
 
         onValue(sorteoRef, (snapshot) => {
@@ -220,16 +209,10 @@
             const estadoPartida = data.estado || "detenido";
             const ultimoElemento = data.ultimo || sacadosList[sacadosList.length - 1] || "--";
 
-            // Actualizar Título de la Pantalla
             document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${codJuego.toUpperCase()}`;
-
-            // Actualizar Bola o Elemento Actual
             document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
-
-            // Actualizar Contador
             document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacadosList.length}`;
 
-            // Control de Aviso de Pausa / Estado
             const aviso = document.getElementById('aviso-estado');
             if (estadoPartida === 'pausado') {
                 aviso.style.display = "block";
@@ -240,12 +223,11 @@
                 aviso.style.display = "block";
                 aviso.style.background = "var(--rojo)";
                 aviso.style.color = "#fff";
-                aviso.innerText = "⏹ PARTIDA DETENIDA / REINICIADA";
+                aviso.innerText = "⏹ PARTIDA DETENIDA";
             } else {
                 aviso.style.display = "none";
             }
 
-            // Renderizado inteligente del Tablero
             renderizarTablero(codJuego, sacadosList);
         });
 
@@ -253,29 +235,25 @@
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
 
-            // CASO A: Juegos basados en Texto / Cartas / Elementos Fijos
             if (listasJuegos[juego]) {
                 const elementos = listasJuegos[juego];
                 let html = '';
-                
                 elementos.forEach((el, index) => {
                     const marcado = sacados.includes(el);
                     const prefijoNum = juego === 'pokemon' ? `#${index + 1} ` : '';
                     html += `<div class="celda-texto ${marcado ? 'marcada' : ''}">${prefijoNum}${el}</div>`;
                 });
-
                 grid.style.gridTemplateColumns = juego === 'pokemon' ? "repeat(auto-fill, minmax(105px, 1fr))" : "repeat(auto-fill, minmax(115px, 1fr))";
                 grid.innerHTML = html;
                 return;
             }
 
-            // CASO B: Juegos de Bingo Numéricos Tradicionales (90, 75, 50, 100, etc.)
             let totalNums = 90;
             let columnas = 10;
-            if (juego === '50') { totalNums = 50; columnas = 10; }
+            if (juego === '50') { totalNums = 50; }
             else if (juego === '72') { totalNums = 72; columnas = 9; }
-            else if (juego === '100') { totalNums = 100; columnas = 10; }
-            else if (juego === 'bingocartones') { totalNums = 50; columnas = 10; }
+            else if (juego === '100') { totalNums = 100; }
+            else if (juego === 'bingocartones') { totalNums = 50; }
 
             let htmlNum = '';
             for (let i = 1; i <= totalNums; i++) {
@@ -283,7 +261,6 @@
                 const textoCelda = juego === 'bingocartones' ? `#${i}` : i;
                 htmlNum += `<div class="celda-num ${marcado ? 'marcada' : ''}">${textoCelda}</div>`;
             }
-
             grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
             grid.innerHTML = htmlNum;
         }
