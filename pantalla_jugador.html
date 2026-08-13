@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JUGAPRO - Transmisión en Vivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --fondo: #050505;
@@ -14,8 +15,9 @@
             --rojo: #ff0055;
             --texto: #ffffff;
         }
+
         body {
-            background-color: var(--fondo);
+            background: radial-gradient(circle, #0f0f0f 0%, #000000 100%);
             color: var(--texto);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -23,24 +25,166 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
-        .header-transmision {
+
+        /* ANIMACIONES */
+        @keyframes pulseBall {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
+            50% { transform: scale(1.08); box-shadow: 0 0 45px rgba(57, 255, 20, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animar-bola {
+            animation: pulseBall 0.5s ease-in-out;
+        }
+
+        .btn-efecto { 
+            background: #000; 
+            border: 1px solid #FF69B4; 
+            color: #FF69B4; 
+            padding: 8px 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            transition: all 0.3s ease; 
+        }
+        .btn-efecto:hover { 
+            border-color: var(--cian); 
+            color: var(--cian); 
+            box-shadow: 0 0 15px var(--cian); 
+            transform: translateY(-2px);
+        }
+
+        /* CAPA LOGIN JUGADOR */
+        #capa-login-jugador {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: radial-gradient(circle, #111 0%, #000 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .login-card {
+            background: rgba(15, 15, 15, 0.95);
+            border: 2px solid var(--verde);
+            padding: 40px;
+            border-radius: 20px;
             text-align: center;
-            margin-bottom: 20px;
+            box-shadow: 0 0 35px rgba(57, 255, 20, 0.25);
+            width: 100%;
+            max-width: 320px;
+            box-sizing: border-box;
+            position: relative;
+            backdrop-filter: blur(10px);
         }
+
+        .login-card h1 {
+            color: var(--verde);
+            font-size: 18px;
+            letter-spacing: 2px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+        }
+
+        .input-group { width: 100%; margin-bottom: 15px; }
+        .input-group input {
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px;
+            text-align: center;
+            font-size: 15px;
+            width: 100%;
+            outline: none;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: var(--verde);
+            box-shadow: 0 0 12px rgba(57, 255, 20, 0.4);
+        }
+
+        .btn-ingresar {
+            background: var(--verde);
+            color: #000;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .btn-ingresar:hover {
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.8);
+            transform: scale(1.02);
+        }
+        #err-log-jugador { color: var(--rojo); margin-top: 15px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+
+        /* CONTENIDO JUGADOR */
+        #contenido-jugador {
+            width: 100%;
+            max-width: 800px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .header-top { 
+            width: 100%; 
+            background: rgba(5, 5, 5, 0.8); 
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #151515; 
+            display: flex; 
+            justify-content: center; 
+            padding: 15px 0; 
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .contenedor-central { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            width: 100%; 
+            max-width: 750px; 
+            padding: 0 20px;
+        }
+
+        .header-transmision { text-align: center; margin-bottom: 20px; }
         .header-transmision h1 {
             color: var(--verde);
             margin: 0 0 5px 0;
-            font-size: 28px;
+            font-size: 26px;
             letter-spacing: 2px;
             text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
         }
-        .en-directo {
-            color: var(--verde);
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
+        .en-directo { color: var(--verde); font-size: 11px; font-weight: bold; letter-spacing: 1px; }
+
+        /* BOLA CONTENEDOR OPTIMIZADA PARA TEXTOS LARGOS */
         .bola-contenedor {
             background: radial-gradient(circle, #222 0%, #000 80%);
             border: 4px solid var(--verde);
@@ -51,122 +195,147 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             text-align: center;
+            overflow: hidden;
             padding: 15px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
         }
+
         #ultimo-elemento-vivo {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 900;
             color: var(--amarillo);
             word-break: break-word;
-            line-height: 1.2;
+            line-height: 1.15;
             text-align: center;
+            text-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
+            max-width: 100%;
+            max-height: 100%;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
         }
-        #aviso-estado {
-            font-size: 14px;
-            font-weight: bold;
-            padding: 6px 15px;
+
+        #contador-extraidas {
+            background: rgba(15, 15, 15, 0.9);
+            border: 1px solid #333;
+            padding: 8px 18px;
             border-radius: 20px;
-            margin-bottom: 15px;
-            display: none;
-            text-transform: uppercase;
-        }
-        .panel-tablero {
-            background: var(--panel);
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 15px;
-            width: 100%;
-            max-width: 750px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-        }
-        .info-tablero {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 10px;
             font-weight: bold;
+            font-size: 12px;
+            color: var(--cian);
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.15);
         }
+
         #tablero-grid-jugador {
             display: grid;
-            gap: 5px;
+            gap: 6px;
+            width: 100%;
+            max-width: 750px;
+            background: var(--panel);
+            border: 1px solid #222;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+            box-sizing: border-box;
+            margin-bottom: 40px;
         }
-        .celda-num {
-            background: #111;
-            color: #777;
-            padding: 10px 4px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 13px;
-            text-align: center;
-            transition: all 0.2s ease;
-        }
-        .celda-num.marcada {
-            background: var(--verde);
-            color: #000;
-            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
-        }
-        .celda-texto {
-            background: #111;
-            color: #888;
-            padding: 10px 6px;
+
+        .celda {
+            background: #121212;
+            color: #666;
+            padding: 12px 4px;
             border-radius: 6px;
+            text-align: center;
             font-weight: bold;
             font-size: 11px;
-            text-align: center;
-            text-transform: uppercase;
-            border: 1px solid #222;
-            transition: all 0.2s ease;
+            border: 1px solid #1a1a1a;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
+            text-transform: uppercase;
         }
-        .celda-texto.marcada {
-            background: var(--cian);
+
+        .marcada {
+            background: var(--verde);
             color: #000;
+            box-shadow: 0 0 12px rgba(57, 255, 20, 0.6);
             border-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
 
-    <div class="header-transmision">
-        <h1 id="titulo-juego-vivo">CONECTANDO...</h1>
-        <div class="en-directo">🟢 TRANSMISIÓN EN DIRECTO</div>
-    </div>
-
-    <div id="aviso-estado"></div>
-
-    <div class="bola-contenedor">
-        <div id="ultimo-elemento-vivo">--</div>
-    </div>
-
-    <div class="panel-tablero">
-        <div class="info-tablero">
-            <span id="nombre-tablero-label">TABLERO GENERAL</span>
-            <span id="contador-extraidas">EXTRAÍDAS: 0</span>
+    <!-- CAPA DE LOGIN DE JUGADOR -->
+    <div id="capa-login-jugador">
+        <div class="login-card">
+            <button onclick="window.close()" class="btn-efecto" style="position: absolute; top: 15px; right: 15px; border-color: red; color: red;" title="CERRAR VENTANA"><i class="fas fa-times"></i></button>
+            <h1>ACCESO JUGADOR</h1>
+            <div class="input-group">
+                <input type="text" id="login-nick" placeholder="TU NICK" autocomplete="off">
+            </div>
+            <div class="input-group">
+                <input type="password" id="login-pin" placeholder="PIN" autocomplete="off">
+            </div>
+            <button id="btn-login-jugador" class="btn-ingresar">ENTRAR</button>
+            <div id="err-log-jugador"></div>
         </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL DE TRANSMISIÓN -->
+    <div id="contenido-jugador">
+        <div class="header-top">
+            <div class="contenedor-central">
+                <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px;">JUGA<span style="color:var(--cian)">PRO</span></div>
+                <button onclick="window.cerrarSesionJugador()" class="btn-efecto" style="border-color: #A020F0; color: #A020F0;" title="SALIR"><i class="fas fa-power-off"></i> SALIR</button>
+            </div>
+        </div>
+
+        <div class="header-transmision">
+            <h1 id="titulo-juego-vivo">CONECTANDO...</h1>
+            <div class="en-directo">🟢 TRANSMISIÓN EN DIRECTO</div>
+        </div>
+
+        <div class="bola-contenedor" id="bola-animacion">
+            <div id="ultimo-elemento-vivo">--</div>
+        </div>
+
+        <div id="contador-extraidas">EXTRAÍDAS: 0</div>
         <div id="tablero-grid-jugador"></div>
+
+        <!-- CHAT EN VIVO INTEGRADO -->
+        <div id="chat-container" style="width: 100%; max-width: 750px; background: #080808; border: 1px solid #222; border-radius: 12px; margin-bottom: 40px; display: flex; flex-direction: column;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px; border-bottom:1px solid #222;">
+                <span style="font-weight:bold; color:var(--cian); font-size: 13px;">💬 CHAT EN VIVO</span>
+                <button id="btn-limpiar-chat" class="btn-efecto" style="padding: 4px 10px; font-size: 10px; border-color: var(--amarillo); color: var(--amarillo);">🧹 LIMPIAR</button>
+            </div>
+            <div id="mensajes-chat" style="height: 200px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 13px;"></div>
+            <div style="display: flex; padding: 10px; gap: 5px; background: #000;">
+                <input type="text" id="input-chat" placeholder="Escribe un mensaje..." style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #333; background: #111; color: #fff; outline: none;" autocomplete="off">
+                <button id="btn-enviar-chat" class="btn-efecto">ENVIAR</button>
+            </div>
+        </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getDatabase, ref, onValue, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        const firebaseConfig = {
-            authDomain: "juegos-16e17.firebaseapp.com",
-            projectId: "juegos-16e17"
-        };
-
+        const firebaseConfig = { projectId: "juegos-16e17", databaseURL: "https://juegos-16e17-default-rtdb.europe-west1.firebasedatabase.app" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const rtdb = getDatabase(app);
 
         const urlParams = new URLSearchParams(window.location.search);
         const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'gh';
-        const juegoForzadoURL = urlParams.get('juego') || urlParams.get('s');
 
         const listasJuegos = {
             "mex": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"],
@@ -178,10 +347,21 @@
             "fiesta": ["Globos", "Pastel", "Piñata", "Música", "Confeti", "Regalos", "Luces", "Serpentina", "Bebidas", "Antifaces", "Velas", "Sorpresas"],
             "novelas": ["Rubí", "La Usurpadora", "Marimar", "Teresa", "Betty la Fea", "Rosalinda", "Pasión de Gavilanes", "El Senor de los Cielos", "Sin Senos no hay Paraíso", "Amor Real", "La Fea más Bella", "Cuidado con el Ángel"],
             "paises": ["Argentina", "Brasil", "Chile", "Colombia", "España", "México", "Perú", "Uruguay", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Costa Rica", "Panamá", "Rep. Dominicana", "Canadá", "EE.UU.", "Francia", "Italia", "Alemania"],
+            "pais": ["Argentina", "Brasil", "Chile", "Colombia", "España", "México", "Perú", "Uruguay", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Costa Rica", "Panamá", "Rep. Dominicana", "Canadá", "EE.UU.", "Francia", "Italia", "Alemania"],
             "autos": ["Ferrari", "Porsche", "Lamborghini", "BMW", "Mercedes-Benz", "Audi", "Toyota", "Ford", "Chevrolet", "Nissan", "Honda", "Volkswagen"],
             "simpsons": ["Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", "Krusty", "Milhouse"],
+            "simpson": ["Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", "Krusty", "Milhouse"],
             "pitufos": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
-            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XX1","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
+            "pitufo": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
+            "inv": ["Inversión 1", "Inversión 2", "Inversión 3", "Inversión 4", "Inversión 5", "Inversión 6", "Inversión 7", "Inversión 8", "Inversión 9", "Inversión 10"],
+            "terna": ["Terna 1", "Terna 2", "Terna 3", "Terna 4", "Terna 5", "Terna 6", "Terna 7", "Terna 8", "Terna 9", "Terna 10", "Terna 11", "Terna 12"],
+            "power": ["Power 1", "Power 2", "Power 3", "Power 4", "Power 5", "Power 6", "Power 7", "Power 8", "Power 9", "Power 10"],
+            "bomba": ["Bomba 1", "Bomba 2", "Bomba 3", "Bomba 4", "Bomba 5", "Bomba 6", "Bomba 7", "Bomba 8", "Bomba 9", "Bomba 10"],
+            "parejasuma": ["Pareja 1", "Pareja 2", "Pareja 3", "Pareja 4", "Pareja 5", "Pareja 6", "Pareja 7", "Pareja 8", "Pareja 9", "Pareja 10"],
+            "sumaindi": ["Participante 1", "Participante 2", "Participante 3", "Participante 4", "Participante 5", "Participante 6", "Participante 7", "Participante 8", "Participante 9", "Participante 10"],
+            "sumarversus": ["Equipo A", "Equipo B"],
+            "nuevo": ["Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5", "Opción 6", "Opción 7", "Opción 8", "Opción 9", "Opción 10"],
+            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
             "pokemon": [
                 "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Caterpie",
                 "Metapod", "Butterfree", "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata", "Raticate",
@@ -201,102 +381,179 @@
             ]
         };
 
-        const docRef = doc(db, "proyectos", miCarpeta);
         let unsubscribeJuego = null;
+        let ultimoValorAnterior = "";
+        
+        const tiempoInicioCliente = Date.now();
 
-        onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                const juegoActivo = juegoForzadoURL || data.juegoActivo || '50';
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem(`jugador_sesion_${miCarpeta}`)) {
+                document.getElementById('capa-login-jugador').style.display = 'none';
+                document.getElementById('contenido-jugador').style.display = 'flex';
+                iniciarSincronizacion();
+            }
+        });
 
-                const juegoDocRef = doc(db, `proyectos/${miCarpeta}/juegosData`, juegoActivo);
+        window.cerrarSesionJugador = () => {
+            localStorage.removeItem(`jugador_sesion_${miCarpeta}`);
+            localStorage.removeItem(`jugador_genero_${miCarpeta}`);
+            location.reload();
+        };
+
+        document.getElementById('btn-login-jugador').onclick = async () => {
+            const nick = document.getElementById('login-nick').value.trim().toLowerCase();
+            const pin = document.getElementById('login-pin').value.trim();
+            const errLog = document.getElementById('err-log-jugador');
+
+            if (!nick || !pin) {
+                errLog.innerText = "INGRESA NICK Y PIN";
+                return;
+            }
+
+            try {
+                const regRef = collection(db, "proyectos", miCarpeta, "registrados");
+                const snap = await getDocs(regRef);
+                
+                let aut = false;
+                let genero = 'H';
+                snap.forEach(d => { 
+                    const userData = d.data();
+                    const nickDb = (userData.nick || d.id).trim().toLowerCase();
+                    const pinDb = String(userData.pin || '').trim();
+                    if(nickDb === nick && pinDb === pin) {
+                        aut = true;
+                        genero = userData.sexo || 'H';
+                    }
+                });
+
+                if(aut) {
+                    localStorage.setItem(`jugador_sesion_${miCarpeta}`, nick);
+                    localStorage.setItem(`jugador_genero_${miCarpeta}`, genero);
+                    document.getElementById('capa-login-jugador').style.display = 'none';
+                    document.getElementById('contenido-jugador').style.display = 'flex';
+                    iniciarSincronizacion();
+                } else {
+                    errLog.innerText = "DATOS INCORRECTOS";
+                }
+            } catch (e) {
+                console.error(e);
+                errLog.innerText = "ERROR DE CONEXIÓN";
+            }
+        };
+
+        // FUNCIÓN DE SÍNTESIS DE VOZ
+        function hablarTexto(texto) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(texto);
+                utterance.lang = 'es-ES';
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // GESTIÓN DEL CHAT
+        const chatRef = ref(rtdb, `proyectos/${miCarpeta}/chat/mensajes`);
+
+        document.getElementById('btn-enviar-chat').onclick = () => {
+            const input = document.getElementById('input-chat');
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            push(chatRef, {
+                nick: localStorage.getItem(`jugador_sesion_${miCarpeta}`),
+                genero: localStorage.getItem(`jugador_genero_${miCarpeta}`) || 'H',
+                texto: texto,
+                timestamp: Date.now()
+            });
+            input.value = '';
+        };
+
+        document.getElementById('btn-limpiar-chat').onclick = () => {
+            document.getElementById('mensajes-chat').innerHTML = "";
+        };
+
+        onChildAdded(chatRef, (snapshot) => {
+            const msg = snapshot.val();
+            if (!msg) return;
+
+            if (msg.timestamp && msg.timestamp < tiempoInicioCliente) return;
+
+            const chat = document.getElementById('mensajes-chat');
+            const color = (msg.genero === 'H') ? '#00f3ff' : '#ff00ff';
+            chat.innerHTML += `<div><span style="color:${color}; font-weight:bold;">${msg.nick}:</span> ${msg.texto}</div>`;
+            chat.scrollTop = chat.scrollHeight;
+        });
+
+        function iniciarSincronizacion() {
+            onSnapshot(doc(db, "proyectos", miCarpeta), (snap) => {
+                if (!snap.exists()) return;
+                const data = snap.data();
+                const juegoActivo = data.juegoActivo || '50';
                 
                 if (unsubscribeJuego) unsubscribeJuego();
 
-                unsubscribeJuego = onSnapshot(juegoDocRef, (juegoSnap) => {
-                    let infoJuego = {};
-                    if (juegoSnap.exists()) {
-                        infoJuego = juegoSnap.data();
-                    } else {
-                        infoJuego = (data.juegosData && data.juegosData[juegoActivo]) || 
-                                      (data.sorteos && data.sorteos[juegoActivo]) || 
-                                      data[juegoActivo] || 
-                                      data;
+                unsubscribeJuego = onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActivo}`), (sSnap) => {
+                    const info = sSnap.val() || {};
+                    const rawSacados = info.sacados || [];
+                    const sacados = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
+                    const ultimoVal = info.ultimo || sacados[sacados.length - 1] || "--";
+                    
+                    document.getElementById('titulo-juego-vivo').innerText = `JUEGO: ${juegoActivo.toUpperCase()}`;
+                    document.getElementById('ultimo-elemento-vivo').innerText = ultimoVal;
+                    document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacados.length}`;
+                    
+                    if (ultimoVal !== ultimoValorAnterior && ultimoVal !== "--") {
+                        ultimoValorAnterior = ultimoVal;
+                        
+                        // Lectura de voz en alta voz
+                        hablarTexto(String(ultimoVal));
+
+                        const bola = document.getElementById('bola-animacion');
+                        bola.classList.remove('animar-bola');
+                        void bola.offsetWidth; 
+                        bola.classList.add('animar-bola');
                     }
 
-                    // Fusión inteligente para extraer los datos de sacados sin importar en qué propiedad del documento o subcolección estén
-                    const rawSacados = infoJuego.sacados || infoJuego[juegoActivo]?.sacados || data.sacados || data[juegoActivo]?.sacados || [];
-                    const sacadosList = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
-                    
-                    const ultimoElemento = infoJuego.ultimo || infoJuego[juegoActivo]?.ultimo || data.ultimo || sacadosList[sacadosList.length - 1] || "--";
-
-                    document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${juegoActivo.toUpperCase()}`;
-                    document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
-                    document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacadosList.length}`;
-
-                    renderizarTablero(juegoActivo, sacadosList);
+                    renderizarTablero(juegoActivo, sacados);
                 });
-
-            } else {
-                document.getElementById('titulo-juego-vivo').innerText = "PROYECTO NO ENCONTRADO";
-            }
-        }, (error) => {
-            console.error("Error al escuchar Firestore:", error);
-            document.getElementById('titulo-juego-vivo').innerText = "ERROR DE FIRESTORE";
-        });
+            });
+        }
 
         function renderizarTablero(juego, sacados) {
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
-
             const juegoLower = String(juego).toLowerCase();
+            let html = "";
 
             if (listasJuegos[juegoLower]) {
                 const elementos = listasJuegos[juegoLower];
-                let html = '';
                 elementos.forEach((el, index) => {
-                    const marcado = sacados.includes(el);
+                    const esta = sacados.includes(el);
                     const prefijoNum = juegoLower === 'pokemon' ? `#${index + 1} ` : '';
-                    html += `<div class="celda-texto ${marcado ? 'marcada' : ''}">${prefijoNum}${el}</div>`;
+                    html += `<div class="celda ${esta ? 'marcada' : ''}" style="font-size: 10px; padding: 10px 2px;">${prefijoNum}${el}</div>`;
                 });
                 grid.style.gridTemplateColumns = juegoLower === 'pokemon' ? "repeat(auto-fill, minmax(105px, 1fr))" : "repeat(auto-fill, minmax(115px, 1fr))";
                 grid.innerHTML = html;
                 return;
             }
 
-            let totalNums = 0;
+            let totalNums = 50;
             let columnas = 10;
 
-            if (juegoLower === '50' || juegoLower === 'bingo50') { totalNums = 50; }
-            else if (juegoLower === '72' || juegoLower === 'bingo72') { totalNums = 72; columnas = 9; }
+            if (juegoLower === '72' || juegoLower === 'bingo72') { totalNums = 72; columnas = 9; }
             else if (juegoLower === '90' || juegoLower === 'bingo90') { totalNums = 90; }
             else if (juegoLower === '100' || juegoLower === 'bingo100') { totalNums = 100; }
-            else if (juegoLower === 'bingocartones') { totalNums = 50; }
-            else if (juegoLower === 'killernum') { totalNums = 50; }
             else if (juegoLower === 'eliminatorias') { totalNums = 30; columnas = 6; }
 
-            if (totalNums > 0) {
-                let htmlNum = '';
-                for (let i = 1; i <= totalNums; i++) {
-                    const marcado = sacados.includes(i) || sacados.includes(String(i)) || sacados.includes(Number(i));
-                    const textoCelda = juegoLower === 'bingocartones' ? `#${i}` : (juegoLower === 'eliminatorias' ? `P${i}` : i);
-                    htmlNum += `<div class="celda-num ${marcado ? 'marcada' : ''}">${textoCelda}</div>`;
-                }
-                grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
-                grid.innerHTML = htmlNum;
-                return;
+            grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
+            for(let i=1; i<=totalNums; i++) {
+                const esta = sacados.includes(i) || sacados.includes(String(i)) || sacados.includes(Number(i));
+                const textoCelda = juegoLower === 'eliminatorias' ? `P${i}` : i;
+                html += `<div class="celda ${esta ? 'marcada' : ''}">${textoCelda}</div>`;
             }
-
-            let htmlDinamic = '';
-            if (sacados.length === 0) {
-                htmlDinamic = `<div style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">Esperando elementos...</div>`;
-            } else {
-                sacados.forEach((item) => {
-                    htmlDinamic += `<div class="celda-texto marcada" style="font-size: 13px; padding: 12px;">${item}</div>`;
-                });
-            }
-            grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(140px, 1fr))";
-            grid.innerHTML = htmlDinamic;
+            grid.innerHTML = html;
         }
     </script>
 </body>
