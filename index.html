@@ -10,8 +10,6 @@
         :root { 
             --cian: #00ffff; --rosa: #ff00ff; --verde: #39ff14; 
             --amarillo: #ffff00; --rojo: #ff0000; --violeta: #bc13fe;
-            --neon-verde: 0 0 15px #39ff14, inset 0 0 10px #39ff14;
-            --neon-rojo: 0 0 15px #ff0000, inset 0 0 10px #ff0000;
         }
         body { 
             background: #000; 
@@ -47,19 +45,13 @@
             margin: 0 auto;
         }
         .logo-main { font-size: 24px; font-weight: 900; letter-spacing: 2px; }
-        .vencimiento-box { display: flex; align-items: center; gap: 8px; background: #000; padding: 8px 25px; border-radius: 50px; border: 2px solid var(--verde); box-shadow: var(--neon-verde); transition: 0.5s; }
-        .v-txt { font-size: 10px; color: var(--verde); font-weight: 900; letter-spacing: 1px; }
-        .v-num { font-size: 20px; font-weight: 900; color: var(--verde); text-shadow: 0 0 10px var(--verde); }
-        .v-label { font-size: 8px; color: var(--verde); font-weight: 900; margin: 0 4px 0 2px; }
-        .vencimiento-urgente { border-color: var(--rojo) !important; box-shadow: var(--neon-rojo) !important; }
-        .vencimiento-urgente * { color: var(--rojo) !important; text-shadow: 0 0 10px var(--rojo) !important; }
         
         .btn-efecto { background: #000; border: 1px solid #FF69B4; color: #FF69B4; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; text-transform: uppercase; transition: 0.3s; }
         .btn-efecto:hover { border-color: var(--cian); color: var(--cian); box-shadow: 0 0 10px var(--cian); }
         .menu-modos { width: 95%; max-width: 900px; margin-top: 25px; padding: 20px; background: #080808; border: 1px solid #151515; border-radius: 15px; box-sizing: border-box; }
         .buscador-container { position: relative; display: flex; gap: 10px; }
         #input-busqueda { flex-grow: 1; background: #000; border: 1px solid var(--verde); color: var(--verde); padding: 15px; border-radius: 10px; font-weight: 900; outline: none; box-shadow: inset 0 0 8px var(--verde); cursor: pointer; text-transform: uppercase; }
-        #sugerencias { position: absolute; top: 60px; left: 0; width: calc(100% - 130px); background: #080808; border: 1px solid var(--verde); border-radius: 10px; z-index: 1000; display: none; max-height: 250px; overflow-y: auto; box-shadow: var(--neon-verde); }
+        #sugerencias { position: absolute; top: 60px; left: 0; width: calc(100% - 130px); background: #080808; border: 1px solid var(--verde); border-radius: 10px; z-index: 1000; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 0 15px var(--verde); }
         .sug-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #151515; font-weight: 900; text-transform: uppercase; transition: 0.2s; color: #fff; }
         .sug-item:hover { background: var(--verde); color: #000; box-shadow: 0 0 20px var(--verde); }
         
@@ -80,8 +72,6 @@
         #pin-input:focus { border-color: #800020; box-shadow: 0 0 15px #800020; }
         .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #444; cursor: pointer; font-size: 18px; }
         #busc-reg { width: 100%; box-sizing: border-box; background: #000; border: 1px solid var(--amarillo); color: var(--amarillo); padding: 12px; margin-bottom: 15px; border-radius: 8px; outline: none; font-weight: 900; text-transform: uppercase; }
-
-        #error-msg { display: none; color: #ff0000; background: #220000; padding: 20px; border: 2px solid #ff0000; border-radius: 10px; margin: 20px; text-align: center; }
     </style>
 </head>
 <body>
@@ -107,13 +97,6 @@
     <div class="header-top">
         <div class="contenedor-central">
             <div class="logo-main">JUGA<span style="color:var(--cian)">PRO</span></div>
-            <div id="box-reloj" class="vencimiento-box">
-                <span class="v-txt">VENCE EN:</span>
-                <span id="d" class="v-num">00</span><span class="v-label">D</span>
-                <span id="h" class="v-num">00</span><span class="v-label">H</span>
-                <span id="m" class="v-num">00</span><span class="v-label">M</span>
-                <span id="s" class="v-num" style="font-size:14px; opacity:0.8;">00</span><span class="v-label">S</span>
-            </div>
             <div style="display:flex; gap:8px;">
                 <button class="btn-efecto" onclick="window.abrirModalFondo()" style="border-color: #FFFF00; color: #FFFF00;" title="CAMBIAR FONDO">🎨 DISEÑO</button>
                 <button class="btn-efecto" onclick="window.abrirModalPin()" style="border-color: #C71585; color: #C71585;" title="CAMBIAR CLAVE">⚙️ CLAVE</button>
@@ -224,13 +207,12 @@ window.SORTEADORES_CONFIG = {
     "bingo100": "BINGO 100", "bingo120": "TERNA 120", "lm": "LOTERÍA MEXICANA"
 };
 
-// Detección dinámica del parámetro de URL '?p=gh' o fallback a 'gh'
 const urlParams = new URLSearchParams(window.location.search);
 const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || "gh";
 
 let usuariosLocal = [], modoActivo = null;
 let pinDeEntrada = sessionStorage.getItem(`admin_p_volatil`);
-let intervaloReloj, miSesionActual = null;
+let miSesionActual = null;
 
 document.getElementById('ver-password').onclick = function() {
     const input = document.getElementById('pin-input');
@@ -277,22 +259,6 @@ function arrancarTodo() {
         if(listaSorteadores.includes(valSelectAnterior)) selectSort.value = valSelectAnterior;
 
         if (miSesionActual === null) miSesionActual = d.sessionToken;
-
-        if(d.vencimiento){
-            if(intervaloReloj) clearInterval(intervaloReloj);
-            const actualizarReloj = () => {
-                const dif = d.vencimiento - Date.now();
-                if (dif <= 0) { location.reload(); return; }
-                const box = document.getElementById('box-reloj');
-                if (dif < 86400000) box.classList.add('vencimiento-urgente');
-                document.getElementById('d').innerText = Math.floor(dif/86400000).toString().padStart(2,'0');
-                document.getElementById('h').innerText = Math.floor((dif%86400000)/3600000).toString().padStart(2,'0');
-                document.getElementById('m').innerText = Math.floor((dif%3600000)/60000).toString().padStart(2,'0');
-                document.getElementById('s').innerText = Math.floor((dif%60000)/1000).toString().padStart(2,'0');
-            };
-            actualizarReloj(); 
-            intervaloReloj = setInterval(actualizarReloj, 1000);
-        }
 
         if(d.fondoPersonalizado) {
             document.body.style.background = d.fondoPersonalizado.includes('http') 
@@ -420,21 +386,26 @@ async function cargarMod(m) {
     const p = document.getElementById('panel-juego'); 
     if (!m) return;
 
-    // Quita espacios invisibles antes y después
-    const juegoLimpio = String(m).trim(); 
-    
-    // Genera la ruta correcta con guion bajo
-    const rutaModulo = `./modulos/admin_${juegoLimpio}.js?v=${Date.now()}`;
+    const juegoLimpio = String(m).trim();
+    const rutaModulo = `./modulos/admin_${encodeURIComponent(juegoLimpio)}.js?v=${Date.now()}`;
     
     try { 
         const mod = await import(rutaModulo); 
         if (mod && mod.iniciar) { 
             p.innerHTML = ''; 
             mod.iniciar(p, db, miCarpeta, rtdb); 
+        } else {
+            p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ El módulo "admin_${juegoLimpio}.js" no exporta la función "iniciar".</div>`;
         }
     } catch(e) { 
-        console.error("Error al cargar el módulo:", e);
-        p.innerHTML = `<div style="color:red; text-align:center; padding:20px;">⚠️ No se encontró el módulo /modulos/admin_${juegoLimpio}.js</div>`;
+        console.error("Error detallado al cargar el módulo:", e);
+        p.innerHTML = `
+            <div style="color:var(--rojo); text-align:center; padding:20px; border: 1px dashed var(--rojo); border-radius:10px; margin:20px;">
+                ⚠️ <b>No se pudo cargar el módulo:</b> admin_${juegoLimpio}.js<br>
+                <small style="color:#bbb; display:block; margin-top:8px;">
+                    Verifica que el archivo exista en <code>/modulos/admin_${juegoLimpio}.js</code> y no tenga errores de sintaxis.
+                </small>
+            </div>`;
     }
 }
 

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - Sorteadores</title>
     <style>
-        /* Estilos base */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -26,15 +25,6 @@
             backdrop-filter: blur(5px);
         }
 
-        #relojVencimiento {
-            font-weight: bold;
-            color: #ffcc00;
-            background: rgba(0,0,0,0.4);
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #ffcc00;
-        }
-
         .btn-panel {
             background: #2196F3;
             color: white;
@@ -46,11 +36,8 @@
             transition: 0.3s;
         }
 
-        .btn-panel:hover {
-            background: #0b7dda;
-        }
+        .btn-panel:hover { background: #0b7dda; }
 
-        /* Contenedores principales */
         .panel-controles {
             display: flex;
             gap: 15px;
@@ -67,7 +54,6 @@
             outline: none;
         }
 
-        /* Ventana flotante de Registrados */
         .modal {
             display: none;
             position: fixed;
@@ -116,334 +102,29 @@
 </head>
 <body>
 
-    <!-- Encabezado con Estado -->
     <header>
-        <h2>🎮 PANEL ADMINISTRADOR</h2>
-        <div id="relojVencimiento">CARGANDO LICENCIA...</div>
+        <h2>🎮 PANEL ADMINISTRADOR DE SORTEADOR</h2>
         <button id="btnRegistrados" class="btn-panel" onclick="abrirModalRegistrados()">👤 REGISTRADOS (0)</button>
     </header>
 
-    <!-- Controles de Menús -->
     <div class="panel-controles">
         <div>
-            <label>Sorteadores:</label>
+            <label>Sorteador Actual:</label>
             <select id="selectSorteadores" onchange="cambiarSorteador(this.value)">
                 <option value="">Cargando sorteadores...</option>
             </select>
         </div>
 
         <div>
-            <label>Cargar Juego:</label>
+            <label>Juegos Habilitados:</label>
             <select id="selectJuegos" onchange="cargarModuloJuego(this.value)">
                 <option value="">Seleccionar juego...</option>
             </select>
         </div>
     </div>
 
-    <!-- Contenedor donde se dibuja el juego activo -->
     <main id="contenedorJuego">
         <h3>Selecciona un juego o sorteador para iniciar...</h3>
-    </main>
-
-    <!-- Modal Ventana Registrados -->
-    <div id="modalRegistrados" class="modal">
-        <div class="modal-contenido">
-            <h3>👥 Jugadores Registrados</h3>
-            <p><strong>Total:</strong> <span id="cntTotal">0</span> | ♂ Hombres: <span id="cntH">0</span> | ♀ Mujeres: <span id="cntM">0</span></p>
-            <hr>
-            <div id="listaRegistrados">Cargando lista...</div>
-            <br>
-            <button class="btn-panel" style="background:#555" onclick="cerrarModalRegistrados()">Cerrar</button>
-        </div>
-    </div>
-
-    <!-- CÓDIGO FIREBASE Y LÓGICA DEL PANEL -->
-    <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control - Sorteadores</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            color: #ffffff;
-            background: #121212;
-            transition: background 0.5s ease;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 15px 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        #relojVencimiento {
-            font-weight: bold;
-            color: #ffcc00;
-            background: rgba(0,0,0,0.4);
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #ffcc00;
-        }
-
-        .btn-panel {
-            background: #2196F3;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .btn-panel:hover { background: #0b7dda; }
-
-        .panel-controles {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        select, input {
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #444;
-            background: #222;
-            color: #fff;
-            outline: none;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-contenido {
-            background: #1e1e1e;
-            padding: 25px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .tarjeta-usuario {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #2a2a2a;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .btn-eliminar {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn-sexo {
-            cursor: pointer;
-            font-size: 1.2rem;
-            margin-right: 10px;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h2>🎮 PANEL ADMINISTRADOR DE SORTEADOR</h2>
-        <div id="relojVencimiento">CARGANDO LICENCIA...</div>
-        <button id="btnRegistrados" class="btn-panel" onclick="abrirModalRegistrados()">👤 REGISTRADOS (0)</button>
-    </header>
-
-    <div class="panel-controles">
-        <div>
-            <label>Sorteador Actual:</label>
-            <select id="selectSorteadores" onchange="cambiarSorteador(this.value)">
-                <option value="">Cargando sorteadores...</option>
-            </select>
-        </div>
-
-        <div>
-            <label>Juegos Habilitados:</label>
-            <select id="selectJuegos" onchange="cargarModuloJuego(this.value)">
-                <option value="">Seleccionar juego...</option>
-            </select>
-        </div>
-    </div>
-
-    <main id="contenedorJuego">
-        <h3>Sincronizando con el panel general gh.html...</h3>
-    </main>
-
-    <div id="modalRegistrados" class="modal">
-        <div class="modal-contenido">
-            <h3>👥 Jugadores Registrados</h3>
-            <p><strong>Total:</strong> <span id="cntTotal">0</span> | ♂ Hombres: <span id="cntH">0</span> | ♀ Mujeres: <span id="cntM">0</span></p>
-            <hr>
-            <div id="listaRegistrados">Cargando lista...</div>
-            <br>
-            <button class="btn-panel" style="background:#555" onclick="cerrarModalRegistrados()">Cerrar</button>
-        </div>
-    </div>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control - Sorteadores</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            color: #ffffff;
-            background: #121212;
-            transition: background 0.5s ease;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 15px 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        #relojVencimiento {
-            font-weight: bold;
-            color: #ffcc00;
-            background: rgba(0,0,0,0.4);
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #ffcc00;
-        }
-
-        .btn-panel {
-            background: #2196F3;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .btn-panel:hover { background: #0b7dda; }
-
-        .panel-controles {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        select, input {
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #444;
-            background: #222;
-            color: #fff;
-            outline: none;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-contenido {
-            background: #1e1e1e;
-            padding: 25px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .tarjeta-usuario {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #2a2a2a;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .btn-eliminar {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn-sexo {
-            cursor: pointer;
-            font-size: 1.2rem;
-            margin-right: 10px;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h2>🎮 PANEL ADMINISTRADOR DE SORTEADOR</h2>
-        <div id="relojVencimiento">CARGANDO LICENCIA...</div>
-        <button id="btnRegistrados" class="btn-panel" onclick="abrirModalRegistrados()">👤 REGISTRADOS (0)</button>
-    </header>
-
-    <div class="panel-controles">
-        <div>
-            <label>Sorteador Actual:</label>
-            <select id="selectSorteadores" onchange="cambiarSorteador(this.value)">
-                <option value="">Cargando sorteadores...</option>
-            </select>
-        </div>
-
-        <div>
-            <label>Juegos Habilitados:</label>
-            <select id="selectJuegos" onchange="cargarModuloJuego(this.value)">
-                <option value="">Seleccionar juego...</option>
-            </select>
-        </div>
-    </div>
-
-    <main id="contenedorJuego">
-        <h3>Sincronizando con el panel general gh.html...</h3>
     </main>
 
     <div id="modalRegistrados" class="modal">
@@ -481,7 +162,6 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const idProyecto = urlParams.get('p') || "gh";
-        let timerReloj = null;
         let listaUsuariosGlobal = [];
 
         function iniciarSincronizacionFirebase() {
@@ -495,10 +175,6 @@
                     document.body.style.background = data.fondoPersonalizado.includes('http') 
                         ? `url('${data.fondoPersonalizado}') center/cover no-repeat fixed` 
                         : data.fondoPersonalizado;
-                }
-
-                if (data.vencimiento) {
-                    iniciarRelojVencimiento(Number(data.vencimiento));
                 }
 
                 if (Array.isArray(data.sorteadores)) {
@@ -515,34 +191,6 @@
             });
 
             escucharRegistrados();
-        }
-
-        function iniciarRelojVencimiento(milisegundosExp) {
-            if (timerReloj) clearInterval(timerReloj);
-            const elReloj = document.getElementById("relojVencimiento");
-
-            timerReloj = setInterval(() => {
-                const resto = milisegundosExp - Date.now();
-
-                if (resto <= 0) {
-                    clearInterval(timerReloj);
-                    if (elReloj) {
-                        elReloj.innerText = "⛔ LICENCIA VENCIDA";
-                        elReloj.style.color = "red";
-                    }
-                    document.body.innerHTML = "<h1 style='text-align:center;margin-top:20%;color:red;'>SU LICENCIA HA VENCIDO</h1>";
-                    return;
-                }
-
-                const d = Math.floor(resto / (1000 * 60 * 60 * 24));
-                const h = Math.floor((resto % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((resto % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((resto % (1000 * 60)) / 1000);
-
-                if (elReloj) {
-                    elReloj.innerText = `⏳ VENCE EN: ${d}D ${h}H ${m}M ${s}S`;
-                }
-            }, 1000);
         }
 
         function actualizarMenuSorteadores(lista) {
@@ -673,8 +321,4 @@
         iniciarSincronizacionFirebase();
     </script>
 </body>
-</html>
-</body>
-</html>
-</body>
-</html>
+</html> 

@@ -3,167 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transmisión en Vivo - JUGARPRO</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --cian: #00ffff;
-            --verde: #39ff14;
-            --amarillo: #ffff00;
-        }
-
-        * { box-sizing: border-box; user-select: none; }
-
-        body {
-            background: #040406;
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .header-jugador {
-            text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--cian);
-            padding-bottom: 10px;
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .titulo-juego {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--cian);
-            text-shadow: 0 0 20px var(--cian);
-            margin: 0;
-            text-transform: uppercase;
-        }
-
-        .estado-vivo {
-            font-size: 13px;
-            color: var(--verde);
-            text-shadow: 0 0 10px var(--verde);
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .display-vivo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px 0 30px 0;
-        }
-
-        .bola-gigante-jugador {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #fff, #111 70%, #000);
-            border: 5px solid var(--verde);
-            box-shadow: 0 0 40px var(--verde), inset 0 0 20px var(--verde);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 72px;
-            font-weight: 900;
-            color: var(--verde);
-            text-shadow: 0 0 15px var(--verde);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .bola-gigante-jugador.nueva-bola {
-            transform: scale(1.25) rotate(10deg);
-            border-color: var(--amarillo);
-            color: var(--amarillo);
-            box-shadow: 0 0 60px var(--amarillo), inset 0 0 25px var(--amarillo);
-        }
-
-        .contenedor-tablero {
-            width: 100%;
-            max-width: 900px;
-            background: #0a0a0f;
-            border: 1px solid #222;
-            padding: 20px;
-            border-radius: 15px;
-        }
-
-        .tablero-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #222;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .grid-numeros {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-            gap: 8px;
-        }
-
-        .num-box {
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 8px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            color: #444;
-            transition: all 0.2s ease;
-        }
-
-        .num-box.sacado {
-            background: #000;
-            border-color: var(--amarillo);
-            color: var(--amarillo);
-            box-shadow: 0 0 10px var(--amarillo);
-            font-size: 16px;
-            font-weight: 900;
-        }
-
-        .num-box.ultimo {
-            border-color: var(--verde) !important;
-            color: var(--verde) !important;
-            box-shadow: 0 0 18px var(--verde) !important;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="header-jugador">
-        <h1 id="txt-titulo" class="titulo-juego">SORTEO EN VIVO</h1>
-        <div id="badge-estado" class="estado-vivo"><i class="fas fa-satellite-dish"></i> TRANSMISIÓN EN DIRECTO</div>
-    </div>
-
-    <div class="display-vivo">
-        <div id="bola-display" class="bola-gigante-jugador">--</div>
-        <div style="color:#aaa; font-size:14px; font-weight:900; letter-spacing:2px; margin-top:15px;">ÚLTIMO NÚMERO</div>
-    </div>
-
-    <div class="contenedor-tablero">
-        <div class="tablero-bar">
-            <span style="color:var(--cian); font-weight:900;">NÚMEROS MARCADOS</span>
-            <span style="color:#aaa; font-size:12px; font-weight:bold;">
-                EXTRAÍDAS: <span id="cant-extraidas" style="color:var(--verde)">0</span> / <span id="cant-total">0</span>
-            </span>
-        </div>
-        <div id="grid-tablero" class="grid-numeros"></div>
-    </div>
-
-    <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JUGARPRO - Transmisión en Vivo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -189,7 +28,6 @@
             min-height: 100vh;
         }
 
-        /* CAPA LOGIN JUGADOR */
         #capa-login-jugador {
             position: fixed;
             inset: 0;
@@ -262,7 +100,6 @@
             background: #fff;
         }
 
-        /* CONTENIDO PRINCIPAL */
         #contenido-jugador {
             display: none;
             flex-direction: column;
@@ -409,7 +246,6 @@
 </head>
 <body>
 
-    <!-- PANTALLA LOGIN JUGADOR -->
     <div id="capa-login-jugador">
         <div class="card-login">
             <div style="width: 60px; height: 60px; background: rgba(0, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border: 1px solid var(--cian);">
@@ -421,7 +257,7 @@
                 <input type="text" id="j-nick" placeholder="NICK / USUARIO" autocomplete="off">
             </div>
             <div class="input-box">
-                <input type="password" id="j-pin" placeholder="PIN / CONSTRASEÑA" autocomplete="off">
+                <input type="password" id="j-pin" placeholder="PIN / CONTRASEÑA" autocomplete="off">
             </div>
 
             <button id="btn-login-jugador" class="btn-ingresar">INGRESAR AL JUEGO</button>
@@ -429,7 +265,6 @@
         </div>
     </div>
 
-    <!-- PANTALLA TRANSMISIÓN -->
     <div id="contenido-jugador">
         <div class="header-jugador">
             <div id="user-info" class="user-tag">
@@ -482,7 +317,6 @@
 
         const sesionJugador = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
 
-        // AUTENTICACIÓN JUGADOR
         document.getElementById('btn-login-jugador').onclick = async () => {
             const nickIn = document.getElementById('j-nick').value.trim().toUpperCase();
             const pinIn = document.getElementById('j-pin').value.trim();
@@ -547,7 +381,6 @@
             const grid = document.getElementById('grid-tablero');
             grid.innerHTML = Array.from({length: totalElementos}, (_, i) => `<div id="box-${i+1}" class="num-box">${i+1}</div>`).join('');
 
-            // Escuchar Fondo Personalizado
             onSnapshot(doc(db, "proyectos", miCarpeta), (snap) => {
                 if (snap.exists() && snap.data().fondoPersonalizado) {
                     const fondo = snap.data().fondoPersonalizado;
@@ -557,7 +390,6 @@
                 }
             });
 
-            // Escuchar Realtime Database
             const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
             let ultimoProcesado = null;
 
@@ -601,7 +433,5 @@
             });
         }
     </script>
-</body>
-</html>
 </body>
 </html>
