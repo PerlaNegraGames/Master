@@ -1,6 +1,8 @@
-import { doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-export function iniciar(contenedor, db, miCarpeta) {
+export function iniciar(contenedor, db, miCarpeta, rtdb) {
+    const codJuego = "parejasuma";
+
     contenedor.innerHTML = `
         <div style="background:#080808; border:1px solid var(--amarillo); padding:20px; border-radius:15px; text-align:center;">
             <h2 style="color:var(--amarillo); margin-top:0;">SUMATORIA PAREJAS</h2>
@@ -12,19 +14,18 @@ export function iniciar(contenedor, db, miCarpeta) {
             <div id="tablero-grid-par" style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:600px; margin:0 auto;"></div>
         </div>`;
 
-    const refJuego = doc(db, "proyectos", miCarpeta, "juegosData", "sumatoriaParejas");
+    const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
     let salidos = [];
 
-    onSnapshot(refJuego, (snap) => {
-        if (snap.exists()) {
-            salidos = snap.data().salidos || [];
-            const ultimo = salidos[salidos.length - 1] || "--";
-            const elem = document.getElementById('ultimo-num-par');
-            if(elem) elem.innerText = ultimo;
-            renderTablero(salidos);
-        } else {
-            renderTablero([]);
-        }
+    onValue(sorteoRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        const rawSalidos = data.sacados || [];
+        salidos = Array.isArray(rawSalidos) ? rawSalidos : Object.values(rawSalidos);
+
+        const ultimo = salidos[salidos.length - 1] || "--";
+        const elem = document.getElementById('ultimo-num-par');
+        if(elem) elem.innerText = ultimo;
+        renderTablero(salidos);
     });
 
     function renderTablero(salidosList) {
@@ -41,12 +42,12 @@ export function iniciar(contenedor, db, miCarpeta) {
         const n2 = Math.floor(Math.random() * 50) + 1;
         const combo = `${n1} + ${n2} = ${n1 + n2}`;
         salidos.push(combo);
-        await setDoc(refJuego, { salidos: salidos, ultimo: combo }, { merge: true });
+        await set(sorteoRef, { sacados: salidos, estado: "activo", ultimo: combo });
     };
 
     document.getElementById('btn-reset-par').onclick = async () => {
         if (confirm("¿Reiniciar Sumatoria Parejas?")) {
-            await setDoc(refJuego, { salidos: [], ultimo: null }, { merge: true });
+            await set(sorteoRef, { sacados: [], estado: "detenido", ultimo: null });
         }
     };
 }

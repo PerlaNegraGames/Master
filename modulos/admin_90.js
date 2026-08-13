@@ -1,8 +1,10 @@
-import { doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-export function iniciar(contenedor, db, miCarpeta) {
+export function iniciar(contenedor, db, miCarpeta, rtdb) {
     const totalNumeros = 90;
-    
+    const codJuego = "90";
+    const codJuegoAlt = "bingo90";
+
     contenedor.innerHTML = `
         <div style="background:#080808; border:1px solid var(--verde); padding:20px; border-radius:15px; text-align:center;">
             <h2 style="color:var(--verde); margin-top:0;">BINGO 90 NUMEROS</h2>
@@ -14,19 +16,19 @@ export function iniciar(contenedor, db, miCarpeta) {
             <div id="tablero-grid-90" style="display:grid; grid-template-columns:repeat(10, 1fr); gap:5px; max-width:600px; margin:0 auto;"></div>
         </div>`;
 
-    const refJuego = doc(db, "proyectos", miCarpeta, "juegosData", "bingo90");
+    const sorteoRef1 = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
+    const sorteoRef2 = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuegoAlt}`);
     let numerosSalidos = [];
 
-    onSnapshot(refJuego, (snap) => {
-        if (snap.exists()) {
-            numerosSalidos = snap.data().salidos || [];
-            const ultimo = numerosSalidos[numerosSalidos.length - 1] || "--";
-            const elemUltimo = document.getElementById('ultimo-num-90');
-            if(elemUltimo) elemUltimo.innerText = ultimo;
-            renderTablero(numerosSalidos);
-        } else {
-            renderTablero([]);
-        }
+    onValue(sorteoRef1, (snapshot) => {
+        const data = snapshot.val() || {};
+        const rawSalidos = data.sacados || [];
+        numerosSalidos = Array.isArray(rawSalidos) ? rawSalidos.map(Number) : Object.values(rawSalidos).map(Number);
+
+        const ultimo = numerosSalidos.length > 0 ? numerosSalidos[numerosSalidos.length - 1] : "--";
+        const elemUltimo = document.getElementById('ultimo-num-90');
+        if(elemUltimo) elemUltimo.innerText = ultimo;
+        renderTablero(numerosSalidos);
     });
 
     function renderTablero(salidos) {
@@ -44,12 +46,17 @@ export function iniciar(contenedor, db, miCarpeta) {
         if (disponibles.length === 0) return alert("¡Todos los números han salido!");
         const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
         numerosSalidos.push(nuevo);
-        await setDoc(refJuego, { salidos: numerosSalidos, ultimo: nuevo }, { merge: true });
+        
+        const payload = { sacados: numerosSalidos, estado: "activo", ultimo: nuevo };
+        await set(sorteoRef1, payload);
+        await set(sorteoRef2, payload);
     };
 
     document.getElementById('btn-reset-90').onclick = async () => {
         if (confirm("¿Reiniciar juego de Bingo 90?")) {
-            await setDoc(refJuego, { salidos: [], ultimo: null }, { merge: true });
+            const payload = { sacados: [], estado: "detenido", ultimo: null };
+            await set(sorteoRef1, payload);
+            await set(sorteoRef2, payload);
         }
     };
 }

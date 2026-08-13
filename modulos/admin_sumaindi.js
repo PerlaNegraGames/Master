@@ -1,6 +1,8 @@
-import { doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-export function iniciar(contenedor, db, miCarpeta) {
+export function iniciar(contenedor, db, miCarpeta, rtdb) {
+    const codJuego = "sumaindi";
+
     contenedor.innerHTML = `
         <div style="background:#080808; border:1px solid var(--verde); padding:20px; border-radius:15px; text-align:center;">
             <h2 style="color:var(--verde); margin-top:0;">SUMATORIA INDIVIDUAL</h2>
@@ -13,19 +15,19 @@ export function iniciar(contenedor, db, miCarpeta) {
             <button id="btn-reset-indi" class="btn-abrir" style="background:var(--rojo); color:#fff;">REINICIAR PUNTOS</button>
         </div>`;
 
-    const refJuego = doc(db, "proyectos", miCarpeta, "juegosData", "sumatoriaIndividual");
+    const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
     let total = 0;
 
-    onSnapshot(refJuego, (snap) => {
-        if (snap.exists()) {
-            total = snap.data().puntos || 0;
-            const elem = document.getElementById('total-indi');
-            if(elem) elem.innerText = total;
-        }
+    onValue(sorteoRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        total = data.puntos || 0;
+        const elem = document.getElementById('total-indi');
+        if(elem) elem.innerText = total;
     });
 
     const sumar = async (val) => {
-        await setDoc(refJuego, { puntos: total + val }, { merge: true });
+        total += val;
+        await set(sorteoRef, { puntos: total, estado: "activo" });
     };
 
     document.getElementById('btn-add1').onclick = () => sumar(1);
@@ -34,7 +36,8 @@ export function iniciar(contenedor, db, miCarpeta) {
 
     document.getElementById('btn-reset-indi').onclick = async () => {
         if (confirm("¿Reiniciar puntos individuales?")) {
-            await setDoc(refJuego, { puntos: 0 }, { merge: true });
+            total = 0;
+            await set(sorteoRef, { puntos: 0, estado: "detenido" });
         }
     };
 }

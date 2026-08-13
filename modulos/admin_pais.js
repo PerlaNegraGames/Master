@@ -1,7 +1,8 @@
-import { doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-export function iniciar(contenedor, db, miCarpeta) {
+export function iniciar(contenedor, db, miCarpeta, rtdb) {
     const paises = ["Argentina", "Brasil", "Chile", "Colombia", "España", "México", "Perú", "Uruguay", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Costa Rica", "Panamá", "Rep. Dominicana", "Canadá", "EE.UU.", "Francia", "Italia", "Alemania"];
+    const codJuego = "paises";
 
     contenedor.innerHTML = `
         <div style="background:#080808; border:1px solid var(--cian); padding:20px; border-radius:15px; text-align:center;">
@@ -14,19 +15,18 @@ export function iniciar(contenedor, db, miCarpeta) {
             <div id="tablero-grid-pais" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; max-width:600px; margin:0 auto;"></div>
         </div>`;
 
-    const refJuego = doc(db, "proyectos", miCarpeta, "juegosData", "paises");
+    const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
     let salidos = [];
 
-    onSnapshot(refJuego, (snap) => {
-        if (snap.exists()) {
-            salidos = snap.data().salidos || [];
-            const ultimo = salidos[salidos.length - 1] || "--";
-            const elem = document.getElementById('ultimo-num-pais');
-            if(elem) elem.innerText = ultimo;
-            renderTablero(salidos);
-        } else {
-            renderTablero([]);
-        }
+    onValue(sorteoRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        const rawSalidos = data.sacados || [];
+        salidos = Array.isArray(rawSalidos) ? rawSalidos : Object.values(rawSalidos);
+
+        const ultimo = salidos[salidos.length - 1] || "--";
+        const elem = document.getElementById('ultimo-num-pais');
+        if(elem) elem.innerText = ultimo;
+        renderTablero(salidos);
     });
 
     function renderTablero(salidosList) {
@@ -44,12 +44,12 @@ export function iniciar(contenedor, db, miCarpeta) {
         if (disponibles.length === 0) return alert("¡Todos los países han salido!");
         const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
         salidos.push(nuevo);
-        await setDoc(refJuego, { salidos: salidos, ultimo: nuevo }, { merge: true });
+        await set(sorteoRef, { sacados: salidos, estado: "activo", ultimo: nuevo });
     };
 
     document.getElementById('btn-reset-pais').onclick = async () => {
         if (confirm("¿Reiniciar Lotería Países?")) {
-            await setDoc(refJuego, { salidos: [], ultimo: null }, { merge: true });
+            await set(sorteoRef, { sacados: [], estado: "detenido", ultimo: null });
         }
     };
 }

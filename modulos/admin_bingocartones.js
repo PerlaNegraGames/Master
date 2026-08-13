@@ -1,7 +1,8 @@
-import { doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-export function iniciar(contenedor, db, miCarpeta) {
+export function iniciar(contenedor, db, miCarpeta, rtdb) {
     const totalCartones = 50;
+    const codJuego = "bingocartones";
 
     contenedor.innerHTML = `
         <div style="background:#080808; border:1px solid var(--amarillo); padding:20px; border-radius:15px; text-align:center;">
@@ -14,19 +15,18 @@ export function iniciar(contenedor, db, miCarpeta) {
             <div id="tablero-grid-carton" style="display:grid; grid-template-columns:repeat(10, 1fr); gap:5px; max-width:600px; margin:0 auto;"></div>
         </div>`;
 
-    const refJuego = doc(db, "proyectos", miCarpeta, "juegosData", "bingoCartones");
+    const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
     let salidos = [];
 
-    onSnapshot(refJuego, (snap) => {
-        if (snap.exists()) {
-            salidos = snap.data().salidos || [];
-            const ultimo = salidos[salidos.length - 1] ? `CARTÓN #${salidos[salidos.length - 1]}` : "--";
-            const elem = document.getElementById('ultimo-num-carton');
-            if(elem) elem.innerText = ultimo;
-            renderTablero(salidos);
-        } else {
-            renderTablero([]);
-        }
+    onValue(sorteoRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        const rawSalidos = data.sacados || [];
+        salidos = Array.isArray(rawSalidos) ? rawSalidos.map(Number) : Object.values(rawSalidos).map(Number);
+
+        const ultimo = salidos[salidos.length - 1] ? `CARTÓN #${salidos[salidos.length - 1]}` : "--";
+        const elem = document.getElementById('ultimo-num-carton');
+        if(elem) elem.innerText = ultimo;
+        renderTablero(salidos);
     });
 
     function renderTablero(salidosList) {
@@ -44,12 +44,12 @@ export function iniciar(contenedor, db, miCarpeta) {
         if (disponibles.length === 0) return alert("¡Todos los cartones han salido!");
         const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
         salidos.push(nuevo);
-        await setDoc(refJuego, { salidos: salidos, ultimo: nuevo }, { merge: true });
+        await set(sorteoRef, { sacados: salidos, estado: "activo", ultimo: nuevo });
     };
 
     document.getElementById('btn-reset-carton').onclick = async () => {
         if (confirm("¿Reiniciar Bingo de Cartones?")) {
-            await setDoc(refJuego, { salidos: [], ultimo: null }, { merge: true });
+            await set(sorteoRef, { sacados: [], estado: "detenido", ultimo: null });
         }
     };
 }

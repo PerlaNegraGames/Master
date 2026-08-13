@@ -1,7 +1,8 @@
-import { doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-export function iniciar(contenedor, db, miCarpeta) {
+export function iniciar(contenedor, db, miCarpeta, rtdb) {
     const cartasMex = ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"];
+    const codJuego = "mex";
 
     contenedor.innerHTML = `
         <div style="background:#080808; border:1px solid #00ff66; padding:20px; border-radius:15px; text-align:center;">
@@ -14,19 +15,18 @@ export function iniciar(contenedor, db, miCarpeta) {
             <div id="tablero-grid-mex" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; max-width:600px; margin:0 auto;"></div>
         </div>`;
 
-    const refJuego = doc(db, "proyectos", miCarpeta, "juegosData", "loteriaMexicana");
+    const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
     let salidos = [];
 
-    onSnapshot(refJuego, (snap) => {
-        if (snap.exists()) {
-            salidos = snap.data().salidos || [];
-            const ultimo = salidos[salidos.length - 1] || "--";
-            const elem = document.getElementById('ultimo-num-mex');
-            if(elem) elem.innerText = ultimo;
-            renderTablero(salidos);
-        } else {
-            renderTablero([]);
-        }
+    onValue(sorteoRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        const rawSalidos = data.sacados || [];
+        salidos = Array.isArray(rawSalidos) ? rawSalidos : Object.values(rawSalidos);
+
+        const ultimo = salidos[salidos.length - 1] || "--";
+        const elem = document.getElementById('ultimo-num-mex');
+        if(elem) elem.innerText = ultimo;
+        renderTablero(salidos);
     });
 
     function renderTablero(salidosList) {
@@ -44,12 +44,12 @@ export function iniciar(contenedor, db, miCarpeta) {
         if (disponibles.length === 0) return alert("¡Todas las cartas han salido!");
         const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
         salidos.push(nuevo);
-        await setDoc(refJuego, { salidos: salidos, ultimo: nuevo }, { merge: true });
+        await set(sorteoRef, { sacados: salidos, estado: "activo", ultimo: nuevo });
     };
 
     document.getElementById('btn-reset-mex').onclick = async () => {
         if (confirm("¿Reiniciar Lotería Mexicana?")) {
-            await setDoc(refJuego, { salidos: [], ultimo: null }, { merge: true });
+            await set(sorteoRef, { sacados: [], estado: "detenido", ultimo: null });
         }
     };
 }
