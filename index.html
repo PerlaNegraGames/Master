@@ -420,29 +420,21 @@ async function cargarMod(m) {
     const p = document.getElementById('panel-juego'); 
     if (!m) return;
 
-    // 1. Limpiamos cualquier espacio invisible o caracter especial
-    const juegoLimpio = String(m).trim();
+    // Quita espacios invisibles antes y después
+    const juegoLimpio = String(m).trim(); 
     
-    // 2. Construimos la ruta asegurando codificación correcta de URL
-    const rutaModulo = `./modulos/admin_${encodeURIComponent(juegoLimpio)}.js?v=${Date.now()}`;
+    // Genera la ruta correcta con guion bajo
+    const rutaModulo = `./modulos/admin_${juegoLimpio}.js?v=${Date.now()}`;
     
     try { 
         const mod = await import(rutaModulo); 
         if (mod && mod.iniciar) { 
             p.innerHTML = ''; 
             mod.iniciar(p, db, miCarpeta, rtdb); 
-        } else {
-            p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ El módulo "admin_${juegoLimpio}.js" no exporta la función "iniciar".</div>`;
         }
     } catch(e) { 
-        console.error("Error detallado al cargar el módulo:", e);
-        p.innerHTML = `
-            <div style="color:var(--rojo); text-align:center; padding:20px; border: 1px dashed var(--rojo); border-radius:10px; margin:20px;">
-                ⚠️ <b>No se pudo cargar el módulo:</b> admin_${juegoLimpio}.js<br>
-                <small style="color:#bbb; display:block; margin-top:8px;">
-                    Verifica que el archivo exista en <code>/modulos/admin_${juegoLimpio}.js</code> y no tenga errores de sintaxis.
-                </small>
-            </div>`;
+        console.error("Error al cargar el módulo:", e);
+        p.innerHTML = `<div style="color:red; text-align:center; padding:20px;">⚠️ No se encontró el módulo /modulos/admin_${juegoLimpio}.js</div>`;
     }
 }
 
