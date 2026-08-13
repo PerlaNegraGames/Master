@@ -8,8 +8,6 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
     contenedor.innerHTML = `
         <div style="background:#080808; border:1px solid var(--verde); padding:20px; border-radius:15px; text-align:center;">
             <h2 style="color:var(--verde); margin-top:0;">BINGO 90 NÚMEROS</h2>
-            
-            <!-- NUEVA BARRA DE CONTROLES AVANZADOS -->
             <div style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:15px; flex-wrap:wrap;">
                 <button id="btn-sacar-90" class="btn-abrir" style="background:var(--cian); color:#000;">SACAR NÚMERO</button>
                 <button id="btn-auto-90" class="btn-abrir" style="background:var(--amarillo); color:#000;">▶ AUTOMÁTICO</button>
@@ -21,7 +19,6 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
                 <button id="btn-pausa-90" class="btn-abrir" style="background:#ff9900; color:#000; display:none;">PAUSAR</button>
                 <button id="btn-reset-90" class="btn-abrir" style="background:var(--rojo); color:#fff;">REINICIAR</button>
             </div>
-
             <div id="estado-partida" style="font-size:12px; font-weight:bold; color:var(--verde); margin-bottom:10px; text-transform:uppercase;">ESTADO: DETENIDO</div>
             <div id="ultimo-num-90" style="font-size:40px; font-weight:900; color:var(--amarillo); margin-bottom:15px;">--</div>
             <div id="tablero-grid-90" style="display:grid; grid-template-columns:repeat(10, 1fr); gap:5px; max-width:600px; margin:0 auto;"></div>
@@ -29,16 +26,14 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
 
     const sorteoRef1 = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
     const sorteoRef2 = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuegoAlt}`);
-    
     let numerosSalidos = [];
-    let estadoJuego = "detenido"; // detenido, activo, pausado
     let intervaloAuto = null;
 
     onValue(sorteoRef1, (snapshot) => {
         const data = snapshot.val() || {};
         const rawSalidos = data.sacados || [];
         numerosSalidos = Array.isArray(rawSalidos) ? rawSalidos.map(Number) : Object.values(rawSalidos).map(Number);
-        estadoJuego = data.estado || "detenido";
+        const estadoJuego = data.estado || "detenido";
 
         const ultimo = numerosSalidos.length > 0 ? numerosSalidos[numerosSalidos.length - 1] : "--";
         const elemUltimo = document.getElementById('ultimo-num-90');
@@ -49,7 +44,6 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             lblEstado.innerText = `ESTADO: ${estadoJuego.toUpperCase()}`;
             lblEstado.style.color = estadoJuego === 'activo' ? 'var(--verde)' : (estadoJuego === 'pausado' ? 'var(--amarillo)' : 'var(--rojo)');
         }
-
         renderTablero(numerosSalidos);
     });
 
@@ -72,7 +66,6 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
         }
         const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
         numerosSalidos.push(nuevo);
-        
         const payload = { sacados: numerosSalidos, estado: "activo", ultimo: nuevo };
         await set(sorteoRef1, payload);
         await set(sorteoRef2, payload);
@@ -90,36 +83,28 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
     btnAuto.onclick = () => {
         if (intervaloAuto) return;
         const velocidad = parseInt(selVel.value) || 5000;
-        
         btnAuto.style.display = "none";
         btnPausa.style.display = "inline-block";
         btnPausa.innerText = "PAUSAR";
-
-        // Sacar el primero de inmediato si está detenido
         sacarNumeroAccion();
-
-        intervaloAuto = setInterval(() => {
-            sacarNumeroAccion();
-        }, velocidad);
+        intervaloAuto = setInterval(() => sacarNumeroAccion(), velocidad);
     };
 
     btnPausa.onclick = async () => {
         if (intervaloAuto) {
-            // Pausar
             clearInterval(intervaloAuto);
             intervaloAuto = null;
             btnPausa.innerText = "REANUDAR";
-            await set(sorteoRef1, { sacados: numerosSalidos, estado: "pausado", ultimo: numerosSalidos[numerosSalidos.length - 1] || null });
-            await set(sorteoRef2, { sacados: numerosSalidos, estado: "pausado", ultimo: numerosSalidos[numerosSalidos.length - 1] || null });
+            const payload = { sacados: numerosSalidos, estado: "pausado", ultimo: numerosSalidos[numerosSalidos.length - 1] || null };
+            await set(sorteoRef1, payload);
+            await set(sorteoRef2, payload);
         } else {
-            // Reanudar
             const velocidad = parseInt(selVel.value) || 5000;
             btnPausa.innerText = "PAUSAR";
-            intervaloAuto = setInterval(() => {
-                sacarNumeroAccion();
-            }, velocidad);
-            await set(sorteoRef1, { sacados: numerosSalidos, estado: "activo", ultimo: numerosSalidos[numerosSalidos.length - 1] || null });
-            await set(sorteoRef2, { sacados: numerosSalidos, estado: "activo", ultimo: numerosSalidos[numerosSalidos.length - 1] || null });
+            intervaloAuto = setInterval(() => sacarNumeroAccion(), velocidad);
+            const payload = { sacados: numerosSalidos, estado: "activo", ultimo: numerosSalidos[numerosSalidos.length - 1] || null };
+            await set(sorteoRef1, payload);
+            await set(sorteoRef2, payload);
         }
     };
 

@@ -3,461 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JUGARPRO - Transmisión en Vivo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>JUGAPRO - Transmisión en Vivo</title>
     <style>
         :root {
-            --cian: #00ffff;
+            --fondo: #050505;
+            --panel: #0f0f0f;
             --verde: #39ff14;
-            --amarillo: #ffff00;
-            --rosa: #ff00ff;
-            --rojo: #ff0000;
+            --amarillo: #ffcc00;
+            --cian: #00f3ff;
+            --rojo: #ff0055;
+            --texto: #ffffff;
         }
-
-        * { box-sizing: border-box; user-select: none; }
-
         body {
-            background: #040406;
-            color: #fff;
+            background-color: var(--fondo);
+            color: var(--texto);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
-
-        #capa-login-jugador {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            background: radial-gradient(circle, #001220 0%, #000000 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-login {
-            background: rgba(10, 10, 15, 0.95);
-            border: 2px solid var(--cian);
-            padding: 35px 25px;
-            border-radius: 25px;
-            text-align: center;
-            box-shadow: 0 0 35px rgba(0, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            width: 90%;
-            max-width: 360px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .input-box {
-            width: 100%;
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        .input-box input {
-            width: 100%;
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 12px 15px;
-            border-radius: 10px;
-            outline: none;
-            font-size: 15px;
-            font-weight: bold;
-            box-sizing: border-box;
-            transition: 0.3s;
-            text-align: center;
-        }
-
-        .input-box input:focus {
-            border-color: var(--cian);
-            box-shadow: 0 0 10px var(--cian);
-        }
-
-        .btn-ingresar {
-            width: 100%;
-            background: var(--cian);
-            color: #000;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 900;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 0 15px var(--cian);
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .btn-ingresar:hover {
-            transform: scale(1.02);
-            background: #fff;
-        }
-
-        #contenido-jugador {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .header-jugador {
+        .header-transmision {
             text-align: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid var(--cian);
-            padding-bottom: 10px;
-            width: 100%;
-            max-width: 900px;
-            position: relative;
         }
-
-        .titulo-juego {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--cian);
-            text-shadow: 0 0 20px var(--cian);
-            margin: 0;
-            text-transform: uppercase;
-        }
-
-        .user-tag {
-            position: absolute;
-            right: 0;
-            top: 0;
-            background: #111;
-            border: 1px solid var(--verde);
+        .header-transmision h1 {
             color: var(--verde);
-            padding: 6px 12px;
-            border-radius: 20px;
+            margin: 0 0 5px 0;
+            font-size: 28px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+        }
+        .en-directo {
+            color: var(--verde);
             font-size: 12px;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            letter-spacing: 1px;
         }
-
-        .btn-salir-j {
-            background: none;
-            border: none;
-            color: var(--rojo);
-            cursor: pointer;
-            font-size: 14px;
-            margin-left: 5px;
-        }
-
-        .estado-vivo {
-            font-size: 13px;
-            color: var(--verde);
-            text-shadow: 0 0 10px var(--verde);
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .display-vivo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px 0 30px 0;
-        }
-
-        .bola-gigante-jugador {
-            width: 180px;
-            height: 180px;
+        /* Bola de Sorteo Principal */
+        .bola-contenedor {
+            background: radial-gradient(circle, #222 0%, #000 80%);
+            border: 4px solid var(--verde);
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #fff, #111 70%, #000);
-            border: 5px solid var(--verde);
-            box-shadow: 0 0 40px var(--verde), inset 0 0 20px var(--verde);
+            width: 140px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 72px;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
+            margin-bottom: 25px;
+            text-align: center;
+            padding: 15px;
+        }
+        #ultimo-elemento-vivo {
+            font-size: 24px;
             font-weight: 900;
-            color: var(--verde);
-            text-shadow: 0 0 15px var(--verde);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .bola-gigante-jugador.nueva-bola {
-            transform: scale(1.25) rotate(10deg);
-            border-color: var(--amarillo);
             color: var(--amarillo);
-            box-shadow: 0 0 60px var(--amarillo), inset 0 0 25px var(--amarillo);
+            word-break: break-word;
+            line-height: 1.2;
         }
-
-        .contenedor-tablero {
-            width: 100%;
-            max-width: 900px;
-            background: #0a0a0f;
+        /* Estado de Pausa / Alerta */
+        #aviso-estado {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 6px 15px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            display: none;
+            text-transform: uppercase;
+        }
+        /* Tablero Dinámico */
+        .panel-tablero {
+            background: var(--panel);
             border: 1px solid #222;
-            padding: 20px;
-            border-radius: 15px;
+            border-radius: 12px;
+            padding: 15px;
+            width: 100%;
+            max-width: 750px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
         }
-
-        .tablero-bar {
+        .info-tablero {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #222;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
-
-        .grid-numeros {
+        #tablero-grid-jugador {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-            gap: 8px;
+            gap: 5px;
         }
-
-        .num-box {
+        /* Estilos de Celdas Numéricas */
+        .celda-num {
             background: #111;
-            border: 1px solid #333;
-            border-radius: 8px;
-            height: 45px;
+            color: #777;
+            padding: 10px 4px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 13px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .celda-num.marcada {
+            background: var(--verde);
+            color: #000;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+        /* Estilos de Celdas de Texto / Cartas */
+        .celda-texto {
+            background: #111;
+            color: #888;
+            padding: 10px 6px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 11px;
+            text-align: center;
+            text-transform: uppercase;
+            border: 1px solid #222;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            color: #444;
-            transition: all 0.2s ease;
         }
-
-        .num-box.sacado {
-            background: #000;
-            border-color: var(--amarillo);
-            color: var(--amarillo);
-            box-shadow: 0 0 10px var(--amarillo);
-            font-size: 16px;
-            font-weight: 900;
-        }
-
-        .num-box.ultimo {
-            border-color: var(--verde) !important;
-            color: var(--verde) !important;
-            box-shadow: 0 0 18px var(--verde) !important;
+        .celda-texto.marcada {
+            background: var(--cian);
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
         }
     </style>
 </head>
 <body>
 
-    <div id="capa-login-jugador">
-        <div class="card-login">
-            <div style="width: 60px; height: 60px; background: rgba(0, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border: 1px solid var(--cian);">
-                <i class="fas fa-gamepad" style="color: var(--cian); font-size: 26px;"></i>
-            </div>
-            <h2 style="color:#fff; font-size:18px; margin: 0 0 20px 0; letter-spacing: 2px;">ACCESO JUGADOR</h2>
-            
-            <div class="input-box">
-                <input type="text" id="j-nick" placeholder="NICK / USUARIO" autocomplete="off">
-            </div>
-            <div class="input-box">
-                <input type="password" id="j-pin" placeholder="PIN / CONTRASEÑA" autocomplete="off">
-            </div>
-
-            <button id="btn-login-jugador" class="btn-ingresar">INGRESAR AL JUEGO</button>
-            <div id="msg-err-j" style="color:var(--rojo); font-size:11px; margin-top:12px; font-weight:bold; min-height: 15px;"></div>
-        </div>
+    <div class="header-transmision">
+        <h1 id="titulo-juego-vivo">CARGANDO SORTEO...</h1>
+        <div class="en-directo">🟢 TRANSMISIÓN EN DIRECTO</div>
     </div>
 
-    <div id="contenido-jugador">
-        <div class="header-jugador">
-            <div id="user-info" class="user-tag">
-                <i class="fas fa-user-circle"></i> <span id="nombre-jugador">JUGADOR</span>
-                <button title="Cerrar Sesión" class="btn-salir-j" onclick="window.cerrarSesionJugador()"><i class="fas fa-sign-out-alt"></i></button>
-            </div>
-            <h1 id="txt-titulo" class="titulo-juego">SORTEO EN VIVO</h1>
-            <div id="badge-estado" class="estado-vivo"><i class="fas fa-satellite-dish"></i> TRANSMISIÓN EN DIRECTO</div>
-        </div>
+    <div id="aviso-estado"></div>
 
-        <div class="display-vivo">
-            <div id="bola-display" class="bola-gigante-jugador">--</div>
-            <div style="color:#aaa; font-size:14px; font-weight:900; letter-spacing:2px; margin-top:15px;">ÚLTIMO NÚMERO</div>
-        </div>
-
-        <div class="contenedor-tablero">
-            <div class="tablero-bar">
-                <span style="color:var(--cian); font-weight:900;">NÚMEROS MARCADOS</span>
-                <span style="color:#aaa; font-size:12px; font-weight:bold;">
-                    EXTRAÍDAS: <span id="cant-extraidas" style="color:var(--verde)">0</span> / <span id="cant-total">0</span>
-                </span>
-            </div>
-            <div id="grid-tablero" class="grid-numeros"></div>
-        </div>
+    <div class="bola-contenedor">
+        <div id="ultimo-elemento-vivo">--</div>
     </div>
 
+    <div class="panel-tablero">
+        <div class="info-tablero">
+            <span>TABLERO GENERAL</span>
+            <span id="contador-extraidas">EXTRAÍDAS: 0</span>
+        </div>
+        <div id="tablero-grid-jugador"></div>
+    </div>
+
+    <!-- SDKs de Firebase Firebase v10 Realtime Database -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue, off } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getFirestore, doc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // Configuración Firebase (Asegúrate de colocar tu propia config o la que usa tu proyecto)
         const firebaseConfig = {
-            apiKey: "AIzaSyBd1fw2nWohvcveNCilf6xg4xZDCNdmEQw",
-            authDomain: "juegos-16e17.firebaseapp.com",
-            databaseURL: "https://juegos-16e17-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "juegos-16e17",
-            storageBucket: "juegos-16e17.firebasestorage.app",
-            messagingSenderId: "566680151031",
-            appId: "1:566680151031:web:9a400f22df8bda0e6184f2",
-            measurementId: "G-YJVGWVQ3V3"
+            databaseURL: "https://PROYECTO-DEFAULT-RTDBS.firebaseio.com" // Sustituye con tu URL si es necesario o usa tu objeto de configuración
         };
 
+        // Si ya tienes un archivo de configuración externo, puedes importarlo, aquí inicializamos por parámetros de URL o genérico
+        const urlParams = new URLSearchParams(window.location.search);
+        const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'default';
+        let codJuego = urlParams.get('juego') || urlParams.get('s') || '90';
+
+        // Listas maestras de elementos para juegos que no son numéricos
+        const listasJuegos = {
+            "mex": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"],
+            "lm": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol"],
+            "abcdario": "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+            "comiveneca": ["Pabellón Criollo", "Arepa Pelúa", "Cachapa", "Hallaca", "Tequeños", "Asado Negro", "Patacón", "Pan de Jamón", "Empanada de Cazón", "Mundongo", "Chicha", "Cocada"],
+            "comidas": ["Pizza", "Hamburguesa", "Tacos", "Sushi", "Paella", "Asado", "Pasta", "Hot Dog", "Empanadas", "Arepas", "Ceviche", "Pollo Frito"],
+            "bebidas": ["Cerveza", "Tequila", "Ron", "Whisky", "Vodka", "Garrone", "Sangría", "Margarita", "Mojito", "Pisco", "Vino Tinto", "Champán"],
+            "fiesta": ["Globos", "Pastel", "Piñata", "Música", "Confeti", "Regalos", "Luces", "Serpentina", "Bebidas", "Antifaces", "Velas", "Sorpresas"],
+            "novelas": ["Rubí", "La Usurpadora", "Marimar", "Teresa", "Betty la Fea", "Rosalinda", "Pasión de Gavilanes", "El Senor de los Cielos", "Sin Senos no hay Paraíso", "Amor Real", "La Fea más Bella", "Cuidado con el Ángel"],
+            "paises": ["Argentina", "Brasil", "Chile", "Colombia", "España", "México", "Perú", "Uruguay", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Costa Rica", "Panamá", "Rep. Dominicana", "Canadá", "EE.UU.", "Francia", "Italia", "Alemania"],
+            "autos": ["Ferrari", "Porsche", "Lamborghini", "BMW", "Mercedes-Benz", "Audi", "Toyota", "Ford", "Chevrolet", "Nissan", "Honda", "Volkswagen"],
+            "simpsons": ["Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", "Krusty", "Milhouse"],
+            "pitufos": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
+            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
+            "pokemon": [
+                "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Caterpie",
+                "Metapod", "Butterfree", "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata", "Raticate",
+                "Spearow", "Fearow", "Ekans", "Arbok", "Pikachu", "Raichu", "Sandshrew", "Sandslash", "Nidoran♀", "Nidorina",
+                "Nidoqueen", "Nidoran♂", "Nidorino", "Nidoking", "Clefairy", "Clefable", "Vulpix", "Ninetales", "Jigglypuff", "Wigglytuff",
+                "Zubat", "Golbat", "Oddish", "Gloom", "Vileplume", "Paras", "Parasect", "Venonat", "Venomoth", "Diglett",
+                "Dugtrio", "Meowth", "Persian", "Psyduck", "Golduck", "Mankey", "Primeape", "Growlithe", "Arcanine", "Poliwag",
+                "Poliwhirl", "Poliwrath", "Abra", "Kadabra", "Alakazam", "Machop", "Machoke", "Machamp", "Bellsprout", "Weepinbell",
+                "Victreebel", "Tentacool", "Tentacruel", "Geodude", "Graveler", "Golem", "Ponyta", "Rapidash", "Slowpoke", "Slowbro",
+                "Magnemite", "Magneton", "Farfetch'd", "Doduo", "Dodrio", "Seel", "Dewgong", "Grimer", "Muk", "Shellder",
+                "Cloyster", "Gastly", "Haunter", "Gengar", "Onix", "Drowzee", "Hypno", "Krabby", "Kingler", "Voltorb",
+                "Electrode", "Exeggcute", "Exeggutor", "Cubone", "Marowak", "Hitmonlee", "Hitmonchan", "Lickitung", "Koffing", "Weezing",
+                "Rhyhorn", "Rhydon", "Chansey", "Tangela", "Kangaskhan", "Horsea", "Seadra", "Goldeen", "Seaking", "Staryu",
+                "Starmie", "Mr. Mime", "Scyther", "Jynx", "Electabuzz", "Magmar", "Pinsir", "Tauros", "Magikarp", "Gyarados",
+                "Lapras", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto",
+                "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres", "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew"
+            ]
+        };
+
+        // Inicialización de Firebase Realtime Database
+        // Nota: Si usas una instancia global compartida con tu app principal, ajusta la inicialización de app según tu entorno.
         const app = initializeApp(firebaseConfig);
         const rtdb = getDatabase(app);
-        const db = getFirestore(app);
 
-        const params = new URLSearchParams(window.location.search);
-        const miCarpeta = params.get('p') || 'gh';
-        const sesionJugador = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+        // Referencia al sorteo actual en tiempo real
+        const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
 
-        let referenciaSorteoActual = null;
+        onValue(sorteoRef, (snapshot) => {
+            const data = snapshot.val() || {};
+            const rawSacados = data.sacados || [];
+            const sacadosList = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
+            const estadoPartida = data.estado || "detenido";
+            const ultimoElemento = data.ultimo || sacadosList[sacadosList.length - 1] || "--";
 
-        document.getElementById('btn-login-jugador').onclick = async () => {
-            const nickIn = document.getElementById('j-nick').value.trim().toUpperCase();
-            const pinIn = document.getElementById('j-pin').value.trim();
-            const msgErr = document.getElementById('msg-err-j');
+            // Actualizar Título de la Pantalla
+            document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${codJuego.toUpperCase()}`;
 
-            if (!nickIn || !pinIn) {
-                msgErr.innerText = "COMPLETA USUARIO Y PIN";
+            // Actualizar Bola o Elemento Actual
+            document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
+
+            // Actualizar Contador
+            document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacadosList.length}`;
+
+            // Control de Aviso de Pausa / Estado
+            const aviso = document.getElementById('aviso-estado');
+            if (estadoPartida === 'pausado') {
+                aviso.style.display = "block";
+                aviso.style.background = "#ff9900";
+                aviso.style.color = "#000";
+                aviso.innerText = "⏸ PARTIDA PAUSADA";
+            } else if (estadoPartida === 'detenido') {
+                aviso.style.display = "block";
+                aviso.style.background = "var(--rojo)";
+                aviso.style.color = "#fff";
+                aviso.innerText = "⏹ PARTIDA DETENIDA / REINICIADA";
+            } else {
+                aviso.style.display = "none";
+            }
+
+            // Renderizado inteligente del Tablero
+            renderizarTablero(codJuego, sacadosList);
+        });
+
+        function renderizarTablero(juego, sacados) {
+            const grid = document.getElementById('tablero-grid-jugador');
+            if (!grid) return;
+
+            // CASO A: Juegos basados en Texto / Cartas / Elementos Fijos
+            if (listasJuegos[juego]) {
+                const elementos = listasJuegos[juego];
+                let html = '';
+                
+                elementos.forEach((el, index) => {
+                    const marcado = sacados.includes(el);
+                    const prefijoNum = juego === 'pokemon' ? `#${index + 1} ` : '';
+                    html += `<div class="celda-texto ${marcado ? 'marcada' : ''}">${prefijoNum}${el}</div>`;
+                });
+
+                grid.style.gridTemplateColumns = juego === 'pokemon' ? "repeat(auto-fill, minmax(105px, 1fr))" : "repeat(auto-fill, minmax(115px, 1fr))";
+                grid.innerHTML = html;
                 return;
             }
 
-            msgErr.innerText = "VERIFICANDO...";
+            // CASO B: Juegos de Bingo Numéricos Tradicionales (90, 75, 50, 100, etc.)
+            let totalNums = 90;
+            let columnas = 10;
+            if (juego === '50') { totalNums = 50; columnas = 10; }
+            else if (juego === '72') { totalNums = 72; columnas = 9; }
+            else if (juego === '100') { totalNums = 100; columnas = 10; }
+            else if (juego === 'bingocartones') { totalNums = 50; columnas = 10; }
 
-            try {
-                const regSnap = await getDocs(collection(db, "proyectos", miCarpeta, "registrados"));
-                let usuarioValido = false;
-
-                regSnap.forEach(d => {
-                    const u = d.data();
-                    const nickDB = (u.nick || u.id || "").toString().trim().toUpperCase();
-                    const pinDB = (u.pin || "").toString().trim();
-
-                    if ((nickDB === nickIn || d.id.toUpperCase() === nickIn) && pinDB === pinIn) {
-                        usuarioValido = true;
-                    }
-                });
-
-                if (usuarioValido) {
-                    localStorage.setItem(`jugador_sesion_${miCarpeta}`, nickIn);
-                    iniciarVistaJugador(nickIn);
-                } else {
-                    msgErr.innerText = "USUARIO O PIN INCORRECTO";
-                }
-            } catch (e) {
-                msgErr.innerText = "ERROR AL CONECTAR CON EL SERVIDOR";
-            }
-        };
-
-        window.cerrarSesionJugador = () => {
-            localStorage.removeItem(`jugador_sesion_${miCarpeta}`);
-            location.reload();
-        };
-
-        if (sesionJugador) {
-            iniciarVistaJugador(sesionJugador);
-        }
-
-        function iniciarVistaJugador(nickUsuario) {
-            document.getElementById('capa-login-jugador').style.display = 'none';
-            document.getElementById('contenido-jugador').style.display = 'flex';
-            document.getElementById('nombre-jugador').innerText = nickUsuario;
-
-            let juegoActualEnEspera = null;
-
-            onSnapshot(doc(db, "proyectos", miCarpeta), (snap) => {
-                if (!snap.exists()) return;
-                const data = snap.data();
-
-                if (data.fondoPersonalizado) {
-                    const fondo = data.fondoPersonalizado;
-                    document.body.style.background = fondo.includes('http') 
-                        ? `url('${fondo}') center/cover no-repeat fixed` 
-                        : fondo;
-                }
-
-                const nuevoJuegoActivo = (data.juegoActivo || params.get('c') || '90').toLowerCase().trim();
-
-                if (juegoActualEnEspera !== nuevoJuegoActivo) {
-                    juegoActualEnEspera = nuevoJuegoActivo;
-                    conectarSorteoRealtime(nuevoJuegoActivo);
-                }
-            });
-        }
-
-        function conectarSorteoRealtime(codJuego) {
-            if (referenciaSorteoActual) {
-                off(referenciaSorteoActual);
+            let htmlNum = '';
+            for (let i = 1; i <= totalNums; i++) {
+                const marcado = sacados.includes(i) || sacados.includes(String(i));
+                const textoCelda = juego === 'bingocartones' ? `#${i}` : i;
+                htmlNum += `<div class="celda-num ${marcado ? 'marcada' : ''}">${textoCelda}</div>`;
             }
 
-            const CONFIG_LIMITES = {
-                "50": 50, "72": 72, "90": 90, "100": 100,
-                "inv": 90, "bingocartones": 90, "terna": 120, "bingo120": 120,
-                "mex": 54, "pokemon": 151, "romanos90": 90,
-                "bingo50": 50, "bingo72": 72, "bingo90": 90, "bingo100": 100,
-                "lm": 54, "paises": 100, "power": 90, "novelas": 90, "fiesta": 90,
-                "simpsons": 54, "bebidas": 54, "comidas": 54, "comiveneca": 54,
-                "pitufos": 54, "abcdario": 27, "autos": 54
-            };
-
-            const totalElementos = CONFIG_LIMITES[codJuego] || 90;
-            document.getElementById('cant-total').innerText = totalElementos;
-            document.getElementById('txt-titulo').innerText = `SORTEO ${codJuego.toUpperCase()}`;
-
-            const grid = document.getElementById('grid-tablero');
-            grid.innerHTML = Array.from({length: totalElementos}, (_, i) => `<div id="box-${i+1}" class="num-box">${i+1}</div>`).join('');
-
-            // Escuchamos la ruta de Realtime Database unificada
-            const rutaAlternativa = codJuego.length <= 3 && !codJuego.startsWith('bingo') ? `bingo${codJuego}` : codJuego;
-            referenciaSorteoActual = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${rutaAlternativa}`);
-            let ultimoProcesado = null;
-
-            onValue(referenciaSorteoActual, (snapshot) => {
-                const data = snapshot.val() || {};
-                const rawSacados = data.sacados || [];
-                const sacadosArray = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
-                const sacados = sacadosArray.map(val => Number(val)).filter(val => !isNaN(val));
-
-                const estado = data.estado || 'detenido';
-                const ultimaBola = sacados.length > 0 ? sacados[sacados.length - 1] : '--';
-
-                const bolaDisplay = document.getElementById('bola-display');
-                const badgeEstado = document.getElementById('badge-estado');
-                document.getElementById('cant-extraidas').innerText = sacados.length;
-
-                if (estado === 'pausado') {
-                    badgeEstado.innerHTML = `<i class="fas fa-pause-circle"></i> JUEGO PAUSADO`;
-                    badgeEstado.style.color = "var(--amarillo)";
-                } else {
-                    badgeEstado.innerHTML = `<i class="fas fa-satellite-dish"></i> TRANSMISIÓN EN DIRECTO`;
-                    badgeEstado.style.color = "var(--verde)";
-                }
-
-                if (ultimaBola !== '--' && ultimaBola !== ultimoProcesado) {
-                    ultimoProcesado = ultimaBola;
-                    bolaDisplay.classList.add('nueva-bola');
-                    setTimeout(() => bolaDisplay.classList.remove('nueva-bola'), 400);
-                }
-
-                bolaDisplay.innerText = ultimaBola;
-
-                for (let i = 1; i <= totalElementos; i++) {
-                    const box = document.getElementById(`box-${i}`);
-                    if (!box) continue;
-
-                    if (sacados.includes(i)) {
-                        box.classList.add('sacado');
-                        box.classList.toggle('ultimo', i === ultimaBola);
-                    } else {
-                        box.classList.remove('sacado', 'ultimo');
-                    }
-                }
-            });
+            grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
+            grid.innerHTML = htmlNum;
         }
     </script>
 </body>
