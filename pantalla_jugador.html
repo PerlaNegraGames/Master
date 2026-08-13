@@ -134,7 +134,7 @@
 <body>
 
     <div class="header-transmision">
-        <h1 id="titulo-juego-vivo">CONECTANDO...</h1>
+        <h1 id="titulo-juego-vivo">CONECTANDO A FIRESTORE...</h1>
         <div class="en-directo">🟢 TRANSMISIÓN EN DIRECTO</div>
     </div>
 
@@ -154,99 +154,58 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // Configuración de tu proyecto Firebase (asegúrate de que tenga tu apiKey y projectId correctos para Firestore)
         const firebaseConfig = {
-            databaseURL: "https://juegos-16e17-default-rtdb.europe-west1.firebasedatabase.app/"
-        };
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'default';
-        let codJuegoURL = urlParams.get('juego') || urlParams.get('s') || '';
-
-        console.log("Iniciando pantalla de jugador para proyecto:", miCarpeta);
-
-        const listasJuegos = {
-            "mex": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"],
-            "lm": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol"],
-            "abcdario": "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
-            "comiveneca": ["Pabellón Criollo", "Arepa Pelúa", "Cachapa", "Hallaca", "Tequeños", "Asado Negro", "Patacón", "Pan de Jamón", "Empanada de Cazón", "Mundongo", "Chicha", "Cocada"],
-            "comidas": ["Pizza", "Hamburguesa", "Tacos", "Sushi", "Paella", "Asado", "Pasta", "Hot Dog", "Empanadas", "Arepas", "Ceviche", "Pollo Frito"],
-            "bebidas": ["Cerveza", "Tequila", "Ron", "Whisky", "Vodka", "Garrone", "Sangría", "Margarita", "Mojito", "Pisco", "Vino Tinto", "Champán"],
-            "fiesta": ["Globos", "Pastel", "Piñata", "Música", "Confeti", "Regalos", "Luces", "Serpentina", "Bebidas", "Antifaces", "Velas", "Sorpresas"],
-            "novelas": ["Rubí", "La Usurpadora", "Marimar", "Teresa", "Betty la Fea", "Rosalinda", "Pasión de Gavilanes", "El Senor de los Cielos", "Sin Senos no hay Paraíso", "Amor Real", "La Fea más Bella", "Cuidado con el Ángel"],
-            "paises": ["Argentina", "Brasil", "Chile", "Colombia", "España", "México", "Perú", "Uruguay", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Costa Rica", "Panamá", "Rep. Dominicana", "Canadá", "EE.UU.", "Francia", "Italia", "Alemania"],
-            "autos": ["Ferrari", "Porsche", "Lamborghini", "BMW", "Mercedes-Benz", "Audi", "Toyota", "Ford", "Chevrolet", "Nissan", "Honda", "Volkswagen"],
-            "simpsons": ["Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", "Krusty", "Milhouse"],
-            "pitufos": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
-            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
-            "pokemon": [
-                "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Caterpie",
-                "Metapod", "Butterfree", "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata", "Raticate",
-                "Spearow", "Fearow", "Ekans", "Arbok", "Pikachu", "Raichu", "Sandshrew", "Sandslash", "Nidoran♀", "Nidorina",
-                "Nidoqueen", "Nidoran♂", "Nidorino", "Nidoking", "Clefairy", "Clefable", "Vulpix", "Ninetales", "Jigglypuff", "Wigglytuff",
-                "Zubat", "Golbat", "Oddish", "Gloom", "Vileplume", "Paras", "Parasect", "Venonat", "Venomoth", "Diglett",
-                "Dugtrio", "Meowth", "Persian", "Psyduck", "Golduck", "Mankey", "Primeape", "Growlithe", "Arcanine", "Poliwag",
-                "Poliwhirl", "Poliwrath", "Abra", "Kadabra", "Alakazam", "Machop", "Machoke", "Machamp", "Bellsprout", "Weepinbell",
-                "Victreebel", "Tentacool", "Tentacruel", "Geodude", "Graveler", "Golem", "Ponyta", "Rapidash", "Slowpoke", "Slowbro",
-                "Magnemite", "Magneton", "Farfetch'd", "Doduo", "Dodrio", "Seel", "Dewgong", "Grimer", "Muk", "Shellder",
-                "Cloyster", "Gastly", "Haunter", "Gengar", "Onix", "Drowzee", "Hypno", "Krabby", "Kingler", "Voltorb",
-                "Electrode", "Exeggcute", "Exeggutor", "Cubone", "Marowak", "Hitmonlee", "Hitmonchan", "Lickitung", "Koffing", "Weezing",
-                "Rhyhorn", "Rhydon", "Chansey", "Tangela", "Kangaskhan", "Horsea", "Seadra", "Goldeen", "Seaking", "Staryu",
-                "Starmie", "Mr. Mime", "Scyther", "Jynx", "Electabuzz", "Magmar", "Pinsir", "Tauros", "Magikarp", "Gyarados",
-                "Lapras", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto",
-                "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres", "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew"
-            ]
+            apiKey: "TU_API_KEY", // Opcional si solo usas lectura pública con reglas abiertas
+            authDomain: "juegos-16e17.firebaseapp.com",
+            projectId: "juegos-16e17"
         };
 
         const app = initializeApp(firebaseConfig);
-        const rtdb = getDatabase(app);
-        const sorteosRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos`);
+        const db = getFirestore(app);
 
-        onValue(sorteosRef, (snapshot) => {
-            const todosLosSorteos = snapshot.val() || {};
-            console.log("Datos recibidos de Firebase:", todosLosSorteos);
+        const urlParams = new URLSearchParams(window.location.search);
+        const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'gh';
 
-            let codJuegoActivo = codJuegoURL;
+        const listasJuegos = {
+            "mex": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"],
+            "abcdario": "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+            "comidas": ["Pizza", "Hamburguesa", "Tacos", "Sushi", "Paella", "Asado", "Pasta", "Hot Dog", "Empanadas", "Arepas", "Ceviche", "Pollo Frito"],
+            "paises": ["Argentina", "Brasil", "Chile", "Colombia", "España", "México", "Perú", "Uruguay", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Costa Rica", "Panamá", "Rep. Dominicana", "Canadá", "EE.UU.", "Francia", "Italia", "Alemania"]
+        };
 
-            if (!codJuegoActivo || !todosLosSorteos[codJuegoActivo]) {
-                const llaves = Object.keys(todosLosSorteos);
-                if (llaves.length > 0) {
-                    codJuegoActivo = llaves[0]; 
-                } else {
-                    codJuegoActivo = 'mex'; // Si está completamente vacío, por defecto usa 'mex' para probar cartas
-                }
-            }
+        // Escuchamos el documento del proyecto en Firestore (ej: proyectos/gh)
+        const docRef = doc(db, "proyectos", miCarpeta);
 
-            const data = todosLosSorteos[codJuegoActivo] || {};
-            const rawSacados = data.sacados || [];
-            const sacadosList = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
-            const estadoPartida = data.estado || "detenido";
-            const ultimoElemento = data.ultimo || sacadosList[sacadosList.length - 1] || "--";
+        onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                console.log("Datos de Firestore:", data);
 
-            document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${codJuegoActivo.toUpperCase()}`;
-            document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
-            document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacadosList.length}`;
+                const juegoActivo = data.juegoActivo || urlParams.get('juego') || 'mex';
+                
+                // Buscamos si hay datos específicos del juego en Firestore, o simulamos según el estado global
+                const infoJuego = data.sorteos?.[juegoActivo] || data[juegoActivo] || {};
+                
+                const rawSacados = infoJuego.sacados || data.sacados || [];
+                const sacadosList = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
+                const estadoPartida = infoJuego.estado || data.estado || "activo";
+                const ultimoElemento = infoJuego.ultimo || data.ultimo || sacadosList[sacadosList.length - 1] || "--";
 
-            const aviso = document.getElementById('aviso-estado');
-            if (estadoPartida === 'pausado') {
-                aviso.style.display = "block";
-                aviso.style.background = "#ff9900";
-                aviso.style.color = "#000";
-                aviso.innerText = "⏸ PARTIDA PAUSADA";
-            } else if (estadoPartida === 'detenido') {
-                aviso.style.display = "block";
-                aviso.style.background = "var(--rojo)";
-                aviso.style.color = "#fff";
-                aviso.innerText = "⏹ PARTIDA DETENIDA";
+                document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${juegoActivo.toUpperCase()}`;
+                document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
+                document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacadosList.length}`;
+
+                renderizarTablero(juegoActivo, sacadosList);
             } else {
-                aviso.style.display = "none";
+                console.error("No se encontró el documento del proyecto en Firestore.");
+                document.getElementById('titulo-juego-vivo').innerText = "PROYECTO NO ENCONTRADO";
             }
-
-            renderizarTablero(codJuegoActivo, sacadosList);
         }, (error) => {
-            console.error("Error de Firebase:", error);
-            document.getElementById('titulo-juego-vivo').innerText = "ERROR DE CONEXIÓN";
+            console.error("Error al escuchar Firestore:", error);
+            document.getElementById('titulo-juego-vivo').innerText = "ERROR DE FIRESTORE";
         });
 
         function renderizarTablero(juego, sacados) {
@@ -256,48 +215,29 @@
             if (listasJuegos[juego]) {
                 const elementos = listasJuegos[juego];
                 let html = '';
-                elementos.forEach((el, index) => {
+                elementos.forEach((el) => {
                     const marcado = sacados.includes(el);
-                    const prefijoNum = juego === 'pokemon' ? `#${index + 1} ` : '';
-                    html += `<div class="celda-texto ${marcado ? 'marcada' : ''}">${prefijoNum}${el}</div>`;
+                    html += `<div class="celda-texto ${marcado ? 'marcada' : ''}">${el}</div>`;
                 });
-                grid.style.gridTemplateColumns = juego === 'pokemon' ? "repeat(auto-fill, minmax(105px, 1fr))" : "repeat(auto-fill, minmax(115px, 1fr))";
+                grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(115px, 1fr))";
                 grid.innerHTML = html;
                 return;
             }
 
-            let totalNums = 0;
+            // Numérico tradicional
+            let totalNums = 90;
             let columnas = 10;
-            if (juego === '50' || juego === 'bingo50') { totalNums = 50; }
-            else if (juego === '72' || juego === 'bingo72') { totalNums = 72; columnas = 9; }
-            else if (juego === '90' || juego === 'bingo90') { totalNums = 90; }
-            else if (juego === '100' || juego === 'bingo100') { totalNums = 100; }
-            else if (juego === 'bingocartones') { totalNums = 50; }
-            else if (juego === 'killernum') { totalNums = 50; }
-            else if (juego === 'eliminatorias') { totalNums = 30; columnas = 6; }
+            if (juego === '50') totalNums = 50;
+            if (juego === '72') { totalNums = 72; columnas = 9; }
+            if (juego === '100') totalNums = 100;
 
-            if (totalNums > 0) {
-                let htmlNum = '';
-                for (let i = 1; i <= totalNums; i++) {
-                    const marcado = sacados.includes(i) || sacados.includes(String(i));
-                    const textoCelda = juego === 'bingocartones' ? `#${i}` : (juego === 'eliminatorias' ? `P${i}` : i);
-                    htmlNum += `<div class="celda-num ${marcado ? 'marcada' : ''}">${textoCelda}</div>`;
-                }
-                grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
-                grid.innerHTML = htmlNum;
-                return;
+            let htmlNum = '';
+            for (let i = 1; i <= totalNums; i++) {
+                const marcado = sacados.includes(i) || sacados.includes(String(i));
+                htmlNum += `<div class="celda-num ${marcada ? 'marcada' : ''}">${i}</div>`;
             }
-
-            let htmlDinamic = '';
-            if (sacados.length === 0) {
-                htmlDinamic = `<div style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">Esperando elementos...</div>`;
-            } else {
-                sacados.forEach((item) => {
-                    htmlDinamic += `<div class="celda-texto marcada" style="font-size: 13px; padding: 12px;">${item}</div>`;
-                });
-            }
-            grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(140px, 1fr))";
-            grid.innerHTML = htmlDinamic;
+            grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
+            grid.innerHTML = htmlNum;
         }
     </script>
 </body>
