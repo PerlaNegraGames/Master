@@ -186,7 +186,7 @@
                 }
 
                 if (data.juegoActivo && window.juegoActual !== data.juegoActivo) {
-                    cargarModuloJuego(data.juegoActivo);
+                    cargarModuloJuego(data.juegoActivo, false); // Evita bucle infinito al sincronizar
                 }
             });
 
@@ -217,10 +217,19 @@
             });
         }
 
-        window.cargarModuloJuego = async function(idJuego) {
+        window.cargarModuloJuego = async function(idJuego, actualizarFirestore = true) {
             if (!idJuego) return;
             window.juegoActual = idJuego;
             
+            // Sincronizar el cambio de juego en Firestore para que la pantalla del jugador lo detecte
+            if (actualizarFirestore) {
+                try {
+                    await updateDoc(doc(db, "proyectos", idProyecto), { juegoActivo: idJuego });
+                } catch (err) {
+                    console.error("Error al sincronizar juego activo:", err);
+                }
+            }
+
             const contenedor = document.getElementById("contenedorJuego");
             if (!contenedor) return;
             contenedor.innerHTML = `<h3>Cargando módulo: admin_${idJuego}.js ...</h3>`;
@@ -321,4 +330,4 @@
         iniciarSincronizacionFirebase();
     </script>
 </body>
-</html> 
+</html>
