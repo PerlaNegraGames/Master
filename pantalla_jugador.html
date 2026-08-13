@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transmisión en Vivo - JUGARPRO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --cian: #00ffff;
+            --verde: #39ff14;
+            --amarillo: #ffff00;
+        }
+
+        * { box-sizing: border-box; user-select: none; }
+
+        body {
+            background: #040406;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header-jugador {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--cian);
+            padding-bottom: 10px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .titulo-juego {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--cian);
+            text-shadow: 0 0 20px var(--cian);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .estado-vivo {
+            font-size: 13px;
+            color: var(--verde);
+            text-shadow: 0 0 10px var(--verde);
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .display-vivo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0 30px 0;
+        }
+
+        .bola-gigante-jugador {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, #111 70%, #000);
+            border: 5px solid var(--verde);
+            box-shadow: 0 0 40px var(--verde), inset 0 0 20px var(--verde);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            font-weight: 900;
+            color: var(--verde);
+            text-shadow: 0 0 15px var(--verde);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .bola-gigante-jugador.nueva-bola {
+            transform: scale(1.25) rotate(10deg);
+            border-color: var(--amarillo);
+            color: var(--amarillo);
+            box-shadow: 0 0 60px var(--amarillo), inset 0 0 25px var(--amarillo);
+        }
+
+        .contenedor-tablero {
+            width: 100%;
+            max-width: 900px;
+            background: #0a0a0f;
+            border: 1px solid #222;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .tablero-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .grid-numeros {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 8px;
+        }
+
+        .num-box {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: #444;
+            transition: all 0.2s ease;
+        }
+
+        .num-box.sacado {
+            background: #000;
+            border-color: var(--amarillo);
+            color: var(--amarillo);
+            box-shadow: 0 0 10px var(--amarillo);
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        .num-box.ultimo {
+            border-color: var(--verde) !important;
+            color: var(--verde) !important;
+            box-shadow: 0 0 18px var(--verde) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-jugador">
+        <h1 id="txt-titulo" class="titulo-juego">SORTEO EN VIVO</h1>
+        <div id="badge-estado" class="estado-vivo"><i class="fas fa-satellite-dish"></i> TRANSMISIÓN EN DIRECTO</div>
+    </div>
+
+    <div class="display-vivo">
+        <div id="bola-display" class="bola-gigante-jugador">--</div>
+        <div style="color:#aaa; font-size:14px; font-weight:900; letter-spacing:2px; margin-top:15px;">ÚLTIMO NÚMERO</div>
+    </div>
+
+    <div class="contenedor-tablero">
+        <div class="tablero-bar">
+            <span style="color:var(--cian); font-weight:900;">NÚMEROS MARCADOS</span>
+            <span style="color:#aaa; font-size:12px; font-weight:bold;">
+                EXTRAÍDAS: <span id="cant-extraidas" style="color:var(--verde)">0</span> / <span id="cant-total">0</span>
+            </span>
+        </div>
+        <div id="grid-tablero" class="grid-numeros"></div>
+    </div>
+
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUGARPRO - Transmisión en Vivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --cian: #00ffff;
+            --verde: #39ff14;
+            --amarillo: #ffff00;
+            --rosa: #ff00ff;
+            --rojo: #ff0000;
+        }
+
+        * { box-sizing: border-box; user-select: none; }
+
+        body {
+            background: #040406;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* CAPA LOGIN JUGADOR */
+        #capa-login-jugador {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: radial-gradient(circle, #001220 0%, #000000 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-login {
+            background: rgba(10, 10, 15, 0.95);
+            border: 2px solid var(--cian);
+            padding: 35px 25px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-box {
+            width: 100%;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-box input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            font-weight: bold;
+            box-sizing: border-box;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .input-box input:focus {
+            border-color: var(--cian);
+            box-shadow: 0 0 10px var(--cian);
+        }
+
+        .btn-ingresar {
+            width: 100%;
+            background: var(--cian);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 900;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--cian);
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .btn-ingresar:hover {
+            transform: scale(1.02);
+            background: #fff;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        #contenido-jugador {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .header-jugador {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--cian);
+            padding-bottom: 10px;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        .titulo-juego {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--cian);
+            text-shadow: 0 0 20px var(--cian);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .user-tag {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: #111;
+            border: 1px solid var(--verde);
+            color: var(--verde);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-salir-j {
+            background: none;
+            border: none;
+            color: var(--rojo);
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .estado-vivo {
+            font-size: 13px;
+            color: var(--verde);
+            text-shadow: 0 0 10px var(--verde);
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .display-vivo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0 30px 0;
+        }
+
+        .bola-gigante-jugador {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, #111 70%, #000);
+            border: 5px solid var(--verde);
+            box-shadow: 0 0 40px var(--verde), inset 0 0 20px var(--verde);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            font-weight: 900;
+            color: var(--verde);
+            text-shadow: 0 0 15px var(--verde);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .bola-gigante-jugador.nueva-bola {
+            transform: scale(1.25) rotate(10deg);
+            border-color: var(--amarillo);
+            color: var(--amarillo);
+            box-shadow: 0 0 60px var(--amarillo), inset 0 0 25px var(--amarillo);
+        }
+
+        .contenedor-tablero {
+            width: 100%;
+            max-width: 900px;
+            background: #0a0a0f;
+            border: 1px solid #222;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .tablero-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .grid-numeros {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 8px;
+        }
+
+        .num-box {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: #444;
+            transition: all 0.2s ease;
+        }
+
+        .num-box.sacado {
+            background: #000;
+            border-color: var(--amarillo);
+            color: var(--amarillo);
+            box-shadow: 0 0 10px var(--amarillo);
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        .num-box.ultimo {
+            border-color: var(--verde) !important;
+            color: var(--verde) !important;
+            box-shadow: 0 0 18px var(--verde) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA LOGIN JUGADOR -->
+    <div id="capa-login-jugador">
+        <div class="card-login">
+            <div style="width: 60px; height: 60px; background: rgba(0, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; border: 1px solid var(--cian);">
+                <i class="fas fa-gamepad" style="color: var(--cian); font-size: 26px;"></i>
+            </div>
+            <h2 style="color:#fff; font-size:18px; margin: 0 0 20px 0; letter-spacing: 2px;">ACCESO JUGADOR</h2>
+            
+            <div class="input-box">
+                <input type="text" id="j-nick" placeholder="NICK / USUARIO" autocomplete="off">
+            </div>
+            <div class="input-box">
+                <input type="password" id="j-pin" placeholder="PIN / CONSTRASEÑA" autocomplete="off">
+            </div>
+
+            <button id="btn-login-jugador" class="btn-ingresar">INGRESAR AL JUEGO</button>
+            <div id="msg-err-j" style="color:var(--rojo); font-size:11px; margin-top:12px; font-weight:bold; min-height: 15px;"></div>
+        </div>
+    </div>
+
+    <!-- PANTALLA TRANSMISIÓN -->
+    <div id="contenido-jugador">
+        <div class="header-jugador">
+            <div id="user-info" class="user-tag">
+                <i class="fas fa-user-circle"></i> <span id="nombre-jugador">JUGADOR</span>
+                <button title="Cerrar Sesión" class="btn-salir-j" onclick="window.cerrarSesionJugador()"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+            <h1 id="txt-titulo" class="titulo-juego">SORTEO EN VIVO</h1>
+            <div id="badge-estado" class="estado-vivo"><i class="fas fa-satellite-dish"></i> TRANSMISIÓN EN DIRECTO</div>
+        </div>
+
+        <div class="display-vivo">
+            <div id="bola-display" class="bola-gigante-jugador">--</div>
+            <div style="color:#aaa; font-size:14px; font-weight:900; letter-spacing:2px; margin-top:15px;">ÚLTIMO NÚMERO</div>
+        </div>
+
+        <div class="contenedor-tablero">
+            <div class="tablero-bar">
+                <span style="color:var(--cian); font-weight:900;">NÚMEROS MARCADOS</span>
+                <span style="color:#aaa; font-size:12px; font-weight:bold;">
+                    EXTRAÍDAS: <span id="cant-extraidas" style="color:var(--verde)">0</span> / <span id="cant-total">0</span>
+                </span>
+            </div>
+            <div id="grid-tablero" class="grid-numeros"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getFirestore, doc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBd1fw2nWohvcveNCilf6xg4xZDCNdmEQw",
+            authDomain: "juegos-16e17.firebaseapp.com",
+            databaseURL: "https://juegos-16e17-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "juegos-16e17",
+            storageBucket: "juegos-16e17.firebasestorage.app",
+            messagingSenderId: "566680151031",
+            appId: "1:566680151031:web:9a400f22df8bda0e6184f2",
+            measurementId: "G-YJVGWVQ3V3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const rtdb = getDatabase(app);
+        const db = getFirestore(app);
+
+        const params = new URLSearchParams(window.location.search);
+        const codJuego = (params.get('c') || 'bingo90').toLowerCase().trim();
+        const miCarpeta = params.get('p') || 'gh';
+
+        const sesionJugador = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+
+        // AUTENTICACIÓN JUGADOR
+        document.getElementById('btn-login-jugador').onclick = async () => {
+            const nickIn = document.getElementById('j-nick').value.trim().toUpperCase();
+            const pinIn = document.getElementById('j-pin').value.trim();
+            const msgErr = document.getElementById('msg-err-j');
+
+            if (!nickIn || !pinIn) {
+                msgErr.innerText = "COMPLETA USUARIO Y PIN";
+                return;
+            }
+
+            msgErr.innerText = "VERIFICANDO...";
+
+            try {
+                const regSnap = await getDocs(collection(db, "proyectos", miCarpeta, "registrados"));
+                let usuarioValido = false;
+
+                regSnap.forEach(d => {
+                    const u = d.data();
+                    const nickDB = (u.nick || u.id || "").toString().trim().toUpperCase();
+                    const pinDB = (u.pin || "").toString().trim();
+
+                    if ((nickDB === nickIn || d.id.toUpperCase() === nickIn) && pinDB === pinIn) {
+                        usuarioValido = true;
+                    }
+                });
+
+                if (usuarioValido) {
+                    localStorage.setItem(`jugador_sesion_${miCarpeta}`, nickIn);
+                    iniciarVistaJugador(nickIn);
+                } else {
+                    msgErr.innerText = "USUARIO O PIN INCORRECTO";
+                }
+            } catch (e) {
+                msgErr.innerText = "ERROR AL CONECTAR CON EL SERVIDOR";
+            }
+        };
+
+        window.cerrarSesionJugador = () => {
+            localStorage.removeItem(`jugador_sesion_${miCarpeta}`);
+            location.reload();
+        };
+
+        if (sesionJugador) {
+            iniciarVistaJugador(sesionJugador);
+        }
+
+        function iniciarVistaJugador(nickUsuario) {
+            document.getElementById('capa-login-jugador').style.display = 'none';
+            document.getElementById('contenido-jugador').style.display = 'flex';
+            document.getElementById('nombre-jugador').innerText = nickUsuario;
+
+            const CONFIG_LIMITES = {
+                "bingo50": 50, "bingo72": 72, "bingo75": 75, "bingo80": 80,
+                "bingo90": 90, "bingo100": 100, "bingo120": 120, "romanos90": 90,
+                "mexicana": 54, "pokemon": 151, "emoji": 54, "millonaria": 100
+            };
+
+            const totalElementos = CONFIG_LIMITES[codJuego] || 90;
+            document.getElementById('cant-total').innerText = totalElementos;
+            document.getElementById('txt-titulo').innerText = `SORTEO ${codJuego.toUpperCase()}`;
+
+            const grid = document.getElementById('grid-tablero');
+            grid.innerHTML = Array.from({length: totalElementos}, (_, i) => `<div id="box-${i+1}" class="num-box">${i+1}</div>`).join('');
+
+            // Escuchar Fondo Personalizado
+            onSnapshot(doc(db, "proyectos", miCarpeta), (snap) => {
+                if (snap.exists() && snap.data().fondoPersonalizado) {
+                    const fondo = snap.data().fondoPersonalizado;
+                    document.body.style.background = fondo.includes('http') 
+                        ? `url('${fondo}') center/cover no-repeat fixed` 
+                        : fondo;
+                }
+            });
+
+            // Escuchar Realtime Database
+            const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
+            let ultimoProcesado = null;
+
+            onValue(sorteoRef, (snapshot) => {
+                const data = snapshot.val() || {};
+                const sacados = data.sacados || [];
+                const estado = data.estado || 'detenido';
+                const ultimaBola = sacados.length > 0 ? sacados[sacados.length - 1] : '--';
+
+                const bolaDisplay = document.getElementById('bola-display');
+                const badgeEstado = document.getElementById('badge-estado');
+                document.getElementById('cant-extraidas').innerText = sacados.length;
+
+                if (estado === 'pausado') {
+                    badgeEstado.innerHTML = `<i class="fas fa-pause-circle"></i> JUEGO PAUSADO`;
+                    badgeEstado.style.color = "var(--amarillo)";
+                } else {
+                    badgeEstado.innerHTML = `<i class="fas fa-satellite-dish"></i> TRANSMISIÓN EN DIRECTO`;
+                    badgeEstado.style.color = "var(--verde)";
+                }
+
+                if (ultimaBola !== '--' && ultimaBola !== ultimoProcesado) {
+                    ultimoProcesado = ultimaBola;
+                    bolaDisplay.classList.add('nueva-bola');
+                    setTimeout(() => bolaDisplay.classList.remove('nueva-bola'), 400);
+                }
+
+                bolaDisplay.innerText = ultimaBola;
+
+                for (let i = 1; i <= totalElementos; i++) {
+                    const box = document.getElementById(`box-${i}`);
+                    if (!box) continue;
+
+                    if (sacados.includes(i)) {
+                        box.classList.add('sacado');
+                        box.classList.toggle('ultimo', i === ultimaBola);
+                    } else {
+                        box.classList.remove('sacado', 'ultimo');
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>
