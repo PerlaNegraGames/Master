@@ -56,11 +56,12 @@
             padding: 15px;
         }
         #ultimo-elemento-vivo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 900;
             color: var(--amarillo);
             word-break: break-word;
             line-height: 1.2;
+            text-align: center;
         }
         #aviso-estado {
             font-size: 14px;
@@ -133,7 +134,7 @@
 <body>
 
     <div class="header-transmision">
-        <h1 id="titulo-juego-vivo">CARGANDO SORTEO...</h1>
+        <h1 id="titulo-juego-vivo">BUSCANDO JUEGO ACTIVO...</h1>
         <div class="en-directo">🟢 TRANSMISIÓN EN DIRECTO</div>
     </div>
 
@@ -145,7 +146,7 @@
 
     <div class="panel-tablero">
         <div class="info-tablero">
-            <span>TABLERO GENERAL</span>
+            <span id="nombre-tablero-label">TABLERO GENERAL</span>
             <span id="contador-extraidas">EXTRAÍDAS: 0</span>
         </div>
         <div id="tablero-grid-jugador"></div>
@@ -155,16 +156,15 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Configuración oficial con tu URL de Firebase Realtime Database
         const firebaseConfig = {
             databaseURL: "https://juegos-16e17-default-rtdb.europe-west1.firebasedatabase.app/"
         };
 
         const urlParams = new URLSearchParams(window.location.search);
         const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'default';
-        const codJuego = urlParams.get('juego') || urlParams.get('s') || '90';
+        let codJuegoURL = urlParams.get('juego') || urlParams.get('s') || '';
 
-        // Listas maestras completas para renderizar texto y cartas correctamente
+        // Listas maestras de cartas y elementos textuales
         const listasJuegos = {
             "mex": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"],
             "lm": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol"],
@@ -200,16 +200,36 @@
 
         const app = initializeApp(firebaseConfig);
         const rtdb = getDatabase(app);
-        const sorteoRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos/${codJuego}`);
 
-        onValue(sorteoRef, (snapshot) => {
-            const data = snapshot.val() || {};
+        // Escuchamos la ruta raíz de los sorteos del proyecto para detectar automáticamente el juego activo
+        const sorteosRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos`);
+
+        onValue(sorteosRef, (snapshot) => {
+            const todosLosSorteos = snapshot.val() || {};
+            
+            let codJuegoActivo = codJuegoURL;
+
+            // Si la URL no especifica el juego, buscamos el primero que esté activo o tenga elementos sacados
+            if (!codJuegoActivo || !todosLosSorteos[codJuegoActivo]) {
+                const llaves = Object.keys(todosLosSorteos);
+                const encontradoActivo = llaves.find(k => todosLosSorteos[k].estado === 'activo' || todosLosSorteos[k].estado === 'pausado');
+                
+                if (encontradoActivo) {
+                    codJuegoActivo = encontradoActivo;
+                } else if (llaves.length > 0) {
+                    codJuegoActivo = llaves[0]; // Por defecto agarra el primero que encuentre
+                } else {
+                    codJuegoActivo = '90'; // Último recurso
+                }
+            }
+
+            const data = todosLosSorteos[codJuegoActivo] || {};
             const rawSacados = data.sacados || [];
             const sacadosList = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
             const estadoPartida = data.estado || "detenido";
             const ultimoElemento = data.ultimo || sacadosList[sacadosList.length - 1] || "--";
 
-            document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${codJuego.toUpperCase()}`;
+            document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${codJuegoActivo.toUpperCase()}`;
             document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
             document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacadosList.length}`;
 
@@ -228,14 +248,14 @@
                 aviso.style.display = "none";
             }
 
-            renderizarTablero(codJuego, sacadosList);
+            renderizarTablero(codJuegoActivo, sacadosList);
         });
 
         function renderizarTablero(juego, sacados) {
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
 
-            // 1. Juegos con tablero estático de texto/cartas predefinido
+            // 1. Juegos con tablero estático de texto/cartas
             if (listasJuegos[juego]) {
                 const elementos = listasJuegos[juego];
                 let html = '';
@@ -252,8 +272,8 @@
             // 2. Juegos numéricos tradicionales
             let totalNums = 0;
             let columnas = 10;
-            if (juego === '50') { totalNums = 50; }
-            else if (juego === '72') { totalNums = 72; columnas = 9; }
+            if (juego === '50' || juego === 'bingo50') { totalNums = 50; }
+            else if (juego === '72' || juego === 'bingo72') { totalNums = 72; columnas = 9; }
             else if (juego === '90' || juego === 'bingo90') { totalNums = 90; }
             else if (juego === '100' || juego === 'bingo100') { totalNums = 100; }
             else if (juego === 'bingocartones') { totalNums = 50; }
@@ -272,7 +292,7 @@
                 return;
             }
 
-            // 3. Juegos dinámicos de texto/combos (inv, terna, power, bomba, parejasuma, nuevo, killer, etc.)
+            // 3. Juegos dinámicos de texto/combos (inv, terna, power, bomba, etc.)
             let htmlDinamic = '';
             if (sacados.length === 0) {
                 htmlDinamic = `<div style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">Esperando elementos...</div>`;
