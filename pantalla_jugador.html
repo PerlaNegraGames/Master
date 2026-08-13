@@ -134,7 +134,7 @@
 <body>
 
     <div class="header-transmision">
-        <h1 id="titulo-juego-vivo">CONECTANDO A FIRESTORE...</h1>
+        <h1 id="titulo-juego-vivo">CONECTANDO...</h1>
         <div class="en-directo">🟢 TRANSMISIÓN EN DIRECTO</div>
     </div>
 
@@ -181,7 +181,7 @@
             "autos": ["Ferrari", "Porsche", "Lamborghini", "BMW", "Mercedes-Benz", "Audi", "Toyota", "Ford", "Chevrolet", "Nissan", "Honda", "Volkswagen"],
             "simpsons": ["Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", "Krusty", "Milhouse"],
             "pitufos": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
-            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
+            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XX1","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
             "pokemon": [
                 "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Caterpie",
                 "Metapod", "Butterfree", "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata", "Raticate",
@@ -207,12 +207,12 @@
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 
-                // Prioridad 1: Si hay parámetro en la URL, se usa. Prioridad 2: El juego activo que mande el admin en Firestore.
+                // Determina qué juego está activo basándose en la URL o en el campo juegoActivo de Firestore
                 const juegoActivo = juegoForzadoURL || data.juegoActivo || '90';
 
-                // Buscar datos del juego actual en diferentes ubicaciones posibles de Firestore
-                const infoJuego = (data.sorteos && data.sorteos[juegoActivo]) || 
-                                  (data.juegosData && data.juegosData[juegoActivo]) || 
+                // Busca la información del juego en cualquier posible submapa o propiedad del documento
+                const infoJuego = (data.juegosData && data.juegosData[juegoActivo]) || 
+                                  (data.sorteos && data.sorteos[juegoActivo]) || 
                                   data[juegoActivo] || 
                                   data;
 
@@ -238,16 +238,18 @@
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
 
+            const juegoLower = String(juego).toLowerCase();
+
             // 1. Si es un juego basado en texto / cartas predefinidas
-            if (listasJuegos[juego]) {
-                const elementos = listasJuegos[juego];
+            if (listasJuegos[juegoLower]) {
+                const elementos = listasJuegos[juegoLower];
                 let html = '';
                 elementos.forEach((el, index) => {
                     const marcado = sacados.includes(el);
-                    const prefijoNum = juego === 'pokemon' ? `#${index + 1} ` : '';
+                    const prefijoNum = juegoLower === 'pokemon' ? `#${index + 1} ` : '';
                     html += `<div class="celda-texto ${marcado ? 'marcada' : ''}">${prefijoNum}${el}</div>`;
                 });
-                grid.style.gridTemplateColumns = juego === 'pokemon' ? "repeat(auto-fill, minmax(105px, 1fr))" : "repeat(auto-fill, minmax(115px, 1fr))";
+                grid.style.gridTemplateColumns = juegoLower === 'pokemon' ? "repeat(auto-fill, minmax(105px, 1fr))" : "repeat(auto-fill, minmax(115px, 1fr))";
                 grid.innerHTML = html;
                 return;
             }
@@ -255,7 +257,6 @@
             // 2. Si es un juego numérico tradicional
             let totalNums = 0;
             let columnas = 10;
-            const juegoLower = String(juego).toLowerCase();
 
             if (juegoLower === '50' || juegoLower === 'bingo50') { totalNums = 50; }
             else if (juegoLower === '72' || juegoLower === 'bingo72') { totalNums = 72; columnas = 9; }
