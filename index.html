@@ -224,7 +224,10 @@ window.SORTEADORES_CONFIG = {
     "bingo100": "BINGO 100", "bingo120": "TERNA 120", "lm": "LOTERÍA MEXICANA"
 };
 
-const miCarpeta = "gh";
+// Detección dinámica del parámetro de URL '?p=gh' o fallback a 'gh'
+const urlParams = new URLSearchParams(window.location.search);
+const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || "gh";
+
 let usuariosLocal = [], modoActivo = null;
 let pinDeEntrada = sessionStorage.getItem(`admin_p_volatil`);
 let intervaloReloj, miSesionActual = null;
@@ -415,11 +418,23 @@ window.cerrarSesion = () => { sessionStorage.clear(); location.reload(); };
 
 async function cargarMod(m) { 
     const p = document.getElementById('panel-juego'); 
+    const rutaModulo = `./modulos/admin_${m}.js?v=${Date.now()}`;
+    
     try { 
-        const mod = await import(`./modulos/admin_${m}.js?v=${Date.now()}`); 
-        if (mod.iniciar) { p.innerHTML = ''; mod.iniciar(p, db, miCarpeta, rtdb); }
+        const mod = await import(rutaModulo); 
+        if (mod && mod.iniciar) { 
+            p.innerHTML = ''; 
+            mod.iniciar(p, db, miCarpeta, rtdb); 
+        } else {
+            p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ El módulo "admin_${m}.js" no tiene una función "iniciar" exportada.</div>`;
+        }
     } catch(e) { 
-        p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ Módulo activo: ${m.toUpperCase()}</div>`;
+        console.error("Error detallado al importar el módulo:", e);
+        p.innerHTML = `
+            <div style="color:var(--rojo); text-align:center; padding:20px; border: 1px dashed var(--rojo); border-radius:10px; margin:20px;">
+                ⚠️ <b>Error al cargar el módulo:</b> admin_${m}.js<br>
+                <small style="color:#bbb; display:block; margin-top:8px;">Detalle: ${e.message}</small>
+            </div>`;
     }
 }
 
