@@ -2,10 +2,11 @@ import { doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7
 
 export function iniciar(contenedor, db, miCarpeta) {
     const totalNumeros = 50;
-    
+
+    // 1. Inyectamos la interfaz en el DOM
     contenedor.innerHTML = `
         <div style="background:#080808; border:1px solid var(--verde); padding:20px; border-radius:15px; text-align:center;">
-            <h2 style="color:var(--verde); margin-top:0;">BINGO 50 NUMEROS</h2>
+            <h2 style="color:var(--verde); margin-top:0;">BINGO 50 NÚMEROS</h2>
             <div style="display:flex; gap:10px; justify-content:center; margin-bottom:15px;">
                 <button id="btn-sacar-50" class="btn-abrir" style="background:var(--cian); color:#000;">SACAR NÚMERO</button>
                 <button id="btn-reset-50" class="btn-abrir" style="background:var(--rojo); color:#fff;">REINICIAR TABLERO</button>
@@ -17,6 +18,7 @@ export function iniciar(contenedor, db, miCarpeta) {
     const refJuego = doc(db, "proyectos", miCarpeta, "juegosData", "bingo50");
     let numerosSalidos = [];
 
+    // 2. Escuchamos cambios en Firebase
     onSnapshot(refJuego, (snap) => {
         if (snap.exists()) {
             numerosSalidos = snap.data().salidos || [];
@@ -39,17 +41,24 @@ export function iniciar(contenedor, db, miCarpeta) {
         if(grid) grid.innerHTML = html;
     }
 
-    document.getElementById('btn-sacar-50').onclick = async () => {
-        const disponibles = Array.from({length: totalNumeros}, (_, i) => i + 1).filter(n => !numerosSalidos.includes(n));
-        if (disponibles.length === 0) return alert("¡Todos los números han salido!");
-        const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
-        numerosSalidos.push(nuevo);
-        await setDoc(refJuego, { salidos: numerosSalidos, ultimo: nuevo }, { merge: true });
-    };
+    // 3. Asignamos eventos
+    const btnSacar = document.getElementById('btn-sacar-50');
+    if (btnSacar) {
+        btnSacar.onclick = async () => {
+            const disponibles = Array.from({length: totalNumeros}, (_, i) => i + 1).filter(n => !numerosSalidos.includes(n));
+            if (disponibles.length === 0) return alert("¡Todos los números han salido!");
+            const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
+            numerosSalidos.push(nuevo);
+            await setDoc(refJuego, { salidos: numerosSalidos, ultimo: nuevo }, { merge: true });
+        };
+    }
 
-    document.getElementById('btn-reset-50').onclick = async () => {
-        if (confirm("¿Reiniciar juego de Bingo 50?")) {
-            await setDoc(refJuego, { salidos: [], ultimo: null }, { merge: true });
-        }
-    };
+    const btnReset = document.getElementById('btn-reset-50');
+    if (btnReset) {
+        btnReset.onclick = async () => {
+            if (confirm("¿Reiniciar juego de Bingo 50?")) {
+                await setDoc(refJuego, { salidos: [], ultimo: null }, { merge: true });
+            }
+        };
+    }
 }
