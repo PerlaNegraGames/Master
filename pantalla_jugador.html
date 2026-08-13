@@ -201,31 +201,43 @@
             ]
         };
 
+        // Escuchamos el documento principal del proyecto para saber qué juego está activo en tiempo real
         const docRef = doc(db, "proyectos", miCarpeta);
+        let unsubscribeJuego = null;
 
         onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
+                const juegoActivo = juegoForzadoURL || data.juegoActivo || '50';
+
+                // Escuchamos también el documento específico del juego activo si está guardado en una subcolección o ruta dedicada
+                const juegoDocRef = doc(db, `proyectos/${miCarpeta}/juegosData`, juegoActivo);
                 
-                // Determina qué juego está activo basándose en la URL o en el campo juegoActivo de Firestore
-                const juegoActivo = juegoForzadoURL || data.juegoActivo || '90';
+                if (unsubscribeJuego) unsubscribeJuego(); // Limpiamos la escucha anterior
 
-                // Busca la información del juego en cualquier posible submapa o propiedad del documento
-                const infoJuego = (data.juegosData && data.juegosData[juegoActivo]) || 
-                                  (data.sorteos && data.sorteos[juegoActivo]) || 
-                                  data[juegoActivo] || 
-                                  data;
+                unsubscribeJuego = onSnapshot(juegoDocRef, (juegoSnap) => {
+                    let infoJuego = {};
+                    if (juegoSnap.exists()) {
+                        infoJuego = juegoSnap.data();
+                    } else {
+                        // Fallback por si los datos están directamente en el documento principal
+                        infoJuego = (data.juegosData && data.juegosData[juegoActivo]) || 
+                                      (data.sorteos && data.sorteos[juegoActivo]) || 
+                                      data[juegoActivo] || 
+                                      data;
+                    }
 
-                const rawSacados = infoJuego.sacados || data.sacados || [];
-                const sacadosList = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
-                const estadoPartida = infoJuego.estado || data.estado || "activo";
-                const ultimoElemento = infoJuego.ultimo || data.ultimo || sacadosList[sacadosList.length - 1] || "--";
+                    const rawSacados = infoJuego.sacados || data.sacados || [];
+                    const sacadosList = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
+                    const ultimoElemento = infoJuego.ultimo || data.ultimo || sacadosList[sacadosList.length - 1] || "--";
 
-                document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${juegoActivo.toUpperCase()}`;
-                document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
-                document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacadosList.length}`;
+                    document.getElementById('titulo-juego-vivo').innerText = `SORTEO ${juegoActivo.toUpperCase()}`;
+                    document.getElementById('ultimo-elemento-vivo').innerText = ultimoElemento;
+                    document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacadosList.length}`;
 
-                renderizarTablero(juegoActivo, sacadosList);
+                    renderizarTablero(juegoActivo, sacadosList);
+                });
+
             } else {
                 document.getElementById('titulo-juego-vivo').innerText = "PROYECTO NO ENCONTRADO";
             }
