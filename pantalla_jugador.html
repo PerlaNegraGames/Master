@@ -134,7 +134,7 @@
 <body>
 
     <div class="header-transmision">
-        <h1 id="titulo-juego-vivo">BUSCANDO JUEGO ACTIVO...</h1>
+        <h1 id="titulo-juego-vivo">CONECTANDO...</h1>
         <div class="en-directo">🟢 TRANSMISIÓN EN DIRECTO</div>
     </div>
 
@@ -164,7 +164,8 @@
         const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'default';
         let codJuegoURL = urlParams.get('juego') || urlParams.get('s') || '';
 
-        // Listas maestras de cartas y elementos textuales
+        console.log("Iniciando pantalla de jugador para proyecto:", miCarpeta);
+
         const listasJuegos = {
             "mex": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"],
             "lm": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol"],
@@ -200,26 +201,20 @@
 
         const app = initializeApp(firebaseConfig);
         const rtdb = getDatabase(app);
-
-        // Escuchamos la ruta raíz de los sorteos del proyecto para detectar automáticamente el juego activo
         const sorteosRef = ref(rtdb, `proyectos/${miCarpeta}/sorteos`);
 
         onValue(sorteosRef, (snapshot) => {
             const todosLosSorteos = snapshot.val() || {};
-            
+            console.log("Datos recibidos de Firebase:", todosLosSorteos);
+
             let codJuegoActivo = codJuegoURL;
 
-            // Si la URL no especifica el juego, buscamos el primero que esté activo o tenga elementos sacados
             if (!codJuegoActivo || !todosLosSorteos[codJuegoActivo]) {
                 const llaves = Object.keys(todosLosSorteos);
-                const encontradoActivo = llaves.find(k => todosLosSorteos[k].estado === 'activo' || todosLosSorteos[k].estado === 'pausado');
-                
-                if (encontradoActivo) {
-                    codJuegoActivo = encontradoActivo;
-                } else if (llaves.length > 0) {
-                    codJuegoActivo = llaves[0]; // Por defecto agarra el primero que encuentre
+                if (llaves.length > 0) {
+                    codJuegoActivo = llaves[0]; 
                 } else {
-                    codJuegoActivo = '90'; // Último recurso
+                    codJuegoActivo = 'mex'; // Si está completamente vacío, por defecto usa 'mex' para probar cartas
                 }
             }
 
@@ -249,13 +244,15 @@
             }
 
             renderizarTablero(codJuegoActivo, sacadosList);
+        }, (error) => {
+            console.error("Error de Firebase:", error);
+            document.getElementById('titulo-juego-vivo').innerText = "ERROR DE CONEXIÓN";
         });
 
         function renderizarTablero(juego, sacados) {
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
 
-            // 1. Juegos con tablero estático de texto/cartas
             if (listasJuegos[juego]) {
                 const elementos = listasJuegos[juego];
                 let html = '';
@@ -269,7 +266,6 @@
                 return;
             }
 
-            // 2. Juegos numéricos tradicionales
             let totalNums = 0;
             let columnas = 10;
             if (juego === '50' || juego === 'bingo50') { totalNums = 50; }
@@ -292,7 +288,6 @@
                 return;
             }
 
-            // 3. Juegos dinámicos de texto/combos (inv, terna, power, bomba, etc.)
             let htmlDinamic = '';
             if (sacados.length === 0) {
                 htmlDinamic = `<div style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">Esperando elementos...</div>`;
