@@ -115,11 +115,6 @@
             <div id="sugerencias"></div>
             <button id="btn-aplicar-modo" class="btn-abrir" style="background:var(--verde); color:#000;">APLICAR</button>
         </div>
-        <!-- CONTROLES ESPECÍFICOS PARA INVERTIDOS -->
-        <div id="contenedor-controles-invertidos" style="margin-top: 15px; display: none; gap: 10px; display: flex;">
-            <button onclick="window.comenzarInvertidos()" class="btn-abrir" style="background: var(--rojo); color: #fff; flex: 1;">🚀 COMENZAR PARTIDA</button>
-            <button onclick="window.reiniciarInvertidos()" class="btn-abrir" style="background: var(--amarillo); color: #000; flex: 1;">🔄 REINICIAR PARTIDA Y SELECCIÓN</button>
-        </div>
     </div>
 
     <div id="panel-juego" style="width:100%; max-width:900px; margin-top:20px;"></div>
@@ -214,7 +209,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, doc, getDoc, onSnapshot, updateDoc, collection, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBd1fw2nWohvcveNCilf6xg4xZDCNdmEQw",
@@ -313,13 +308,6 @@ function arrancarTodo() {
 
         const juegoActivoLimpio = d.juegoActivo ? String(d.juegoActivo).trim() : null;
         
-        const contenedorInvBtn = document.getElementById('contenedor-controles-invertidos');
-        if (juegoActivoLimpio === 'inv') {
-            contenedorInvBtn.style.display = 'flex';
-        } else {
-            contenedorInvBtn.style.display = 'none';
-        }
-
         if(juegoActivoLimpio && modoActivo !== juegoActivoLimpio) { 
             modoActivo = juegoActivoLimpio; 
             cargarMod(juegoActivoLimpio); 
@@ -403,32 +391,6 @@ window.crearUsuarioAdmin = async () => {
     } catch (e) {
         errDiv.innerText = "ERROR AL CREAR USUARIO";
         console.error(e);
-    }
-};
-
-window.comenzarInvertidos = async () => {
-    try {
-        await updateDoc(doc(db, "proyectos", miCarpeta), { estadoInvertidosComenzado: true });
-        alert("¡Partida de Invertidos comenzada!");
-    } catch(e) {
-        console.error(e);
-    }
-};
-
-window.reiniciarInvertidos = async () => {
-    if (!confirm("¿Estás seguro de reiniciar la partida completa de Invertidos y borrar las selecciones y números sacados?")) return;
-    try {
-        // Reiniciar estado en Firestore
-        await updateDoc(doc(db, "proyectos", miCarpeta), { estadoInvertidosComenzado: false });
-        
-        // Borrar selecciones de usuarios y números sorteados en Realtime Database
-        await set(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), null);
-        await set(ref(rtdb, `proyectos/${miCarpeta}/sorteos/inv`), null);
-
-        alert("¡Partida y selecciones de Invertidos reiniciadas con éxito!");
-    } catch(e) {
-        console.error(e);
-        alert("Error al reiniciar la partida");
     }
 };
 
