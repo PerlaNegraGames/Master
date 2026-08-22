@@ -327,7 +327,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getDatabase, ref, onValue, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, onValue, push, onChildAdded, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = { projectId: "juegos-16e17", databaseURL: "https://juegos-16e17-default-rtdb.europe-west1.firebasedatabase.app" };
         const app = initializeApp(firebaseConfig);
@@ -386,15 +386,30 @@
         
         const tiempoInicioCliente = Date.now();
 
+        // NUEVA FUNCIÓN DE PRESENCIA ONLINE/OFFLINE
+        function registrarPresencia(nick) {
+            const estadoRef = ref(rtdb, `proyectos/${miCarpeta}/presencia/${nick}`);
+            set(estadoRef, { estado: 'online', timestamp: Date.now() });
+            onDisconnect(estadoRef).set({ estado: 'offline', timestamp: Date.now() });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem(`jugador_sesion_${miCarpeta}`)) {
+            const nickGuardado = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            if (nickGuardado) {
                 document.getElementById('capa-login-jugador').style.display = 'none';
                 document.getElementById('contenido-jugador').style.display = 'flex';
+                registrarPresencia(nickGuardado); // Registrar online al recargar si ya tenía sesión
                 iniciarSincronizacion();
             }
         });
 
-        window.cerrarSesionJugador = () => {
+        window.cerrarSesionJugador = async () => {
+            const nickGuardado = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            if (nickGuardado) {
+                // Marcar como offline manualmente antes de salir
+                const estadoRef = ref(rtdb, `proyectos/${miCarpeta}/presencia/${nickGuardado}`);
+                await set(estadoRef, { estado: 'offline', timestamp: Date.now() });
+            }
             localStorage.removeItem(`jugador_sesion_${miCarpeta}`);
             localStorage.removeItem(`jugador_genero_${miCarpeta}`);
             location.reload();
@@ -429,6 +444,9 @@
                 if(aut) {
                     localStorage.setItem(`jugador_sesion_${miCarpeta}`, nick);
                     localStorage.setItem(`jugador_genero_${miCarpeta}`, genero);
+                    
+                    registrarPresencia(nick); // <--- REGISTRA EL ESTADO ONLINE EN TIEMPO REAL
+
                     document.getElementById('capa-login-jugador').style.display = 'none';
                     document.getElementById('contenido-jugador').style.display = 'flex';
                     iniciarSincronizacion();
