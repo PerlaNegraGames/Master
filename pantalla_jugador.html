@@ -685,6 +685,15 @@
             }, { onlyOnce: true });
         };
 
+        function guardarInvertidoElegido(par) {
+            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            const refSel = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nickActual}`);
+            set(refSel, {
+                par: par,
+                timestamp: Date.now()
+            });
+        }
+
         window.seleccionarCartaMex = (carta) => {
             const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
             const refSel = ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion/${nickActual}/cartas`);
