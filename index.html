@@ -316,8 +316,9 @@ window.renderUsuarios = (lista) => {
         const esH = (u.sexo === 'H' || u.genero === 'HOMBRE');
         const colorG = esH ? 'var(--cian)' : 'var(--rosa)';
         
-        // Verificamos estado online/offline basado en la presencia global
-        const estadoUsr = window.presenciaGlobal[u.nick] || { estado: 'offline' };
+        // Convertimos a minúsculas para que coincida exactamente con la RTDB
+        const nickKey = (u.nick || u.id || "").trim().toLowerCase();
+        const estadoUsr = window.presenciaGlobal[nickKey] || { estado: 'offline' };
         const esOnline = estadoUsr.estado === 'online';
         const claseEstado = esOnline ? 'online' : 'offline';
 
