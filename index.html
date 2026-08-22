@@ -40,7 +40,7 @@
             align-items: center; 
             justify-content: space-between; 
             width: 100%; 
-            max-width: 1300px; 
+            max-width: 1350px; 
             padding: 0 20px;
             margin: 0 auto;
         }
@@ -50,22 +50,22 @@
         .btn-efecto:hover { border-color: var(--cian); color: var(--cian); box-shadow: 0 0 10px var(--cian); }
         
         .layout-admin-principal {
-            display: flex; gap: 20px; width: 100%; max-width: 1300px; box-sizing: border-box; align-items: flex-start; justify-content: center; margin-top: 25px; padding: 0 20px;
+            display: flex; gap: 20px; width: 100%; max-width: 1350px; box-sizing: border-box; align-items: flex-start; justify-content: center; margin-top: 25px; padding: 0 20px;
         }
 
         .sidebar-conectados-admin {
-            width: 280px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0;
+            width: 330px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0;
         }
         .sidebar-conectados-admin h3 {
             color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px;
         }
-        #lista-conectados-admin { display: flex; flex-direction: column; gap: 8px; max-height: 550px; overflow-y: auto; }
+        #lista-conectados-admin-view { display: flex; flex-direction: column; gap: 8px; max-height: 550px; overflow-y: auto; }
         .item-conectado {
-            display: flex; align-items: center; justify-content: space-between; background: #111; padding: 8px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 6px; background: #111; padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a; box-sizing: border-box; width: 100%;
         }
         .punto-online { width: 8px; height: 8px; background: var(--verde); border-radius: 50%; box-shadow: 0 0 6px var(--verde); flex-shrink: 0; }
         .badge-invertido {
-            background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 1px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 0.5px; width: 100%; box-sizing: border-box; white-space: normal; word-break: break-word; text-align: left;
         }
         .num-inv-rojo { color: var(--rojo) !important; text-decoration: line-through; }
 
@@ -133,7 +133,6 @@
     </div>
 
     <div class="layout-admin-principal">
-        <!-- BARRA LATERAL DE CONECTADOS IGUAL A LA DE PANTALLA JUGADOR -->
         <div class="sidebar-conectados-admin">
             <h3>🟢 Conectados (<span id="count-conectados-admin">0</span>)</h3>
             <div id="lista-conectados-admin-view"></div>
@@ -352,9 +351,9 @@ function escucharConectadosAdmin() {
 
                             html += `
                             <div class="item-conectado">
-                                <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+                                <div style="display:flex; align-items:center; gap:6px; width: 100%;">
                                     <span class="punto-online"></span>
-                                    <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
+                                    <span style="font-weight: bold; text-transform: uppercase; color: #fff; word-break: break-all;">${nick}</span>
                                 </div>
                                 ${badgeHtml}
                             </div>`;
