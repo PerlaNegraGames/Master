@@ -8,13 +8,13 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
         "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", 
         "La Rana", "La Estrellita", "El Mundo", "El Apache", "El Nopal", "El Alacrán", "La Rosa", "La Calavera", "La Campana", "El Cantarito", 
         "El Venado", "El Sol", "La Corona", "La Chalupa", "El Pino", "El Pescado", "La Palma", "La Maceta", "El Faro", "El Catrín 2", 
-        "Carta 51", "Carta 52", "Carta 53", "Carta 54", "Carta 55", "Carta 56", "Carta 57", "Carta 58", "Carta 59", "Carta 60",
-        "Carta 61", "Carta 62", "Carta 63", "Carta 64", "Carta 65", "Carta 66", "Carta 67", "Carta 68", "Carta 69", "Carta 70",
-        "Carta 71", "Carta 72", "Carta 73", "Carta 74", "Carta 75", "Carta 76", "Carta 77", "Carta 78", "Carta 79", "Carta 80",
-        "Carta 81", "Carta 82", "Carta 83", "Carta 84", "Carta 85", "Carta 86", "Carta 87", "Carta 88", "Carta 89", "Carta 90",
-        "Carta 91", "Carta 92", "Carta 93", "Carta 94", "Carta 95", "Carta 96", "Carta 97", "Carta 98", "Carta 99", "Carta 100",
-        "Carta 101", "Carta 102", "Carta 103", "Carta 104", "Carta 105", "Carta 106", "Carta 107", "Carta 108", "Carta 109", "Carta 110",
-        "Carta 111", "Carta 112", "Carta 113", "Carta 114", "Carta 115", "Carta 116", "Carta 117", "Carta 118", "Carta 119", "Carta 120"
+        "La Guitarra", "La Manzana", "El Sombrero", "El Colibrí", "El Cascabel", "El Tecolote", "El Chapulín", "El metate", "El Molcajete", "El Sarape",
+        "El Cántaro", "La Olla", "Los Jarritos", "El Comal", "El Soplador", "El Equipal", "El Chiquihuite", "El Guacamole", "El Ajolote", "El Xoloitzcuintle",
+        "El Tacos", "El Alebrije", "El Trompo", "El papalote", "La Pirinola", "El Balero", "La Matatena", "El Rehilete", "La Catrina", "El Venadito",
+        "La Zopilota", "El Tejón", "La ardilla", "El Zorrillo", "El Coyote", "El Tecolote", "La Lechuza", "El Buho", "La Mariposa", "El Gusano",
+        "La Hormiga", "La Abeja", "La Mosca", "El Mosquito", "La Cucaracha", "El Caracol", "La Tortuga", "El Cangrejo", "La Langosta", "La Medusa",
+        "La Ballena", "El Tiburón", "La Foca", "El Pingüino", "El Oso", "El Tigre", "El León", "El Elefante", "La Jirafa", "El Mono",
+        "El Cerdito", "La Vaca", "El Toro", "El Caballo", "La Cabra", "La Oveja", "El Perrito", "El Gato", "El Loro", "El Canario"
     ];
     const codJuego = "mex";
 
@@ -92,7 +92,7 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
 
     async function sacarAccion() {
         const disponibles = cartasMex.filter(item => !salidos.includes(item));
-        if (disponibles.length === 0) {
+        if (disponibles.length ===0) {
             detenerAuto();
             alert("¡Todas las cartas han salido!");
             return;
