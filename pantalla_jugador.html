@@ -524,12 +524,11 @@
             if (juegoLower === 'inv' && !invertidosComenzado) {
                 const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
                 
-                // Escuchar selecciones de todos los usuarios para bloquear las ya elegidas
+                // Escuchamos permanentemente en tiempo real sin { onlyOnce: true }
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
                     const allSelections = sAllSel.val() || {};
                     
-                    // Mapear qué pares están ocupados y por quién
-                    let paresOcupados = {}; // par -> nick
+                    let paresOcupados = {}; 
                     Object.keys(allSelections).forEach(user => {
                         if (allSelections[user] && allSelections[user].par) {
                             paresOcupados[allSelections[user].par] = user;
@@ -560,7 +559,7 @@
 
                     grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(75px, 1fr))";
                     grid.innerHTML = gridHtml;
-                }, { onlyOnce: true });
+                });
                 return;
             }
 
@@ -595,7 +594,6 @@
         window.seleccionarParInvertido = (par) => {
             const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
             
-            // Validar de forma segura en la base de datos antes de permitir la selección
             const refGlobalInv = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`);
             onValue(refGlobalInv, (snapshot) => {
                 const data = snapshot.val() || {};
@@ -612,8 +610,6 @@
                 }
 
                 guardarInvertidoElegido(par);
-                alert(`¡Has seleccionado el par invertido: ${par}!`);
-                iniciarSincronizacion();
             }, { onlyOnce: true });
         };
     </script>
