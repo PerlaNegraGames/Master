@@ -115,9 +115,10 @@
             <div id="sugerencias"></div>
             <button id="btn-aplicar-modo" class="btn-abrir" style="background:var(--verde); color:#000;">APLICAR</button>
         </div>
-        <!-- BOTÓN ESPECIAL PARA INICIAR PARTIDA DE INVERTIDOS -->
-        <div id="contenedor-btn-iniciar-invertidos" style="margin-top: 15px; display: none;">
-            <button onclick="window.comenzarInvertidos()" class="btn-abrir" style="background: var(--rojo); color: #fff; width: 100%;">🚀 COMENZAR PARTIDA INVERTIDOS</button>
+        <!-- CONTROLES ESPECÍFICOS PARA INVERTIDOS -->
+        <div id="contenedor-controles-invertidos" style="margin-top: 15px; display: none; gap: 10px; display: flex;">
+            <button onclick="window.comenzarInvertidos()" class="btn-abrir" style="background: var(--rojo); color: #fff; flex: 1;">🚀 COMENZAR PARTIDA</button>
+            <button onclick="window.reiniciarInvertidos()" class="btn-abrir" style="background: var(--amarillo); color: #000; flex: 1;">🔄 REINICIAR PARTIDA Y SELECCIÓN</button>
         </div>
     </div>
 
@@ -213,7 +214,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, doc, getDoc, onSnapshot, updateDoc, collection, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBd1fw2nWohvcveNCilf6xg4xZDCNdmEQw",
@@ -312,10 +313,9 @@ function arrancarTodo() {
 
         const juegoActivoLimpio = d.juegoActivo ? String(d.juegoActivo).trim() : null;
         
-        // Mostrar botón de Invertidos si el juego activo es 'inv'
-        const contenedorInvBtn = document.getElementById('contenedor-btn-iniciar-invertidos');
+        const contenedorInvBtn = document.getElementById('contenedor-controles-invertidos');
         if (juegoActivoLimpio === 'inv') {
-            contenedorInvBtn.style.display = 'block';
+            contenedorInvBtn.style.display = 'flex';
         } else {
             contenedorInvBtn.style.display = 'none';
         }
@@ -409,10 +409,26 @@ window.crearUsuarioAdmin = async () => {
 window.comenzarInvertidos = async () => {
     try {
         await updateDoc(doc(db, "proyectos", miCarpeta), { estadoInvertidosComenzado: true });
-        alert("¡Partida de Invertidos comenzada! La pantalla de jugadores cambió a tablero de 90.");
+        alert("¡Partida de Invertidos comenzada!");
     } catch(e) {
         console.error(e);
-        alert("Error al iniciar partida");
+    }
+};
+
+window.reiniciarInvertidos = async () => {
+    if (!confirm("¿Estás seguro de reiniciar la partida completa de Invertidos y borrar las selecciones y números sacados?")) return;
+    try {
+        // Reiniciar estado en Firestore
+        await updateDoc(doc(db, "proyectos", miCarpeta), { estadoInvertidosComenzado: false });
+        
+        // Borrar selecciones de usuarios y números sorteados en Realtime Database
+        await set(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), null);
+        await set(ref(rtdb, `proyectos/${miCarpeta}/sorteos/inv`), null);
+
+        alert("¡Partida y selecciones de Invertidos reiniciadas con éxito!");
+    } catch(e) {
+        console.error(e);
+        alert("Error al reiniciar la partida");
     }
 };
 
@@ -488,7 +504,6 @@ window.seleccionarJuego = (id) => {
 
 document.getElementById('btn-aplicar-modo').onclick = async () => {
     if (tempJuego) {
-        // Al aplicar un juego nuevo, reseteamos el estado de invertidos comenzado
         await updateDoc(doc(db, "proyectos", miCarpeta), { juegoActivo: tempJuego, estadoInvertidosComenzado: false });
     }
 };
