@@ -123,6 +123,7 @@
 
         #tablero-grid-jugador {
             display: grid; gap: 6px; width: 100%; background: var(--panel); border: 1px solid #222; padding: 20px; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.8); box-sizing: border-box; margin-bottom: 40px;
+            max-height: 500px; overflow-y: auto;
         }
 
         .celda {
@@ -314,13 +315,6 @@
             onDisconnect(estadoRef).set({ estado: 'offline', timestamp: Date.now() });
         }
 
-        function guardarInvertidoElegido(par) {
-            const nick = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            if (!nick) return;
-            const refInv = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nick}`);
-            set(refInv, { par: par, timestamp: Date.now() });
-        }
-
         function escucharConectados() {
             onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snapshot) => {
                 const dataPresencia = snapshot.val() || {};
@@ -501,8 +495,8 @@
                 const nuevoJuego = data.juegoActivo || '50';
                 const cambioDeJuego = (juegoActualGlobal !== nuevoJuego);
                 juegoActualGlobal = nuevoJuego;
-                estadoInvertidosGlobal = data.estadoInvertidosComenzado || false;
-                estadoMexGlobal = data.estadoMexComenzado || false;
+                estadoInvertidosGlobal = Boolean(data.estadoInvertidosComenzado);
+                estadoMexGlobal = Boolean(data.estadoMexComenzado);
                 
                 if (cambioDeJuego) {
                     escucharConectados();
@@ -604,7 +598,7 @@
                     elementos.forEach((carta) => {
                         const ocupadoPor = cartasOcupadas[carta];
                         const esMia = misCartas.includes(carta);
-                        const estaOcupadaPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
+                        const estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
 
                         let claseCss = "";
                         let onclickAttr = `onclick="window.seleccionarCartaMex('${carta}')"`;
@@ -625,7 +619,7 @@
                 return;
             }
 
-            if (listasJuegos[juegoLower] && juegoLower !== 'inv') {
+            if (listasJuegos[juegoLower] && juegoLower !== 'inv' && juegoLower !== 'mex') {
                 const elementos = listasJuegos[juegoLower];
                 elementos.forEach((el, index) => {
                     const esta = sacados.includes(el);
@@ -633,6 +627,18 @@
                     html += `<div class="celda ${esta ? 'marcada' : ''}" style="font-size: 10px; padding: 10px 2px;">${prefijoNum}${el}</div>`;
                 });
                 grid.style.gridTemplateColumns = juegoLower === 'pokemon' ? "repeat(auto-fill, minmax(105px, 1fr))" : "repeat(auto-fill, minmax(115px, 1fr))";
+                grid.innerHTML = html;
+                return;
+            }
+
+            // Si la partida de Lotería Mexicana ya comenzó, se muestra el tablero con las cartas cantadas
+            if (juegoLower === 'mex' && mexComenzado) {
+                const elementos = listasJuegos['mex'];
+                elementos.forEach((el) => {
+                    const esta = sacados.includes(el);
+                    html += `<div class="celda ${esta ? 'marcada' : ''}" style="font-size: 9px; padding: 10px 2px;">${el}</div>`;
+                });
+                grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
                 grid.innerHTML = html;
                 return;
             }
