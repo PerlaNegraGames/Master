@@ -466,7 +466,7 @@ window.seleccionarJuego = (id) => {
 
 document.getElementById('btn-aplicar-modo').onclick = async () => {
     if (tempJuego) {
-        await updateDoc(doc(db, "proyectos", miCarpeta), { juegoActivo: tempJuego, estadoInvertidosComenzado: false });
+        await updateDoc(doc(db, "proyectos", miCarpeta), { juegoActivo: tempJuego, estadoInvertidosComenzado: false, estadoMexComenzado: false });
     }
 };
 

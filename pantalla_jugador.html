@@ -227,7 +227,20 @@
         const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'gh';
 
         const listasJuegos = {
-            "mex": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "El Sireno", "La Escalera", "La Botella", "El Barril", "El Árbol", "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "Pájaro", "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", "La Rana"],
+            "mex": [
+                "El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol", 
+                "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "El Pájaro", 
+                "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", 
+                "La Rana", "La Estrellita", "El Mundo", "El Apache", "El Nopal", "El Alacrán", "La Rosa", "La Calavera", "La Campana", "El Cantarito", 
+                "El Venado", "El Sol", "La Corona", "La Chalupa", "El Pino", "El Pescado", "La Palma", "La Maceta", "El Faro", "El Catrín 2", 
+                "Carta 51", "Carta 52", "Carta 53", "Carta 54", "Carta 55", "Carta 56", "Carta 57", "Carta 58", "Carta 59", "Carta 60",
+                "Carta 61", "Carta 62", "Carta 63", "Carta 64", "Carta 65", "Carta 66", "Carta 67", "Carta 68", "Carta 69", "Carta 70",
+                "Carta 71", "Carta 72", "Carta 73", "Carta 74", "Carta 75", "Carta 76", "Carta 77", "Carta 78", "Carta 79", "Carta 80",
+                "Carta 81", "Carta 82", "Carta 83", "Carta 84", "Carta 85", "Carta 86", "Carta 87", "Carta 88", "Carta 89", "Carta 90",
+                "Carta 91", "Carta 92", "Carta 93", "Carta 94", "Carta 95", "Carta 96", "Carta 97", "Carta 98", "Carta 99", "Carta 100",
+                "Carta 101", "Carta 102", "Carta 103", "Carta 104", "Carta 105", "Carta 106", "Carta 107", "Carta 108", "Carta 109", "Carta 110",
+                "Carta 111", "Carta 112", "Carta 113", "Carta 114", "Carta 115", "Carta 116", "Carta 117", "Carta 118", "Carta 119", "Carta 120"
+            ],
             "lm": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol"],
             "abcdario": "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
             "comiveneca": ["Pabellón Criollo", "Arepa Pelúa", "Cachapa", "Hallaca", "Tequeños", "Asado Negro", "Patacón", "Pan de Jamón", "Empanada de Cazón", "Mundongo", "Chicha", "Cocada"],
@@ -273,6 +286,7 @@
         let ultimoValorAnterior = "";
         let juegoActualGlobal = "50";
         let estadoInvertidosGlobal = false;
+        let estadoMexGlobal = false;
         
         const tiempoInicioCliente = Date.now();
 
@@ -314,46 +328,53 @@
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
                     const dataInv = snapInv.val() || {};
                     
-                    const contenedorLista = document.getElementById('lista-conectados-jugador');
-                    const contadorElem = document.getElementById('count-conectados');
-                    
-                    let html = "";
-                    let totalOnline = 0;
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
+                        const dataMex = snapMex.val() || {};
+                        
+                        const contenedorLista = document.getElementById('lista-conectados-jugador');
+                        const contadorElem = document.getElementById('count-conectados');
+                        
+                        let html = "";
+                        let totalOnline = 0;
 
-                    Object.keys(dataPresencia).forEach(nick => {
-                        if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
-                            totalOnline++;
-                            let badgeHtml = "";
-                            
-                            // Se evalúa directamente el juego actual reactivo
-                            if (juegoActualGlobal === 'inv') {
-                                const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
-                                if (seleccionUser) {
-                                    let partes = seleccionUser.split("-");
-                                    let p1 = partes[0];
-                                    let p2 = partes[1];
-                                    
-                                    badgeHtml = `<span class="badge-invertido"><span>${p1}</span>-<span>${p2}</span></span>`;
-                                } else {
-                                    badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                        Object.keys(dataPresencia).forEach(nick => {
+                            if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
+                                totalOnline++;
+                                let badgeHtml = "";
+                                
+                                if (juegoActualGlobal === 'inv') {
+                                    const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
+                                    if (seleccionUser) {
+                                        let partes = seleccionUser.split("-");
+                                        badgeHtml = `<span class="badge-invertido"><span>${partes[0]}</span>-<span>${partes[1]}</span></span>`;
+                                    } else {
+                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                                    }
+                                } else if (juegoActualGlobal === 'mex') {
+                                    const cartasUser = (dataMex[nick] && Array.isArray(dataMex[nick].cartas)) ? dataMex[nick].cartas : [];
+                                    if (cartasUser.length > 0) {
+                                        badgeHtml = `<span class="badge-invertido">${cartasUser.join(', ')}</span>`;
+                                    } else {
+                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
+                                    }
                                 }
-                            }
 
-                            html += `
-                            <div class="item-conectado">
-                                <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
-                                    <span class="punto-online"></span>
-                                    <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
-                                </div>
-                                ${badgeHtml}
-                            </div>`;
+                                html += `
+                                <div class="item-conectado">
+                                    <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+                                        <span class="punto-online"></span>
+                                        <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
+                                    </div>
+                                    ${badgeHtml}
+                                </div>`;
+                            }
+                        });
+
+                        if (contadorElem) contadorElem.innerText = totalOnline;
+                        if (contenedorLista) {
+                            contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
                         }
                     });
-
-                    if (contadorElem) contadorElem.innerText = totalOnline;
-                    if (contenedorLista) {
-                        contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
-                    }
                 });
             });
         }
@@ -481,8 +502,8 @@
                 const cambioDeJuego = (juegoActualGlobal !== nuevoJuego);
                 juegoActualGlobal = nuevoJuego;
                 estadoInvertidosGlobal = data.estadoInvertidosComenzado || false;
+                estadoMexGlobal = data.estadoMexComenzado || false;
                 
-                // Forzar actualización inmediata de la lista de conectados si cambia el juego
                 if (cambioDeJuego) {
                     escucharConectados();
                 }
@@ -491,8 +512,8 @@
 
                 unsubscribeJuego = onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (sSnap) => {
                     const info = sSnap.val() || {};
-                    const rawSacados = info.sacados || [];
-                    const sacados = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
+                    const rawSalidos = info.sacados || [];
+                    const sacados = Array.isArray(rawSalidos) ? rawSalidos : Object.values(rawSalidos);
                     const ultimoVal = info.ultimo || sacados[sacados.length - 1] || "--";
                     
                     document.getElementById('titulo-juego-vivo').innerText = `JUEGO: ${juegoActualGlobal.toUpperCase()}`;
@@ -509,12 +530,12 @@
                         bola.classList.add('animar-bola');
                     }
 
-                    renderizarTablero(juegoActualGlobal, sacados, estadoInvertidosGlobal);
+                    renderizarTablero(juegoActualGlobal, sacados, estadoInvertidosGlobal, estadoMexGlobal);
                 });
             });
         }
 
-        function renderizarTablero(juego, sacados, invertidosComenzado) {
+        function renderizarTablero(juego, sacados, invertidosComenzado, mexComenzado) {
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
             const juegoLower = String(juego).toLowerCase();
@@ -524,7 +545,6 @@
                 const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
                 
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
-                    // Doble verificación por si cambiaron de juego mientras escuchaba
                     if (juegoActualGlobal !== 'inv') return;
 
                     const allSelections = sAllSel.val() || {};
@@ -563,6 +583,48 @@
                 return;
             }
 
+            if (juegoLower === 'mex' && !mexComenzado) {
+                const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+                
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (sAllSel) => {
+                    if (juegoActualGlobal !== 'mex') return;
+
+                    const allSelections = sAllSel.val() || {};
+                    let cartasOcupadas = {}; 
+                    Object.keys(allSelections).forEach(user => {
+                        if (allSelections[user] && Array.isArray(allSelections[user].cartas)) {
+                            allSelections[user].cartas.forEach(c => { cartasOcupadas[c] = user; });
+                        }
+                    });
+
+                    const misCartas = (allSelections[nickActual] && Array.isArray(allSelections[nickActual].cartas)) ? allSelections[nickActual].cartas : [];
+                    const elementos = listasJuegos['mex'];
+                    let gridHtml = "";
+
+                    elementos.forEach((carta) => {
+                        const ocupadoPor = cartasOcupadas[carta];
+                        const esMia = misCartas.includes(carta);
+                        const estaOcupadaPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
+
+                        let claseCss = "";
+                        let onclickAttr = `onclick="window.seleccionarCartaMex('${carta}')"`;
+
+                        if (esMia) {
+                            claseCss = "invertido-seleccionado";
+                        } else if (estaOcupadoPorOtro) {
+                            claseCss = "invertido-ocupado";
+                            onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
+                        }
+
+                        gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 9px; padding: 10px 2px; font-weight: 900;">${carta}</div>`;
+                    });
+
+                    grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
+                    grid.innerHTML = gridHtml;
+                });
+                return;
+            }
+
             if (listasJuegos[juegoLower] && juegoLower !== 'inv') {
                 const elementos = listasJuegos[juegoLower];
                 elementos.forEach((el, index) => {
@@ -593,23 +655,56 @@
 
         window.seleccionarParInvertido = (par) => {
             const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            
             const refGlobalInv = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`);
             onValue(refGlobalInv, (snapshot) => {
                 const data = snapshot.val() || {};
                 let ocupado = false;
                 Object.keys(data).forEach(user => {
-                    if (user !== nickActual && data[user] && data[user].par === par) {
-                        ocupado = true;
+                    if (user !== nickActual && data[user] && data[user].par === par) { ocupado = true; }
+                });
+                if (ocupado) { alert("¡Este par invertido ya ha sido elegido por otro jugador!"); return; }
+                guardarInvertidoElegido(par);
+            }, { onlyOnce: true });
+        };
+
+        window.seleccionarCartaMex = (carta) => {
+            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            const refSel = ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion/${nickActual}/cartas`);
+            const refGlobal = ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`);
+
+            onValue(refGlobal, (snapshot) => {
+                const data = snapshot.val() || {};
+                let ocupadaPorOtro = false;
+                Object.keys(data).forEach(user => {
+                    if (user !== nickActual && data[user] && Array.isArray(data[user].cartas)) {
+                        if (data[user].cartas.includes(carta)) ocupadaPorOtro = true;
                     }
                 });
 
-                if (ocupado) {
-                    alert("¡Este par invertido ya ha sido elegido por otro jugador!");
+                if (ocupadaPorOtro) {
+                    alert("¡Esta carta ya ha sido elegida por otro jugador!");
                     return;
                 }
 
-                guardarInvertidoElegido(par);
+                onValue(refSel, (snapCartas) => {
+                    let misCartas = snapCartas.val() || [];
+                    if (!Array.isArray(misCartas)) misCartas = Object.values(misCartas);
+
+                    if (misCartas.includes(carta)) {
+                        misCartas = misCartas.filter(c => c !== carta);
+                    } else {
+                        if (misCartas.length >= 2) {
+                            alert("¡Solo puedes seleccionar un máximo de 2 cartas distintas!");
+                            return;
+                        }
+                        misCartas.push(carta);
+                    }
+
+                    set(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion/${nickActual}`), {
+                        cartas: misCartas,
+                        timestamp: Date.now()
+                    });
+                }, { onlyOnce: true });
             }, { onlyOnce: true });
         };
     </script>
