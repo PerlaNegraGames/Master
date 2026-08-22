@@ -136,8 +136,11 @@
         .invertido-seleccionado {
             background: var(--amarillo); color: #000; border-color: #fff; box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
         }
+        .invertido-ocupado {
+            background: #220000; color: #666; border-color: #440000; cursor: not-allowed; opacity: 0.5;
+        }
+        .invertido-ocupado:hover { border-color: #440000; color: #666; }
         
-        /* Estilos específicos para indicador de invertido en lista de conectados */
         .badge-invertido {
             background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 1px;
         }
@@ -277,11 +280,10 @@
             let pares = [];
             let unicos = new Set();
             for (let i = 1; i <= 90; i++) {
-                let s1 = String(i);
                 let s2 = String(Number(String(i).split("").reverse().join("")));
                 let menor = Math.min(i, Number(s2));
                 let mayor = Math.max(i, Number(s2));
-                if (menor !== mayor && menor < 90) { // Omitir capicúas puros si se desea, o mantenerlos
+                if (menor !== mayor && menor < 90) {
                     let clave = `${menor}-${mayor}`;
                     if (!unicos.has(clave)) {
                         unicos.add(clave);
@@ -309,11 +311,9 @@
             onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snapshot) => {
                 const dataPresencia = snapshot.val() || {};
                 
-                // Escuchar también selecciones de invertidos
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
                     const dataInv = snapInv.val() || {};
                     
-                    // Escuchar también sorteos para marcar en rojo los invertidos si empezó la partida
                     onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
                         const infoSorteo = snapSorteo.val() || {};
                         const rawSacados = infoSorteo.sacados || [];
@@ -521,27 +521,49 @@
             const juegoLower = String(juego).toLowerCase();
             let html = "";
 
-            // CASO ESPECIAL: JUEGO INVERTIDOS ANTES DE COMENZAR PARTIDA
             if (juegoLower === 'inv' && !invertidosComenzado) {
                 const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
                 
-                onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nickActual}`), (sSel) => {
-                    const selData = sSel.val() || {};
-                    const parSeleccionado = selData.par || null;
+                // Escuchar selecciones de todos los usuarios para bloquear las ya elegidas
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
+                    const allSelections = sAllSel.val() || {};
+                    
+                    // Mapear qué pares están ocupados y por quién
+                    let paresOcupados = {}; // par -> nick
+                    Object.keys(allSelections).forEach(user => {
+                        if (allSelections[user] && allSelections[user].par) {
+                            paresOcupados[allSelections[user].par] = user;
+                        }
+                    });
 
+                    const parSeleccionadoMio = allSelections[nickActual] ? allSelections[nickActual].par : null;
                     const pares = generarParesInvertidos();
                     let gridHtml = "";
+
                     pares.forEach(par => {
-                        const esSeleccionado = (par === parSeleccionado);
-                        gridHtml += `<div class="celda ${esSeleccionado ? 'invertido-seleccionado' : ''}" onclick="window.seleccionarParInvertido('${par}')" style="font-size: 13px; font-weight: 900;">${par}</div>`;
+                        const ocupadoPor = paresOcupados[par];
+                        const esMio = (par === parSeleccionadoMio);
+                        const estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
+
+                        let claseCss = "";
+                        let onclickAttr = `onclick="window.seleccionarParInvertido('${par}')"`;
+
+                        if (esMio) {
+                            claseCss = "invertido-seleccionado";
+                        } else if (estaOcupadoPorOtro) {
+                            claseCss = "invertido-ocupado";
+                            onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
+                        }
+
+                        gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 13px; font-weight: 900;">${par}</div>`;
                     });
+
                     grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(75px, 1fr))";
                     grid.innerHTML = gridHtml;
                 }, { onlyOnce: true });
                 return;
             }
 
-            // CASO: JUEGO INVERTIDOS DESPUÉS DE COMENZAR O CUALQUIER OTRO JUEGO (ESTILO BINGO 90)
             if (listasJuegos[juegoLower] && juegoLower !== 'inv') {
                 const elementos = listasJuegos[juegoLower];
                 elementos.forEach((el, index) => {
@@ -554,7 +576,7 @@
                 return;
             }
 
-            let totalNums = 90; // Si es invertidos comenzado, actúa como bingo de 90
+            let totalNums = 90;
             let columnas = 10;
 
             if (juegoLower === '72' || juegoLower === 'bingo72') { totalNums = 72; columnas = 9; }
@@ -571,10 +593,28 @@
         }
 
         window.seleccionarParInvertido = (par) => {
-            guardarInvertidoElegido(par);
-            alert(`¡Has seleccionado el par invertido: ${par}!`);
-            // Forzar actualización visual inmediata
-            iniciarSincronizacion();
+            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            
+            // Validar de forma segura en la base de datos antes de permitir la selección
+            const refGlobalInv = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`);
+            onValue(refGlobalInv, (snapshot) => {
+                const data = snapshot.val() || {};
+                let ocupado = false;
+                Object.keys(data).forEach(user => {
+                    if (user !== nickActual && data[user] && data[user].par === par) {
+                        ocupado = true;
+                    }
+                });
+
+                if (ocupado) {
+                    alert("¡Este par invertido ya ha sido elegido por otro jugador!");
+                    return;
+                }
+
+                guardarInvertidoElegido(par);
+                alert(`¡Has seleccionado el par invertido: ${par}!`);
+                iniciarSincronizacion();
+            }, { onlyOnce: true });
         };
     </script>
 </body>
