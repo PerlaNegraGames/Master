@@ -314,55 +314,46 @@
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
                     const dataInv = snapInv.val() || {};
                     
-                    onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
-                        const infoSorteo = snapSorteo.val() || {};
-                        const rawSacados = infoSorteo.sacados || [];
-                        const sacados = Array.isArray(rawSacados) ? rawSacados.map(String) : Object.values(rawSacados).map(String);
+                    const contenedorLista = document.getElementById('lista-conectados-jugador');
+                    const contadorElem = document.getElementById('count-conectados');
+                    
+                    let html = "";
+                    let totalOnline = 0;
 
-                        const contenedorLista = document.getElementById('lista-conectados-jugador');
-                        const contadorElem = document.getElementById('count-conectados');
-                        
-                        let html = "";
-                        let totalOnline = 0;
-
-                        Object.keys(dataPresencia).forEach(nick => {
-                            if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
-                                totalOnline++;
-                                let badgeHtml = "";
-                                
-                                // Se oculta automáticamente al cambiar a otro juego que no sea 'inv'
-                                if (juegoActualGlobal === 'inv') {
-                                    const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
-                                    if (seleccionUser) {
-                                        let partes = seleccionUser.split("-");
-                                        let p1 = partes[0];
-                                        let p2 = partes[1];
-                                        
-                                        let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
-                                        let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
-
-                                        badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
-                                    } else {
-                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
-                                    }
+                    Object.keys(dataPresencia).forEach(nick => {
+                        if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
+                            totalOnline++;
+                            let badgeHtml = "";
+                            
+                            // Se evalúa directamente el juego actual reactivo
+                            if (juegoActualGlobal === 'inv') {
+                                const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
+                                if (seleccionUser) {
+                                    let partes = seleccionUser.split("-");
+                                    let p1 = partes[0];
+                                    let p2 = partes[1];
+                                    
+                                    badgeHtml = `<span class="badge-invertido"><span>${p1}</span>-<span>${p2}</span></span>`;
+                                } else {
+                                    badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
                                 }
-
-                                html += `
-                                <div class="item-conectado">
-                                    <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
-                                        <span class="punto-online"></span>
-                                        <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
-                                    </div>
-                                    ${badgeHtml}
-                                </div>`;
                             }
-                        });
 
-                        if (contadorElem) contadorElem.innerText = totalOnline;
-                        if (contenedorLista) {
-                            contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
+                            html += `
+                            <div class="item-conectado">
+                                <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+                                    <span class="punto-online"></span>
+                                    <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
+                                </div>
+                                ${badgeHtml}
+                            </div>`;
                         }
                     });
+
+                    if (contadorElem) contadorElem.innerText = totalOnline;
+                    if (contenedorLista) {
+                        contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
+                    }
                 });
             });
         }
@@ -486,9 +477,16 @@
                     }
                 }
 
-                juegoActualGlobal = data.juegoActivo || '50';
+                const nuevoJuego = data.juegoActivo || '50';
+                const cambioDeJuego = (juegoActualGlobal !== nuevoJuego);
+                juegoActualGlobal = nuevoJuego;
                 estadoInvertidosGlobal = data.estadoInvertidosComenzado || false;
                 
+                // Forzar actualización inmediata de la lista de conectados si cambia el juego
+                if (cambioDeJuego) {
+                    escucharConectados();
+                }
+
                 if (unsubscribeJuego) unsubscribeJuego();
 
                 unsubscribeJuego = onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (sSnap) => {
@@ -526,8 +524,10 @@
                 const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
                 
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
+                    // Doble verificación por si cambiaron de juego mientras escuchaba
+                    if (juegoActualGlobal !== 'inv') return;
+
                     const allSelections = sAllSel.val() || {};
-                    
                     let paresOcupados = {}; 
                     Object.keys(allSelections).forEach(user => {
                         if (allSelections[user] && allSelections[user].par) {
