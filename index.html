@@ -40,7 +40,7 @@
             align-items: center; 
             justify-content: space-between; 
             width: 100%; 
-            max-width: 900px; 
+            max-width: 1300px; 
             padding: 0 20px;
             margin: 0 auto;
         }
@@ -48,14 +48,37 @@
         
         .btn-efecto { background: #000; border: 1px solid #FF69B4; color: #FF69B4; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; text-transform: uppercase; transition: 0.3s; }
         .btn-efecto:hover { border-color: var(--cian); color: var(--cian); box-shadow: 0 0 10px var(--cian); }
-        .menu-modos { width: 95%; max-width: 900px; margin-top: 25px; padding: 20px; background: #080808; border: 1px solid #151515; border-radius: 15px; box-sizing: border-box; }
+        
+        .layout-admin-principal {
+            display: flex; gap: 20px; width: 100%; max-width: 1300px; box-sizing: border-box; align-items: flex-start; justify-content: center; margin-top: 25px; padding: 0 20px;
+        }
+
+        .sidebar-conectados-admin {
+            width: 280px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0;
+        }
+        .sidebar-conectados-admin h3 {
+            color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px;
+        }
+        #lista-conectados-admin { display: flex; flex-direction: column; gap: 8px; max-height: 550px; overflow-y: auto; }
+        .item-conectado {
+            display: flex; align-items: center; justify-content: space-between; background: #111; padding: 8px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a;
+        }
+        .punto-online { width: 8px; height: 8px; background: var(--verde); border-radius: 50%; box-shadow: 0 0 6px var(--verde); flex-shrink: 0; }
+        .badge-invertido {
+            background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 1px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .num-inv-rojo { color: var(--rojo) !important; text-decoration: line-through; }
+
+        .main-admin-columna { flex: 1; display: flex; flex-direction: column; align-items: center; max-width: 950px; }
+
+        .menu-modos { width: 100%; padding: 20px; background: #080808; border: 1px solid #151515; border-radius: 15px; box-sizing: border-box; }
         .buscador-container { position: relative; display: flex; gap: 10px; }
         #input-busqueda { flex-grow: 1; background: #000; border: 1px solid var(--verde); color: var(--verde); padding: 15px; border-radius: 10px; font-weight: 900; outline: none; box-shadow: inset 0 0 8px var(--verde); cursor: pointer; text-transform: uppercase; }
         #sugerencias { position: absolute; top: 60px; left: 0; width: calc(100% - 130px); background: #080808; border: 1px solid var(--verde); border-radius: 10px; z-index: 1000; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 0 15px var(--verde); }
         .sug-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #151515; font-weight: 900; text-transform: uppercase; transition: 0.2s; color: #fff; }
         .sug-item:hover { background: var(--verde); color: #000; box-shadow: 0 0 20px var(--verde); }
         
-        .footer-sorteadores { width: 95%; max-width: 900px; margin: 30px 0 50px 0; padding: 20px; background: #050505; border: 1px solid #151515; border-radius: 15px; box-sizing: border-box; }
+        .footer-sorteadores { width: 100%; margin: 30px 0 50px 0; padding: 20px; background: #050505; border: 1px solid #151515; border-radius: 15px; box-sizing: border-box; }
         .sort-flex { display: flex; gap: 15px; align-items: center; }
         .select-sorteador { flex: 1; background: #000; border: 1px solid var(--violeta); color: var(--violeta); padding: 12px; border-radius: 10px; font-weight: bold; outline: none; cursor: pointer; }
         .btn-abrir { background: var(--violeta); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 900; cursor: pointer; box-shadow: 0 0 15px var(--violeta); }
@@ -109,21 +132,31 @@
         </div>
     </div>
 
-    <div class="menu-modos">
-        <div class="buscador-container">
-            <input type="text" id="input-busqueda" placeholder="SELECCIONAR JUEGO..." readonly>
-            <div id="sugerencias"></div>
-            <button id="btn-aplicar-modo" class="btn-abrir" style="background:var(--verde); color:#000;">APLICAR</button>
+    <div class="layout-admin-principal">
+        <!-- BARRA LATERAL DE CONECTADOS IGUAL A LA DE PANTALLA JUGADOR -->
+        <div class="sidebar-conectados-admin">
+            <h3>🟢 Conectados (<span id="count-conectados-admin">0</span>)</h3>
+            <div id="lista-conectados-admin-view"></div>
         </div>
-    </div>
 
-    <div id="panel-juego" style="width:100%; max-width:900px; margin-top:20px;"></div>
+        <div class="main-admin-columna">
+            <div class="menu-modos">
+                <div class="buscador-container">
+                    <input type="text" id="input-busqueda" placeholder="SELECCIONAR JUEGO..." readonly>
+                    <div id="sugerencias"></div>
+                    <button id="btn-aplicar-modo" class="btn-abrir" style="background:var(--verde); color:#000;">APLICAR</button>
+                </div>
+            </div>
 
-    <div class="footer-sorteadores">
-        <div class="sort-flex">
-            <select id="select-sorteador" class="select-sorteador"></select>
-            <button id="btn-abrir-sort" class="btn-abrir">ABRIR</button>
-            <button id="btn-ver-reg" class="btn-reg">👤 REGISTRADOS (<span id="count-total">0</span>)</button>
+            <div id="panel-juego" style="width:100%; margin-top:20px;"></div>
+
+            <div class="footer-sorteadores">
+                <div class="sort-flex">
+                    <select id="select-sorteador" class="select-sorteador"></select>
+                    <button id="btn-abrir-sort" class="btn-abrir">ABRIR</button>
+                    <button id="btn-ver-reg" class="btn-reg">👤 REGISTRADOS (<span id="count-total">0</span>)</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -243,6 +276,7 @@ const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || "gh";
 let usuariosLocal = [], modoActivo = null;
 let pinDeEntrada = sessionStorage.getItem(`admin_p_volatil`);
 let miSesionActual = null;
+let juegoActualGlobal = "50";
 window.presenciaGlobal = {}; 
 
 document.getElementById('ver-password').onclick = function() {
@@ -265,10 +299,84 @@ async function validarLoginLocal(pin) {
     }
 }
 
+function escucharConectadosAdmin() {
+    onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snapshot) => {
+        const dataPresencia = snapshot.val() || {};
+        
+        onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
+            const dataInv = snapInv.val() || {};
+            
+            onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
+                const dataMex = snapMex.val() || {};
+
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
+                    const infoSorteo = snapSorteo.val() || {};
+                    const rawSacados = infoSorteo.sacados || [];
+                    const sacados = Array.isArray(rawSacados) ? rawSacados.map(String) : Object.values(rawSacados).map(String);
+                    
+                    const contenedorLista = document.getElementById('lista-conectados-admin-view');
+                    const contadorElem = document.getElementById('count-conectados-admin');
+                    
+                    let html = "";
+                    let totalOnline = 0;
+
+                    Object.keys(dataPresencia).forEach(nick => {
+                        if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
+                            totalOnline++;
+                            let badgeHtml = "";
+                            
+                            if (juegoActualGlobal === 'inv') {
+                                const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
+                                if (seleccionUser) {
+                                    let partes = seleccionUser.split("-");
+                                    let p1 = partes[0];
+                                    let p2 = partes[1];
+                                    let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
+                                    let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
+                                    badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
+                                } else {
+                                    badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                                }
+                            } else if (juegoActualGlobal === 'mex') {
+                                const cartasUser = (dataMex[nick] && Array.isArray(dataMex[nick].cartas)) ? dataMex[nick].cartas : [];
+                                if (cartasUser.length > 0) {
+                                    let cartasHtmlArr = cartasUser.map(c => {
+                                        let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
+                                        return `<span class="${claseSalida}">${c}</span>`;
+                                    });
+                                    badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
+                                } else {
+                                    badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
+                                }
+                            }
+
+                            html += `
+                            <div class="item-conectado">
+                                <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+                                    <span class="punto-online"></span>
+                                    <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
+                                </div>
+                                ${badgeHtml}
+                            </div>`;
+                        }
+                    });
+
+                    if (contadorElem) contadorElem.innerText = totalOnline;
+                    if (contenedorLista) {
+                        contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
+                    }
+                });
+            });
+        });
+    });
+}
+
 function arrancarTodo() {
     document.getElementById('contenido-admin').style.display = 'flex';
     document.getElementById('capa-login').style.display = 'none';
     const refProy = doc(db, "proyectos", miCarpeta);
+
+    escucharConectadosAdmin();
 
     onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snap) => {
         window.presenciaGlobal = snap.val() || {};
@@ -310,6 +418,8 @@ function arrancarTodo() {
         
         if(juegoActivoLimpio && modoActivo !== juegoActivoLimpio) { 
             modoActivo = juegoActivoLimpio; 
+            juegoActualGlobal = juegoActivoLimpio;
+            escucharConectadosAdmin();
             cargarMod(juegoActivoLimpio); 
         }
     });
