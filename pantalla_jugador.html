@@ -330,6 +330,7 @@
                                 totalOnline++;
                                 let badgeHtml = "";
                                 
+                                // Se oculta automáticamente al cambiar a otro juego que no sea 'inv'
                                 if (juegoActualGlobal === 'inv') {
                                     const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
                                     if (seleccionUser) {
@@ -524,7 +525,6 @@
             if (juegoLower === 'inv' && !invertidosComenzado) {
                 const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
                 
-                // Escuchamos permanentemente en tiempo real sin { onlyOnce: true }
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
                     const allSelections = sAllSel.val() || {};
                     
