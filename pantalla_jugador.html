@@ -234,13 +234,13 @@
                 "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", 
                 "La Rana", "La Estrellita", "El Mundo", "El Apache", "El Nopal", "El Alacrán", "La Rosa", "La Calavera", "La Campana", "El Cantarito", 
                 "El Venado", "El Sol", "La Corona", "La Chalupa", "El Pino", "El Pescado", "La Palma", "La Maceta", "El Faro", "El Catrín 2", 
-                "Carta 51", "Carta 52", "Carta 53", "Carta 54", "Carta 55", "Carta 56", "Carta 57", "Carta 58", "Carta 59", "Carta 60",
-                "Carta 61", "Carta 62", "Carta 63", "Carta 64", "Carta 65", "Carta 66", "Carta 67", "Carta 68", "Carta 69", "Carta 70",
-                "Carta 71", "Carta 72", "Carta 73", "Carta 74", "Carta 75", "Carta 76", "Carta 77", "Carta 78", "Carta 79", "Carta 80",
-                "Carta 81", "Carta 82", "Carta 83", "Carta 84", "Carta 85", "Carta 86", "Carta 87", "Carta 88", "Carta 89", "Carta 90",
-                "Carta 91", "Carta 92", "Carta 93", "Carta 94", "Carta 95", "Carta 96", "Carta 97", "Carta 98", "Carta 99", "Carta 100",
-                "Carta 101", "Carta 102", "Carta 103", "Carta 104", "Carta 105", "Carta 106", "Carta 107", "Carta 108", "Carta 109", "Carta 110",
-                "Carta 111", "Carta 112", "Carta 113", "Carta 114", "Carta 115", "Carta 116", "Carta 117", "Carta 118", "Carta 119", "Carta 120"
+                "La Guitarra", "La Manzana", "El Sombrero", "El Colibrí", "El Cascabel", "El Tecolote", "El Chapulín", "El metate", "El Molcajete", "El Sarape",
+                "El Cántaro", "La Olla", "Los Jarritos", "El Comal", "El Soplador", "El Equipal", "El Chiquihuite", "El Guacamole", "El Ajolote", "El Xoloitzcuintle",
+                "El Tacos", "El Alebrije", "El Trompo", "El papalote", "La Pirinola", "El Balero", "La Matatena", "El Rehilete", "La Catrina", "El Venadito",
+                "La Zopilota", "El Tejón", "La ardilla", "El Zorrillo", "El Coyote", "El Tecolote", "La Lechuza", "El Buho", "La Mariposa", "El Gusano",
+                "La Hormiga", "La Abeja", "La Mosca", "El Mosquito", "La Cucaracha", "El Caracol", "La Tortuga", "El Cangrejo", "La Langosta", "La Medusa",
+                "La Ballena", "El Tiburón", "La Foca", "El Pingüino", "El Oso", "El Tigre", "El León", "El Elefante", "La Jirafa", "El Mono",
+                "El Cerdito", "La Vaca", "El Toro", "El Caballo", "La Cabra", "La Oveja", "El Perrito", "El Gato", "El Loro", "El Canario"
             ],
             "lm": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol"],
             "abcdario": "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
@@ -278,8 +278,7 @@
                 "Electrode", "Exeggcute", "Exeggutor", "Cubone", "Marowak", "Hitmonlee", "Hitmonchan", "Lickitung", "Koffing", "Weezing",
                 "Rhyhorn", "Rhydon", "Chansey", "Tangela", "Kangaskhan", "Horsea", "Seadra", "Goldeen", "Seaking", "Staryu",
                 "Starmie", "Mr. Mime", "Scyther", "Jynx", "Electabuzz", "Magmar", "Pinsir", "Tauros", "Magikarp", "Gyarados",
-                "Lapras", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto",
-                "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres", "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew"
+                "Lapras", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto", "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres", "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew"
             ]
         };
 
@@ -324,50 +323,64 @@
                     
                     onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
                         const dataMex = snapMex.val() || {};
-                        
-                        const contenedorLista = document.getElementById('lista-conectados-jugador');
-                        const contadorElem = document.getElementById('count-conectados');
-                        
-                        let html = "";
-                        let totalOnline = 0;
 
-                        Object.keys(dataPresencia).forEach(nick => {
-                            if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
-                                totalOnline++;
-                                let badgeHtml = "";
-                                
-                                if (juegoActualGlobal === 'inv') {
-                                    const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
-                                    if (seleccionUser) {
-                                        let partes = seleccionUser.split("-");
-                                        badgeHtml = `<span class="badge-invertido"><span>${partes[0]}</span>-<span>${partes[1]}</span></span>`;
-                                    } else {
-                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                        onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
+                            const infoSorteo = snapSorteo.val() || {};
+                            const rawSacados = infoSorteo.sacados || [];
+                            const sacados = Array.isArray(rawSacados) ? rawSacados.map(String) : Object.values(rawSacados).map(String);
+                            
+                            const contenedorLista = document.getElementById('lista-conectados-jugador');
+                            const contadorElem = document.getElementById('count-conectados');
+                            
+                            let html = "";
+                            let totalOnline = 0;
+
+                            Object.keys(dataPresencia).forEach(nick => {
+                                if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
+                                    totalOnline++;
+                                    let badgeHtml = "";
+                                    
+                                    if (juegoActualGlobal === 'inv') {
+                                        const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
+                                        if (seleccionUser) {
+                                            let partes = seleccionUser.split("-");
+                                            let p1 = partes[0];
+                                            let p2 = partes[1];
+                                            let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
+                                            let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
+                                            badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
+                                        } else {
+                                            badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                                        }
+                                    } else if (juegoActualGlobal === 'mex') {
+                                        const cartasUser = (dataMex[nick] && Array.isArray(dataMex[nick].cartas)) ? dataMex[nick].cartas : [];
+                                        if (cartasUser.length > 0) {
+                                            let cartasHtmlArr = cartasUser.map(c => {
+                                                let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
+                                                return `<span class="${claseSalida}">${c}</span>`;
+                                            });
+                                            badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
+                                        } else {
+                                            badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
+                                        }
                                     }
-                                } else if (juegoActualGlobal === 'mex') {
-                                    const cartasUser = (dataMex[nick] && Array.isArray(dataMex[nick].cartas)) ? dataMex[nick].cartas : [];
-                                    if (cartasUser.length > 0) {
-                                        badgeHtml = `<span class="badge-invertido">${cartasUser.join(', ')}</span>`;
-                                    } else {
-                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
-                                    }
+
+                                    html += `
+                                    <div class="item-conectado">
+                                        <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+                                            <span class="punto-online"></span>
+                                            <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
+                                        </div>
+                                        ${badgeHtml}
+                                    </div>`;
                                 }
+                            });
 
-                                html += `
-                                <div class="item-conectado">
-                                    <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
-                                        <span class="punto-online"></span>
-                                        <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
-                                    </div>
-                                    ${badgeHtml}
-                                </div>`;
+                            if (contadorElem) contadorElem.innerText = totalOnline;
+                            if (contenedorLista) {
+                                contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
                             }
                         });
-
-                        if (contadorElem) contadorElem.innerText = totalOnline;
-                        if (contenedorLista) {
-                            contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
-                        }
                     });
                 });
             });
@@ -631,7 +644,6 @@
                 return;
             }
 
-            // Si la partida de Lotería Mexicana ya comenzó, se muestra el tablero con las cartas cantadas
             if (juegoLower === 'mex' && mexComenzado) {
                 const elementos = listasJuegos['mex'];
                 elementos.forEach((el) => {
