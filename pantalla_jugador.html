@@ -29,7 +29,6 @@
             box-sizing: border-box;
         }
 
-        /* ANIMACIONES */
         @keyframes pulseBall {
             0% { transform: scale(1); box-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
             50% { transform: scale(1.08); box-shadow: 0 0 45px rgba(57, 255, 20, 0.8); }
@@ -41,342 +40,112 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .animar-bola {
-            animation: pulseBall 0.5s ease-in-out;
-        }
+        .animar-bola { animation: pulseBall 0.5s ease-in-out; }
 
         .btn-efecto { 
-            background: #000; 
-            border: 1px solid #FF69B4; 
-            color: #FF69B4; 
-            padding: 8px 15px; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            transition: all 0.3s ease; 
+            background: #000; border: 1px solid #FF69B4; color: #FF69B4; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; text-transform: uppercase; transition: all 0.3s ease; 
         }
-        .btn-efecto:hover { 
-            border-color: var(--cian); 
-            color: var(--cian); 
-            box-shadow: 0 0 15px var(--cian); 
-            transform: translateY(-2px);
-        }
+        .btn-efecto:hover { border-color: var(--cian); color: var(--cian); box-shadow: 0 0 15px var(--cian); transform: translateY(-2px); }
 
-        /* CAPA LOGIN JUGADOR */
         #capa-login-jugador {
-            position: fixed;
-            inset: 0;
-            z-index: 99999;
-            background: radial-gradient(circle, #111 0%, #000 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.4s ease-out;
+            position: fixed; inset: 0; z-index: 99999; background: radial-gradient(circle, #111 0%, #000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.4s ease-out;
         }
 
         .login-card {
-            background: rgba(15, 15, 15, 0.95);
-            border: 2px solid var(--verde);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 0 35px rgba(57, 255, 20, 0.25);
-            width: 100%;
-            max-width: 320px;
-            box-sizing: border-box;
-            position: relative;
-            backdrop-filter: blur(10px);
+            background: rgba(15, 15, 15, 0.95); border: 2px solid var(--verde); padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 0 35px rgba(57, 255, 20, 0.25); width: 100%; max-width: 320px; box-sizing: border-box; position: relative; backdrop-filter: blur(10px);
         }
 
-        .login-card h1 {
-            color: var(--verde);
-            font-size: 18px;
-            letter-spacing: 2px;
-            margin-top: 0;
-            margin-bottom: 25px;
-            text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
-        }
+        .login-card h1 { color: var(--verde); font-size: 18px; letter-spacing: 2px; margin-top: 0; margin-bottom: 25px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
 
         .input-group { width: 100%; margin-bottom: 15px; }
         .input-group input {
-            background: #000;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 12px;
-            text-align: center;
-            font-size: 15px;
-            width: 100%;
-            outline: none;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-weight: bold;
-            transition: 0.3s;
+            background: #000; border: 1px solid #333; color: #fff; padding: 12px; text-align: center; font-size: 15px; width: 100%; outline: none; border-radius: 8px; box-sizing: border-box; font-weight: bold; transition: 0.3s;
         }
-        .input-group input:focus {
-            border-color: var(--verde);
-            box-shadow: 0 0 12px rgba(57, 255, 20, 0.4);
-        }
+        .input-group input:focus { border-color: var(--verde); box-shadow: 0 0 12px rgba(57, 255, 20, 0.4); }
 
         .btn-ingresar {
-            background: var(--verde);
-            color: #000;
-            border: none;
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 900;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
-            margin-top: 10px;
-            transition: all 0.3s ease;
+            background: var(--verde); color: #000; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px rgba(57, 255, 20, 0.4); margin-top: 10px; transition: all 0.3s ease;
         }
-        .btn-ingresar:hover {
-            box-shadow: 0 0 25px rgba(57, 255, 20, 0.8);
-            transform: scale(1.02);
-        }
+        .btn-ingresar:hover { box-shadow: 0 0 25px rgba(57, 255, 20, 0.8); transform: scale(1.02); }
         #err-log-jugador { color: var(--rojo); margin-top: 15px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
 
-        /* CONTENIDO JUGADOR GENERAL */
         #contenido-jugador {
-            width: 100%;
-            max-width: 1750px;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            animation: fadeIn 0.5s ease-out;
+            width: 100%; max-width: 1750px; display: none; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease-out;
         }
 
         .header-top { 
-            width: 100%; 
-            background: rgba(5, 5, 5, 0.8); 
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #151515; 
-            display: flex; 
-            justify-content: center; 
-            padding: 15px 0; 
-            margin-bottom: 20px;
-            box-sizing: border-box;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            width: 100%; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid #151515; display: flex; justify-content: center; padding: 15px 0; margin-bottom: 20px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;
         }
-        .contenedor-central { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            width: 100%; 
-            max-width: 1700px; 
-            padding: 0 20px;
-        }
+        .contenedor-central { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1700px; padding: 0 20px; }
 
-        /* DISEÑO DE LAYOUT CON 3 COLUMNAS */
         .layout-principal {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            max-width: 1700px;
-            box-sizing: border-box;
-            align-items: flex-start;
-            justify-content: center;
+            display: flex; gap: 20px; width: 100%; max-width: 1700px; box-sizing: border-box; align-items: flex-start; justify-content: center;
         }
 
-        /* BARRA LATERAL IZQUIERDA (ONLINE) */
         .sidebar-conectados {
-            width: 240px;
-            background: #080808;
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 15px;
-            box-sizing: border-box;
-            flex-shrink: 0;
+            width: 260px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0;
         }
         .sidebar-conectados h3 {
-            color: var(--verde);
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-top: 0;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #222;
-            padding-bottom: 8px;
-            letter-spacing: 1px;
+            color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px;
         }
-        #lista-conectados-jugador {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 450px;
-            overflow-y: auto;
-        }
+        #lista-conectados-jugador { display: flex; flex-direction: column; gap: 8px; max-height: 450px; overflow-y: auto; }
         .item-conectado {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #111;
-            padding: 8px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            border: 1px solid #1a1a1a;
+            display: flex; align-items: center; justify-content: space-between; background: #111; padding: 8px 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a;
         }
-        .punto-online {
-            width: 8px;
-            height: 8px;
-            background: var(--verde);
-            border-radius: 50%;
-            box-shadow: 0 0 6px var(--verde);
-        }
+        .punto-online { width: 8px; height: 8px; background: var(--verde); border-radius: 50%; box-shadow: 0 0 6px var(--verde); flex-shrink: 0; }
 
-        /* COLUMNA CENTRAL (PRINCIPAL) */
-        .main-columna {
-            width: 750px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex-shrink: 0;
-        }
+        .main-columna { width: 750px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
 
-        /* COLUMNA DERECHA (PÁGINA WEB 650x486) */
         .sidebar-derecha {
-            width: 650px;
-            background: #080808;
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 15px;
-            box-sizing: border-box;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            width: 650px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
         }
         .sidebar-derecha h3 {
-            color: var(--cian);
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-top: 0;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #222;
-            padding-bottom: 8px;
-            letter-spacing: 1px;
-            width: 100%;
-            text-align: center;
+            color: var(--cian); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; width: 100%; text-align: center;
         }
-        .contenedor-iframe-web {
-            width: 650px;
-            height: 486px;
-            border: 1px solid #333;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #000;
-        }
-        .contenedor-iframe-web iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        .contenedor-iframe-web { width: 650px; height: 486px; border: 1px solid #333; border-radius: 8px; overflow: hidden; background: #000; }
+        .contenedor-iframe-web iframe { width: 100%; height: 100%; border: none; }
 
         .header-transmision { text-align: center; margin-bottom: 20px; }
-        .header-transmision h1 {
-            color: var(--verde);
-            margin: 0 0 5px 0;
-            font-size: 26px;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
-        }
+        .header-transmision h1 { color: var(--verde); margin: 0 0 5px 0; font-size: 26px; letter-spacing: 2px; text-shadow: 0 0 15px rgba(57, 255, 20, 0.4); }
         .en-directo { color: var(--verde); font-size: 11px; font-weight: bold; letter-spacing: 1px; }
 
-        /* BOLA CONTENEDOR OPTIMIZADA PARA TEXTOS LARGOS */
         .bola-contenedor {
-            background: radial-gradient(circle, #222 0%, #000 80%);
-            border: 4px solid var(--verde);
-            border-radius: 50%;
-            width: 140px;
-            height: 140px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
-            margin-bottom: 15px;
-            text-align: center;
-            overflow: hidden;
-            padding: 15px;
-            box-sizing: border-box;
-            transition: transform 0.3s ease;
+            background: radial-gradient(circle, #222 0%, #000 80%); border: 4px solid var(--verde); border-radius: 50%; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(57, 255, 20, 0.3); margin-bottom: 15px; text-align: center; overflow: hidden; padding: 15px; box-sizing: border-box; transition: transform 0.3s ease;
         }
 
         #ultimo-elemento-vivo {
-            font-size: 16px;
-            font-weight: 900;
-            color: var(--amarillo);
-            word-break: break-word;
-            line-height: 1.15;
-            text-align: center;
-            text-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
-            max-width: 100%;
-            max-height: 100%;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
+            font-size: 16px; font-weight: 900; color: var(--amarillo); word-break: break-word; line-height: 1.15; text-align: center; text-shadow: 0 0 12px rgba(255, 204, 0, 0.5); max-width: 100%; max-height: 100%; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
         }
 
         #contador-extraidas {
-            background: rgba(15, 15, 15, 0.9);
-            border: 1px solid #333;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 12px;
-            color: var(--cian);
-            margin-bottom: 25px;
-            letter-spacing: 1px;
-            box-shadow: 0 0 12px rgba(0, 243, 255, 0.15);
+            background: rgba(15, 15, 15, 0.9); border: 1px solid #333; padding: 8px 18px; border-radius: 20px; font-weight: bold; font-size: 12px; color: var(--cian); margin-bottom: 25px; letter-spacing: 1px; box-shadow: 0 0 12px rgba(0, 243, 255, 0.15);
         }
 
         #tablero-grid-jugador {
-            display: grid;
-            gap: 6px;
-            width: 100%;
-            background: var(--panel);
-            border: 1px solid #222;
-            padding: 20px;
-            border-radius: 14px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
-            box-sizing: border-box;
-            margin-bottom: 40px;
+            display: grid; gap: 6px; width: 100%; background: var(--panel); border: 1px solid #222; padding: 20px; border-radius: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.8); box-sizing: border-box; margin-bottom: 40px;
         }
 
         .celda {
-            background: #121212;
-            color: #666;
-            padding: 12px 4px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 11px;
-            border: 1px solid #1a1a1a;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-transform: uppercase;
+            background: #121212; color: #666; padding: 12px 4px; border-radius: 6px; text-align: center; font-weight: bold; font-size: 11px; border: 1px solid #1a1a1a; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; text-transform: uppercase; cursor: pointer;
         }
+        .celda:hover { border-color: var(--amarillo); color: var(--amarillo); }
 
         .marcada {
-            background: var(--verde);
-            color: #000;
-            box-shadow: 0 0 12px rgba(57, 255, 20, 0.6);
-            border-color: #fff;
-            transform: scale(1.05);
+            background: var(--verde); color: #000; box-shadow: 0 0 12px rgba(57, 255, 20, 0.6); border-color: #fff; transform: scale(1.05);
         }
+        .invertido-seleccionado {
+            background: var(--amarillo); color: #000; border-color: #fff; box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
+        }
+        
+        /* Estilos específicos para indicador de invertido en lista de conectados */
+        .badge-invertido {
+            background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 1px;
+        }
+        .num-inv-rojo { color: var(--rojo) !important; text-decoration: line-through; }
     </style>
 </head>
 <body>
 
-    <!-- CAPA DE LOGIN DE JUGADOR -->
     <div id="capa-login-jugador">
         <div class="login-card">
             <button onclick="window.close()" class="btn-efecto" style="position: absolute; top: 15px; right: 15px; border-color: red; color: red;" title="CERRAR VENTANA"><i class="fas fa-times"></i></button>
@@ -392,7 +161,6 @@
         </div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL DE TRANSMISIÓN -->
     <div id="contenido-jugador">
         <div class="header-top">
             <div class="contenedor-central">
@@ -402,13 +170,11 @@
         </div>
 
         <div class="layout-principal">
-            <!-- COLUMNA IZQUIERDA: JUGADORES CONECTADOS -->
             <div class="sidebar-conectados">
                 <h3>🟢 Conectados (<span id="count-conectados">0</span>)</h3>
                 <div id="lista-conectados-jugador"></div>
             </div>
 
-            <!-- COLUMNA CENTRAL: JUEGO, TABLERO Y CHAT -->
             <div class="main-columna">
                 <div class="header-transmision">
                     <h1 id="titulo-juego-vivo">CONECTANDO...</h1>
@@ -422,7 +188,6 @@
                 <div id="contador-extraidas">EXTRAÍDAS: 0</div>
                 <div id="tablero-grid-jugador"></div>
 
-                <!-- CHAT EN VIVO INTEGRADO -->
                 <div id="chat-container" style="width: 100%; background: #080808; border: 1px solid #222; border-radius: 12px; margin-bottom: 40px; display: flex; flex-direction: column; box-sizing: border-box;">
                     <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px; border-bottom:1px solid #222;">
                         <span style="font-weight:bold; color:var(--cian); font-size: 13px;">💬 CHAT EN VIVO</span>
@@ -436,7 +201,6 @@
                 </div>
             </div>
 
-            <!-- COLUMNA DERECHA: PÁGINA WEB DINÁMICA (650x486) -->
             <div class="sidebar-derecha">
                 <h3 id="titulo-panel-derecho">🌐 SALA DE XAT</h3>
                 <div class="contenedor-iframe-web">
@@ -475,7 +239,6 @@
             "simpson": ["Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", "Krusty", "Milhouse"],
             "pitufos": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
             "pitufo": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
-            "inv": ["Inversión 1", "Inversión 2", "Inversión 3", "Inversión 4", "Inversión 5", "Inversión 6", "Inversión 7", "Inversión 8", "Inversión 9", "Inversión 10"],
             "terna": ["Terna 1", "Terna 2", "Terna 3", "Terna 4", "Terna 5", "Terna 6", "Terna 7", "Terna 8", "Terna 9", "Terna 10", "Terna 11", "Terna 12"],
             "power": ["Power 1", "Power 2", "Power 3", "Power 4", "Power 5", "Power 6", "Power 7", "Power 8", "Power 9", "Power 10"],
             "bomba": ["Bomba 1", "Bomba 2", "Bomba 3", "Bomba 4", "Bomba 5", "Bomba 6", "Bomba 7", "Bomba 8", "Bomba 9", "Bomba 10"],
@@ -483,7 +246,7 @@
             "sumaindi": ["Participante 1", "Participante 2", "Participante 3", "Participante 4", "Participante 5", "Participante 6", "Participante 7", "Participante 8", "Participante 9", "Participante 10"],
             "sumarversus": ["Equipo A", "Equipo B"],
             "nuevo": ["Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5", "Opción 6", "Opción 7", "Opción 8", "Opción 9", "Opción 10"],
-            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
+            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XX1","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
             "pokemon": [
                 "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Caterpie",
                 "Metapod", "Butterfree", "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata", "Raticate",
@@ -505,8 +268,29 @@
 
         let unsubscribeJuego = null;
         let ultimoValorAnterior = "";
+        let juegoActualGlobal = "50";
+        let estadoInvertidosGlobal = false;
         
         const tiempoInicioCliente = Date.now();
+
+        function generarParesInvertidos() {
+            let pares = [];
+            let unicos = new Set();
+            for (let i = 1; i <= 90; i++) {
+                let s1 = String(i);
+                let s2 = String(Number(String(i).split("").reverse().join("")));
+                let menor = Math.min(i, Number(s2));
+                let mayor = Math.max(i, Number(s2));
+                if (menor !== mayor && menor < 90) { // Omitir capicúas puros si se desea, o mantenerlos
+                    let clave = `${menor}-${mayor}`;
+                    if (!unicos.has(clave)) {
+                        unicos.add(clave);
+                        pares.push(clave);
+                    }
+                }
+            }
+            return pares;
+        }
 
         function registrarPresencia(nick) {
             const estadoRef = ref(rtdb, `proyectos/${miCarpeta}/presencia/${nick}`);
@@ -514,30 +298,71 @@
             onDisconnect(estadoRef).set({ estado: 'offline', timestamp: Date.now() });
         }
 
+        function guardarInvertidoElegido(par) {
+            const nick = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            if (!nick) return;
+            const refInv = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nick}`);
+            set(refInv, { par: par, timestamp: Date.now() });
+        }
+
         function escucharConectados() {
             onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snapshot) => {
-                const data = snapshot.val() || {};
-                const contenedorLista = document.getElementById('lista-conectados-jugador');
-                const contadorElem = document.getElementById('count-conectados');
+                const dataPresencia = snapshot.val() || {};
                 
-                let html = "";
-                let totalOnline = 0;
+                // Escuchar también selecciones de invertidos
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
+                    const dataInv = snapInv.val() || {};
+                    
+                    // Escuchar también sorteos para marcar en rojo los invertidos si empezó la partida
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
+                        const infoSorteo = snapSorteo.val() || {};
+                        const rawSacados = infoSorteo.sacados || [];
+                        const sacados = Array.isArray(rawSacados) ? rawSacados.map(String) : Object.values(rawSacados).map(String);
 
-                Object.keys(data).forEach(nick => {
-                    if (data[nick] && data[nick].estado === 'online') {
-                        totalOnline++;
-                        html += `
-                        <div class="item-conectado">
-                            <span class="punto-online"></span>
-                            <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
-                        </div>`;
-                    }
+                        const contenedorLista = document.getElementById('lista-conectados-jugador');
+                        const contadorElem = document.getElementById('count-conectados');
+                        
+                        let html = "";
+                        let totalOnline = 0;
+
+                        Object.keys(dataPresencia).forEach(nick => {
+                            if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
+                                totalOnline++;
+                                let badgeHtml = "";
+                                
+                                if (juegoActualGlobal === 'inv') {
+                                    const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
+                                    if (seleccionUser) {
+                                        let partes = seleccionUser.split("-");
+                                        let p1 = partes[0];
+                                        let p2 = partes[1];
+                                        
+                                        let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
+                                        let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
+
+                                        badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
+                                    } else {
+                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                                    }
+                                }
+
+                                html += `
+                                <div class="item-conectado">
+                                    <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+                                        <span class="punto-online"></span>
+                                        <span style="font-weight: bold; text-transform: uppercase; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${nick}</span>
+                                    </div>
+                                    ${badgeHtml}
+                                </div>`;
+                            }
+                        });
+
+                        if (contadorElem) contadorElem.innerText = totalOnline;
+                        if (contenedorLista) {
+                            contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
+                        }
+                    });
                 });
-
-                if (contadorElem) contadorElem.innerText = totalOnline;
-                if (contenedorLista) {
-                    contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
-                }
             });
         }
 
@@ -592,7 +417,6 @@
                 if(aut) {
                     localStorage.setItem(`jugador_sesion_${miCarpeta}`, nick);
                     localStorage.setItem(`jugador_genero_${miCarpeta}`, genero);
-                    
                     registrarPresencia(nick);
 
                     document.getElementById('capa-login-jugador').style.display = 'none';
@@ -641,7 +465,6 @@
         onChildAdded(chatRef, (snapshot) => {
             const msg = snapshot.val();
             if (!msg) return;
-
             if (msg.timestamp && msg.timestamp < tiempoInicioCliente) return;
 
             const chat = document.getElementById('mensajes-chat');
@@ -655,7 +478,6 @@
                 if (!snap.exists()) return;
                 const data = snap.data();
                 
-                // Cargar enlace de la sala de xat en tiempo real
                 if (data.urlXat) {
                     const iframe = document.getElementById('iframe-xat-jugador');
                     if (iframe && iframe.src !== data.urlXat) {
@@ -663,17 +485,18 @@
                     }
                 }
 
-                const juegoActivo = data.juegoActivo || '50';
+                juegoActualGlobal = data.juegoActivo || '50';
+                estadoInvertidosGlobal = data.estadoInvertidosComenzado || false;
                 
                 if (unsubscribeJuego) unsubscribeJuego();
 
-                unsubscribeJuego = onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActivo}`), (sSnap) => {
+                unsubscribeJuego = onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (sSnap) => {
                     const info = sSnap.val() || {};
                     const rawSacados = info.sacados || [];
                     const sacados = Array.isArray(rawSacados) ? rawSacados : Object.values(rawSacados);
                     const ultimoVal = info.ultimo || sacados[sacados.length - 1] || "--";
                     
-                    document.getElementById('titulo-juego-vivo').innerText = `JUEGO: ${juegoActivo.toUpperCase()}`;
+                    document.getElementById('titulo-juego-vivo').innerText = `JUEGO: ${juegoActualGlobal.toUpperCase()}`;
                     document.getElementById('ultimo-elemento-vivo').innerText = ultimoVal;
                     document.getElementById('contador-extraidas').innerText = `EXTRAÍDAS: ${sacados.length}`;
                     
@@ -687,18 +510,39 @@
                         bola.classList.add('animar-bola');
                     }
 
-                    renderizarTablero(juegoActivo, sacados);
+                    renderizarTablero(juegoActualGlobal, sacados, estadoInvertidosGlobal);
                 });
             });
         }
 
-        function renderizarTablero(juego, sacados) {
+        function renderizarTablero(juego, sacados, invertidosComenzado) {
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
             const juegoLower = String(juego).toLowerCase();
             let html = "";
 
-            if (listasJuegos[juegoLower]) {
+            // CASO ESPECIAL: JUEGO INVERTIDOS ANTES DE COMENZAR PARTIDA
+            if (juegoLower === 'inv' && !invertidosComenzado) {
+                const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+                
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nickActual}`), (sSel) => {
+                    const selData = sSel.val() || {};
+                    const parSeleccionado = selData.par || null;
+
+                    const pares = generarParesInvertidos();
+                    let gridHtml = "";
+                    pares.forEach(par => {
+                        const esSeleccionado = (par === parSeleccionado);
+                        gridHtml += `<div class="celda ${esSeleccionado ? 'invertido-seleccionado' : ''}" onclick="window.seleccionarParInvertido('${par}')" style="font-size: 13px; font-weight: 900;">${par}</div>`;
+                    });
+                    grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(75px, 1fr))";
+                    grid.innerHTML = gridHtml;
+                }, { onlyOnce: true });
+                return;
+            }
+
+            // CASO: JUEGO INVERTIDOS DESPUÉS DE COMENZAR O CUALQUIER OTRO JUEGO (ESTILO BINGO 90)
+            if (listasJuegos[juegoLower] && juegoLower !== 'inv') {
                 const elementos = listasJuegos[juegoLower];
                 elementos.forEach((el, index) => {
                     const esta = sacados.includes(el);
@@ -710,11 +554,10 @@
                 return;
             }
 
-            let totalNums = 50;
+            let totalNums = 90; // Si es invertidos comenzado, actúa como bingo de 90
             let columnas = 10;
 
             if (juegoLower === '72' || juegoLower === 'bingo72') { totalNums = 72; columnas = 9; }
-            else if (juegoLower === '90' || juegoLower === 'bingo90') { totalNums = 90; }
             else if (juegoLower === '100' || juegoLower === 'bingo100') { totalNums = 100; }
             else if (juegoLower === 'eliminatorias') { totalNums = 30; columnas = 6; }
 
@@ -726,6 +569,13 @@
             }
             grid.innerHTML = html;
         }
+
+        window.seleccionarParInvertido = (par) => {
+            guardarInvertidoElegido(par);
+            alert(`¡Has seleccionado el par invertido: ${par}!`);
+            // Forzar actualización visual inmediata
+            iniciarSincronizacion();
+        };
     </script>
 </body>
 </html>

@@ -115,6 +115,10 @@
             <div id="sugerencias"></div>
             <button id="btn-aplicar-modo" class="btn-abrir" style="background:var(--verde); color:#000;">APLICAR</button>
         </div>
+        <!-- BOTÓN ESPECIAL PARA INICIAR PARTIDA DE INVERTIDOS -->
+        <div id="contenedor-btn-iniciar-invertidos" style="margin-top: 15px; display: none;">
+            <button onclick="window.comenzarInvertidos()" class="btn-abrir" style="background: var(--rojo); color: #fff; width: 100%;">🚀 COMENZAR PARTIDA INVERTIDOS</button>
+        </div>
     </div>
 
     <div id="panel-juego" style="width:100%; max-width:900px; margin-top:20px;"></div>
@@ -170,7 +174,6 @@
     </div>
 </div>
 
-<!-- MODAL PARA LA SALA DE XAT -->
 <div id="modal-xat" class="modal-overlay">
     <div style="background: #0a0a0a; border: 2px solid var(--cian); padding: 20px; border-radius: 15px; width: 380px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000;">
         <h2 style="color:var(--cian); text-align:center; margin: 0 0 15px 0; font-size: 18px;">CONFIGURAR SALA DE XAT</h2>
@@ -308,6 +311,15 @@ function arrancarTodo() {
         }
 
         const juegoActivoLimpio = d.juegoActivo ? String(d.juegoActivo).trim() : null;
+        
+        // Mostrar botón de Invertidos si el juego activo es 'inv'
+        const contenedorInvBtn = document.getElementById('contenedor-btn-iniciar-invertidos');
+        if (juegoActivoLimpio === 'inv') {
+            contenedorInvBtn.style.display = 'block';
+        } else {
+            contenedorInvBtn.style.display = 'none';
+        }
+
         if(juegoActivoLimpio && modoActivo !== juegoActivoLimpio) { 
             modoActivo = juegoActivoLimpio; 
             cargarMod(juegoActivoLimpio); 
@@ -394,6 +406,16 @@ window.crearUsuarioAdmin = async () => {
     }
 };
 
+window.comenzarInvertidos = async () => {
+    try {
+        await updateDoc(doc(db, "proyectos", miCarpeta), { estadoInvertidosComenzado: true });
+        alert("¡Partida de Invertidos comenzada! La pantalla de jugadores cambió a tablero de 90.");
+    } catch(e) {
+        console.error(e);
+        alert("Error al iniciar partida");
+    }
+};
+
 window.abrirModalFondo = () => document.getElementById('modal-fondo').style.display = 'flex';
 window.cerrarModalFondo = () => document.getElementById('modal-fondo').style.display = 'none';
 
@@ -465,7 +487,10 @@ window.seleccionarJuego = (id) => {
 };
 
 document.getElementById('btn-aplicar-modo').onclick = async () => {
-    if (tempJuego) await updateDoc(doc(db, "proyectos", miCarpeta), { juegoActivo: tempJuego });
+    if (tempJuego) {
+        // Al aplicar un juego nuevo, reseteamos el estado de invertidos comenzado
+        await updateDoc(doc(db, "proyectos", miCarpeta), { juegoActivo: tempJuego, estadoInvertidosComenzado: false });
+    }
 };
 
 document.getElementById('btn-abrir-sort').onclick = () => {
