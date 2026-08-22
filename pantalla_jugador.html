@@ -144,7 +144,7 @@
         /* CONTENIDO JUGADOR GENERAL */
         #contenido-jugador {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1750px;
             display: none;
             flex-direction: column;
             align-items: center;
@@ -170,23 +170,24 @@
             align-items: center; 
             justify-content: space-between; 
             width: 100%; 
-            max-width: 1050px; 
+            max-width: 1700px; 
             padding: 0 20px;
         }
 
-        /* DISEÑO DE LAYOUT CON COLUMNA LATERAL */
+        /* DISEÑO DE LAYOUT CON 3 COLUMNAS */
         .layout-principal {
             display: flex;
             gap: 20px;
             width: 100%;
-            max-width: 1050px;
+            max-width: 1700px;
             box-sizing: border-box;
             align-items: flex-start;
+            justify-content: center;
         }
 
         /* BARRA LATERAL IZQUIERDA (ONLINE) */
         .sidebar-conectados {
-            width: 260px;
+            width: 240px;
             background: #080808;
             border: 1px solid #222;
             border-radius: 12px;
@@ -229,13 +230,52 @@
             box-shadow: 0 0 6px var(--verde);
         }
 
-        /* CONTENEDOR DERECHO (PRINCIPAL) */
+        /* COLUMNA CENTRAL (PRINCIPAL) */
         .main-columna {
-            flex: 1;
+            width: 750px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 0;
+            flex-shrink: 0;
+        }
+
+        /* COLUMNA DERECHA (PÁGINA WEB 650x486) */
+        .sidebar-derecha {
+            width: 650px;
+            background: #080808;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 15px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar-derecha h3 {
+            color: var(--cian);
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 8px;
+            letter-spacing: 1px;
+            width: 100%;
+            text-align: center;
+        }
+        .contenedor-iframe-web {
+            width: 650px;
+            height: 486px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+        .contenedor-iframe-web iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .header-transmision { text-align: center; margin-bottom: 20px; }
@@ -368,7 +408,7 @@
                 <div id="lista-conectados-jugador"></div>
             </div>
 
-            <!-- COLUMNA DERECHA: JUEGO, TABLERO Y CHAT -->
+            <!-- COLUMNA CENTRAL: JUEGO, TABLERO Y CHAT -->
             <div class="main-columna">
                 <div class="header-transmision">
                     <h1 id="titulo-juego-vivo">CONECTANDO...</h1>
@@ -393,6 +433,14 @@
                         <input type="text" id="input-chat" placeholder="Escribe un mensaje..." style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #333; background: #111; color: #fff; outline: none;" autocomplete="off">
                         <button id="btn-enviar-chat" class="btn-efecto">ENVIAR</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: PÁGINA WEB DINÁMICA (650x486) -->
+            <div class="sidebar-derecha">
+                <h3 id="titulo-panel-derecho">🌐 SALA DE XAT</h3>
+                <div class="contenedor-iframe-web">
+                    <iframe id="iframe-xat-jugador" src="" title="Sala de Xat"></iframe>
                 </div>
             </div>
         </div>
@@ -460,14 +508,12 @@
         
         const tiempoInicioCliente = Date.now();
 
-        // ESCUCHA Y REGISTRO DE PRESENCIA
         function registrarPresencia(nick) {
             const estadoRef = ref(rtdb, `proyectos/${miCarpeta}/presencia/${nick}`);
             set(estadoRef, { estado: 'online', timestamp: Date.now() });
             onDisconnect(estadoRef).set({ estado: 'offline', timestamp: Date.now() });
         }
 
-        // MONITOREAR JUGADORES CONECTADOS EN TIEMPO REAL PARA LA LISTA LATERAL
         function escucharConectados() {
             onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snapshot) => {
                 const data = snapshot.val() || {};
@@ -561,7 +607,6 @@
             }
         };
 
-        // SÍNTESIS DE VOZ
         function hablarTexto(texto) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -573,7 +618,6 @@
             }
         }
 
-        // CHAT EN VIVO
         const chatRef = ref(rtdb, `proyectos/${miCarpeta}/chat/mensajes`);
 
         document.getElementById('btn-enviar-chat').onclick = () => {
@@ -610,6 +654,15 @@
             onSnapshot(doc(db, "proyectos", miCarpeta), (snap) => {
                 if (!snap.exists()) return;
                 const data = snap.data();
+                
+                // Cargar enlace de la sala de xat en tiempo real
+                if (data.urlXat) {
+                    const iframe = document.getElementById('iframe-xat-jugador');
+                    if (iframe && iframe.src !== data.urlXat) {
+                        iframe.src = data.urlXat;
+                    }
+                }
+
                 const juegoActivo = data.juegoActivo || '50';
                 
                 if (unsubscribeJuego) unsubscribeJuego();
@@ -626,7 +679,6 @@
                     
                     if (ultimoVal !== ultimoValorAnterior && ultimoVal !== "--") {
                         ultimoValorAnterior = ultimoVal;
-                        
                         hablarTexto(String(ultimoVal));
 
                         const bola = document.getElementById('bola-animacion');

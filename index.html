@@ -73,7 +73,6 @@
         .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #444; cursor: pointer; font-size: 18px; }
         #busc-reg { width: 100%; box-sizing: border-box; background: #000; border: 1px solid var(--amarillo); color: var(--amarillo); padding: 12px; margin-bottom: 15px; border-radius: 8px; outline: none; font-weight: 900; text-transform: uppercase; }
         
-        /* Estilos indicadores online/offline */
         .status-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; display: inline-block; }
         .online { background: var(--verde); box-shadow: 0 0 8px var(--verde); }
         .offline { background: #444; }
@@ -102,7 +101,8 @@
             <div class="logo-main">JUGA<span style="color:var(--cian)">PRO</span></div>
             <div style="display:flex; gap:8px;">
                 <button class="btn-efecto" onclick="window.abrirModalFondo()" style="border-color: #FFFF00; color: #FFFF00;" title="CAMBIAR FONDO">🎨 DISEÑO</button>
-                <button class="btn-efecto" onclick="window.abrirPantallaJugador()" style="border-color: #00ffff; color: #00ffff;" title="PANTALLA JUGADOR">📺 JUGADOR</button>
+                <button class="btn-efecto" onclick="window.abrirModalXat()" style="border-color: #00F3FF; color: #00F3FF;" title="SALA DE XAT">💬 SALA DE XAT</button>
+                <button class="btn-efecto" onclick="window.abrirPantallaJugador()" style="border-color: #39ff14; color: #39ff14;" title="PANTALLA JUGADOR">📺 JUGADOR</button>
                 <button class="btn-efecto" onclick="window.abrirModalPin()" style="border-color: #C71585; color: #C71585;" title="CAMBIAR CLAVE">⚙️ CLAVE</button>
                 <button onclick="cerrarSesion()" class="btn-efecto" style="border-color: #A020F0; color: #A020F0;" title="CERRAR SESIÓN"><i class="fas fa-power-off"></i> SALIR</button>
             </div>
@@ -170,6 +170,19 @@
     </div>
 </div>
 
+<!-- MODAL PARA LA SALA DE XAT -->
+<div id="modal-xat" class="modal-overlay">
+    <div style="background: #0a0a0a; border: 2px solid var(--cian); padding: 20px; border-radius: 15px; width: 380px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000;">
+        <h2 style="color:var(--cian); text-align:center; margin: 0 0 15px 0; font-size: 18px;">CONFIGURAR SALA DE XAT</h2>
+        <p style="font-size:10px; color:#666; margin-bottom:5px; text-transform: uppercase; font-weight: bold;">URL de la página web (Iframe):</p>
+        <input type="text" id="input-url-xat" placeholder="https://..." style="width:100%; background:#000; border:1px solid #333; color:#fff; padding:10px; border-radius:8px; margin-bottom:15px; box-sizing:border-box; outline: none;">
+        <div style="display:flex; gap:10px;">
+            <button onclick="guardarUrlXat()" class="btn-abrir" style="flex:1.5; background:var(--cian); color:#000; height: 40px; font-size: 11px;">GUARDAR</button>
+            <button onclick="cerrarModalXat()" class="btn-efecto" style="flex:1; height: 40px;">CERRAR</button>
+        </div>
+    </div>
+</div>
+
 <div id="modal-cambiar-pin" class="modal-overlay">
     <div style="background: #0a0a0a; border: 2px solid var(--verde); padding: 25px; border-radius: 15px; width: 320px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000;">
         <h2 style="color:var(--verde); text-align:center; margin: 0 0 10px 0; font-size: 18px;">SEGURIDAD</h2>
@@ -231,7 +244,7 @@ const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || "gh";
 let usuariosLocal = [], modoActivo = null;
 let pinDeEntrada = sessionStorage.getItem(`admin_p_volatil`);
 let miSesionActual = null;
-window.presenciaGlobal = {}; // Variable para el estado online/offline
+window.presenciaGlobal = {}; 
 
 document.getElementById('ver-password').onclick = function() {
     const input = document.getElementById('pin-input');
@@ -258,7 +271,6 @@ function arrancarTodo() {
     document.getElementById('capa-login').style.display = 'none';
     const refProy = doc(db, "proyectos", miCarpeta);
 
-    // Escucha de Presencia Online/Offline en Realtime Database
     onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snap) => {
         window.presenciaGlobal = snap.val() || {};
         window.renderUsuarios(usuariosLocal);
@@ -291,6 +303,10 @@ function arrancarTodo() {
                 : d.fondoPersonalizado;
         }
 
+        if(d.urlXat) {
+            document.getElementById('input-url-xat').value = d.urlXat;
+        }
+
         const juegoActivoLimpio = d.juegoActivo ? String(d.juegoActivo).trim() : null;
         if(juegoActivoLimpio && modoActivo !== juegoActivoLimpio) { 
             modoActivo = juegoActivoLimpio; 
@@ -316,7 +332,6 @@ window.renderUsuarios = (lista) => {
         const esH = (u.sexo === 'H' || u.genero === 'HOMBRE');
         const colorG = esH ? 'var(--cian)' : 'var(--rosa)';
         
-        // Convertimos a minúsculas para que coincida exactamente con la RTDB
         const nickKey = (u.nick || u.id || "").trim().toLowerCase();
         const estadoUsr = window.presenciaGlobal[nickKey] || { estado: 'offline' };
         const esOnline = estadoUsr.estado === 'online';
@@ -382,8 +397,18 @@ window.crearUsuarioAdmin = async () => {
 window.abrirModalFondo = () => document.getElementById('modal-fondo').style.display = 'flex';
 window.cerrarModalFondo = () => document.getElementById('modal-fondo').style.display = 'none';
 
+window.abrirModalXat = () => document.getElementById('modal-xat').style.display = 'flex';
+window.cerrarModalXat = () => document.getElementById('modal-xat').style.display = 'none';
+
+window.guardarUrlXat = async () => {
+    const url = document.getElementById('input-url-xat').value.trim();
+    await updateDoc(doc(db, "proyectos", miCarpeta), { urlXat: url });
+    cerrarModalXat();
+    alert("¡Sala de Xat actualizada!");
+};
+
 window.abrirPantallaJugador = () => {
-    window.open(`pantalla_jugador.html?p=${miCarpeta}`, "PantallaJugador", "width=1100,height=850");
+    window.open(`pantalla_jugador.html?p=${miCarpeta}`, "PantallaJugador", "width=1750,height=850");
 };
 
 window.guardarNuevoFondo = async () => { 
