@@ -30,11 +30,10 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             <div style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:15px; flex-wrap:wrap;">
                 <button id="btn-sacar-mex" class="btn-abrir" style="background:#00ff66; color:#000;">EXTRAER CARTA</button>
                 <button id="btn-auto-mex" class="btn-abrir" style="background:var(--amarillo); color:#000;">▶ AUTOMÁTICO</button>
-                <select id="sel-vel-mex" style="background:#000; border:1px solid var(--amarillo); color:#fff; padding:8px; border-radius:6px; font-weight:bold;">
-                    <option value="3000">3 Segundos</option>
-                    <option value="5000" selected>5 Segundos</option>
-                    <option value="8000">8 Segundos</option>
-                </select>
+                <div style="display:flex; align-items:center; gap:5px; background:#000; border:1px solid var(--amarillo); padding:4px 8px; border-radius:6px;">
+                    <span style="font-size:11px; color:#fff; font-weight:bold;">SEG:</span>
+                    <input type="number" id="sel-vel-mex" value="5" min="1" step="0.5" style="background:transparent; border:none; color:#fff; width:50px; font-weight:bold; text-align:center; outline:none;">
+                </div>
                 <button id="btn-pausa-mex" class="btn-abrir" style="background:#ff9900; color:#000; display:none;">PAUSAR</button>
                 <button id="btn-reset-mex" class="btn-abrir" style="background:var(--rojo); color:#fff;">REINICIAR BARAJA</button>
             </div>
@@ -92,7 +91,7 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
 
     async function sacarAccion() {
         const disponibles = cartasMex.filter(item => !salidos.includes(item));
-        if (disponibles.length ===0) {
+        if (disponibles.length === 0) {
             detenerAuto();
             alert("¡Todas las cartas han salido!");
             return;
@@ -109,11 +108,16 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
 
     const btnAuto = document.getElementById('btn-auto-mex');
     const btnPausa = document.getElementById('btn-pausa-mex');
-    const selVel = document.getElementById('sel-vel-mex');
+    const inpVel = document.getElementById('sel-vel-mex');
+
+    function obtenerMilisegundos() {
+        const val = parseFloat(inpVel.value);
+        return (isNaN(val) || val <= 0) ? 5000 : val * 1000;
+    }
 
     btnAuto.onclick = () => {
         if (intervaloAuto) return;
-        const vel = parseInt(selVel.value) || 5000;
+        const vel = obtenerMilisegundos();
         btnAuto.style.display = "none";
         btnPausa.style.display = "inline-block";
         btnPausa.innerText = "PAUSAR";
@@ -128,7 +132,7 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             btnPausa.innerText = "REANUDAR";
             await set(sorteoRef, { sacados: salidos, estado: "pausado", ultimo: salidos[salidos.length - 1] || null });
         } else {
-            const vel = parseInt(selVel.value) || 5000;
+            const vel = obtenerMilisegundos();
             btnPausa.innerText = "PAUSAR";
             intervaloAuto = setInterval(() => sacarAccion(), vel);
             await set(sorteoRef, { sacados: salidos, estado: "activo", ultimo: salidos[salidos.length - 1] || null });

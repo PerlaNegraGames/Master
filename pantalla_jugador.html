@@ -12,6 +12,7 @@
             --verde: #39ff14;
             --amarillo: #ffcc00;
             --cian: #00f3ff;
+            --rosa: #ff00ff;
             --rojo: #ff0055;
             --texto: #ffffff;
         }
@@ -228,6 +229,20 @@
         const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'gh';
 
         const listasJuegos = {
+            "power": [
+                "Abas", "Action", "Adele", "Aero", "Aliens", "All", "Alpha", "Always", "Amor", "Animate",
+                "Apex", "Aqua", "Arcade", "Arrow", "Art", "Asylum", "Auto", "Avatar", "Baby", "Badge",
+                "Ball", "Balloons", "Band", "Banner", "Base", "Bat", "Beam", "Bear", "Beast", "Bed",
+                "Beer", "Bell", "Belly", "Big", "Bike", "Bird", "Birth", "Bite", "Black", "Blaze",
+                "Blind", "Blink", "Blob", "Blood", "Blue", "Board", "Boat", "Bomb", "Bone", "Book",
+                "Boom", "Boot", "Boss", "Bottle", "Bounce", "Box", "Boy", "Brain", "Bread", "Break",
+                "Brick", "Bridge", "Bright", "Bring", "Broken", "Brothers", "Brown", "Brush", "Bubble", "Buckle",
+                "Bud", "Bug", "Build", "Bulb", "Bull", "Bullet", "Bunny", "Burn", "Bus", "Bush",
+                "Bust", "Busy", "Butter", "Button", "Buy", "Buzz", "Cactus", "Cake", "Calm", "Camera",
+                "Camp", "Can", "Candle", "Candy", "Canoe", "Cap", "Car", "Card", "Care", "Carpet",
+                "Carrot", "Cart", "Case", "Cash", "Castle", "Cat", "Catch", "Cater", "Cause", "Cave",
+                "CD", "Cell", "Cent", "Chain", "Chair", "Chalk", "Chance", "Change", "Channel", "Chaos"
+            ],
             "mex": [
                 "El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol", 
                 "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "El Pájaro", 
@@ -242,28 +257,21 @@
                 "La Ballena", "El Tiburón", "La Foca", "El Pingüino", "El Oso", "El Tigre", "El León", "El Elefante", "La Jirafa", "El Mono",
                 "El Cerdito", "La Vaca", "El Toro", "El Caballo", "La Cabra", "La Oveja", "El Perrito", "El Gato", "El Loro", "El Canario"
             ],
-            "lm": ["El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol"],
-            "abcdario": "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
-            "comiveneca": ["Pabellón Criollo", "Arepa Pelúa", "Cachapa", "Hallaca", "Tequeños", "Asado Negro", "Patacón", "Pan de Jamón", "Empanada de Cazón", "Mundongo", "Chicha", "Cocada"],
-            "comidas": ["Pizza", "Hamburguesa", "Tacos", "Sushi", "Paella", "Asado", "Pasta", "Hot Dog", "Empanadas", "Arepas", "Ceviche", "Pollo Frito"],
-            "bebidas": ["Cerveza", "Tequila", "Ron", "Whisky", "Vodka", "Garrone", "Sangría", "Margarita", "Mojito", "Pisco", "Vino Tinto", "Champán"],
-            "fiesta": ["Globos", "Pastel", "Piñata", "Música", "Confeti", "Regalos", "Luces", "Serpentina", "Bebidas", "Antifaces", "Velas", "Sorpresas"],
-            "novelas": ["Rubí", "La Usurpadora", "Marimar", "Teresa", "Betty la Fea", "Rosalinda", "Pasión de Gavilanes", "El Senor de los Cielos", "Sin Senos no hay Paraíso", "Amor Real", "La Fea más Bella", "Cuidado con el Ángel"],
-            "paises": ["Argentina", "Brasil", "Chile", "Colombia", "España", "México", "Perú", "Uruguay", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Costa Rica", "Panamá", "Rep. Dominicana", "Canadá", "EE.UU.", "Francia", "Italia", "Alemania"],
-            "pais": ["Argentina", "Brasil", "Chile", "Colombia", "España", "México", "Perú", "Uruguay", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Costa Rica", "Panamá", "Rep. Dominicana", "Canadá", "EE.UU.", "Francia", "Italia", "Alemania"],
-            "autos": ["Ferrari", "Porsche", "Lamborghini", "BMW", "Mercedes-Benz", "Audi", "Toyota", "Ford", "Chevrolet", "Nissan", "Honda", "Volkswagen"],
-            "simpsons": ["Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", "Krusty", "Milhouse"],
-            "simpson": ["Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", "Krusty", "Milhouse"],
-            "pitufos": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
-            "pitufo": ["Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", "Gargamel", "Azrael"],
-            "terna": ["Terna 1", "Terna 2", "Terna 3", "Terna 4", "Terna 5", "Terna 6", "Terna 7", "Terna 8", "Terna 9", "Terna 10", "Terna 11", "Terna 12"],
-            "power": ["Power 1", "Power 2", "Power 3", "Power 4", "Power 5", "Power 6", "Power 7", "Power 8", "Power 9", "Power 10"],
-            "bomba": ["Bomba 1", "Bomba 2", "Bomba 3", "Bomba 4", "Bomba 5", "Bomba 6", "Bomba 7", "Bomba 8", "Bomba 9", "Bomba 10"],
-            "parejasuma": ["Pareja 1", "Pareja 2", "Pareja 3", "Pareja 4", "Pareja 5", "Pareja 6", "Pareja 7", "Pareja 8", "Pareja 9", "Pareja 10"],
-            "sumaindi": ["Participante 1", "Participante 2", "Participante 3", "Participante 4", "Participante 5", "Participante 6", "Participante 7", "Participante 8", "Participante 9", "Participante 10"],
-            "sumarversus": ["Equipo A", "Equipo B"],
-            "nuevo": ["Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5", "Opción 6", "Opción 7", "Opción 8", "Opción 9", "Opción 10"],
-            "romanos90": ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XX1","XXII","XXIII","XXIV","XXV","XXVI","XXVII","XXVIII","XXIX","XXX","XXXI","XXXII","XXXIII","XXXIV","XXXV","XXXVI","XXXVII","XXXVIII","XXXIX","XL","XLI","XLII","XLIII","XLIV","XLV","XLVI","XLVII","XLVIII","XLIX","L","LI","LII","LIII","LIV","LV","LVI","LVII","LVIII","LIX","LX","LXI","LXII","LXIII","LXIV","LXV","LXVI","LXVII","LXVIII","LXIX","LXX","LXXI","LXXII","LXXIII","LXXIV","LXXV","LXXVI","LXXVII","LXXVIII","LXXIX","LXXX","LXXXI","LXXXII","LXXXIII","LXXXIV","LXXXV","LXXXVI","LXXXVII","LXXXVIII","LXXXIX","XC"],
+            "pais": [
+                "Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argelia", "Argentina", "Armenia", 
+                "Australia", "Austria", "Azerbaiyán", "Bahamas", "Bangladés", "Barbados", "Baréin", "Bélgica", "Belice", "Benín", 
+                "Bielorrusia", "Birmania", "Bolivia", "Bosnia y Herzegovina", "Botsuana", "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", 
+                "Bután", "Cabo Verde", "Camboya", "Camerún", "Canadá", "Catar", "Chad", "Chile", "China", "Chipre", 
+                "Colombia", "Comoras", "Congo", "Corea del Norte", "Corea del Sur", "Costa de Marfil", "Costa Rica", "Croacia", "Cuba", "Dinamarca", 
+                "Dominica", "Ecuador", "Egipto", "El Salvador", "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos", 
+                "Estonia", "Etiopía", "Filipinas", "Finlandia", "Fiyi", "Francia", "Gabón", "Gambia", "Georgia", "Ghana", 
+                "Granada", "Grecia", "Guatemala", "Guinea", "Guinea Ecuatorial", "Guinea-Bisáu", "Guyana", "Haití", "Honduras", "Hungría", 
+                "India", "Indonesia", "Irak", "Irán", "Irlanda", "Islandia", "Islas Marshall", "Islas Salomón", "Israel", "Italia", 
+                "Jamaica", "Japón", "Jordania", "Kazajistán", "Kenia", "Kirguistán", "Kiribati", "Kuwait", "Laos", "Lesoto", 
+                "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania", "Luxemburgo", "Madagascar", "Malasia", "Malaui", 
+                "Maldivas", "Malí", "Malta", "Marruecos", "Mauricio", "Mauritania", "México", "Micronesia", "Moldavia", "Mónaco",
+                "Mongolia", "Montenegro", "Mozambique", "Namibia", "Nauru", "Nepal", "Nicaragua", "Níger", "Nigeria", "Noruega"
+            ],
             "pokemon": [
                 "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Caterpie",
                 "Metapod", "Butterfree", "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata", "Raticate",
@@ -278,40 +286,143 @@
                 "Electrode", "Exeggcute", "Exeggutor", "Cubone", "Marowak", "Hitmonlee", "Hitmonchan", "Lickitung", "Koffing", "Weezing",
                 "Rhyhorn", "Rhydon", "Chansey", "Tangela", "Kangaskhan", "Horsea", "Seadra", "Goldeen", "Seaking", "Staryu",
                 "Starmie", "Mr. Mime", "Scyther", "Jynx", "Electabuzz", "Magmar", "Pinsir", "Tauros", "Magikarp", "Gyarados",
-                "Lapras", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto", "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres", "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew"
+                "Lapras", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto",
+                "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres", "Dratini", "Dragonair", "Dragonite"
+            ],
+            "autos": [
+                "Ferrari", "Porsche", "Lamborghini", "BMW", "Mercedes-Benz", "Audi", "Toyota", "Ford", "Chevrolet", "Nissan", 
+                "Honda", "Volkswagen", "Aston Martin", "Bugatti", "Maserati", "Bentley", "Rolls-Royce", "Jaguar", "Land Rover", "Volvo", 
+                "Subaru", "Mazda", "Mitsubishi", "Lexus", "Infiniti", "Acura", "Alfa Romeo", "Fiat", "Renault", "Peugeot", 
+                "Citroën", "Tesla", "Hyundai", "Kia", "Genesis", "Mini", "Smart", "SEAT", "Skoda", "Cupra", 
+                "Pagani", "Koenigsegg", "McLaren", "Lotus", "Alpine", "Dodge", "Chrysler", "Jeep", "Ram", "GMC", 
+                "Buick", "Cadillac", "Lincoln", "Pontiac", "Mercury", "Saturn", "Hummer", "Scion", "De Tomaso", "Lancia", 
+                "Saab", "Opel", "Vauxhall", "Dacia", "Holden", "Perodua", "Proton", "Mahindra", "Tata", "Maruti Suzuki", 
+                "BYD", "Geely", "Chery", "Great Wall", "Nio", "XPeng", "Li Auto", "Hongqi", "SAIC Motor", "Changan", 
+                "Zotye", "Haval", "Baojun", "Wuling", "Foton", "JAC", "Dongfeng", "GAC", "Roewe", "Lynk & Co", 
+                "Polestar", "Rivian", "Lucid", "Fisker", "Isuzu", "Daihatsu", "Hino", "UD Trucks", "Scania", "MAN", 
+                "DAF", "Iveco", "Kenworth", "Peterbilt", "Freightliner", "Mack", "Western Star", "KTM", "Yamaha", "Suzuki", 
+                "Kawasaki", "Ducati", "Harley-Davidson", "Triumph", "Royal Enfield", "Aprilia", "Moto Guzzi", "Husqvarna", "Indian", "BMW Motorrad"
+            ],
+            "bebida": [
+                "Cerveza", "Tequila", "Ron", "Whisky", "Vodka", "Ginebra", "Sangría", "Margarita", "Mojito", "Pisco", 
+                "Vino Tinto", "Champán", "Brandy", "Cognac", "Mezcal", "Fernet", "Anís", "Sidra", "Pulque", "Sake", 
+                "Vermouth", "Campari", "Aperol", "Jägermeister", "Baileys", "Kahlúa", "Frangelico", "Amaretto", "Sambuca", "Grappa", 
+                "Absenta", "Bourbon", "Scotch", "Vodka Tonic", "Piña Colada", "Daiquiri", "Cosmopolitan", "Manhattan", "Negroni", "Old Fashioned", 
+                "Gin Tonic", "Bloody Mary", "Caipirinha", "Cuba Libre", "Tequila Sunrise", "Mimosa", "Bellini", "Mai Tai", "Zombie", "Long Island", 
+                "Michelada", "Clamato", "Vino Blanco", "Vino Rosado", "Prosecco", "Cava", "Oporto", "Sherry", "Calvados", "Pacharán", 
+                "Chinchón", "Søn", "Hidromiel", "Kombucha", "Agua Mineral", "Agua Tónica", "Refresco Cola", "Refresco Limón", "Refresco Naranja", "Agua Horchata", 
+                "Agua Jamaica", "Agua Limón", "Jugo de Naranja", "Jugo de Manzana", "Jugo de Piña", "Jugo de Uva", "Jugo de Arándano", "Jugo de Tomate", "Limonada", "Naranjada", 
+                "Café Espresso", "Café Americano", "Café Capuchino", "Café Latte", "Café Mocha", "Café Helado", "Café Carajillo", "Café Irlandés", "Té Negro", "Té Verde", 
+                "Té de Manzanilla", "Té de Menta", "Té Chai", "Mate", "Chocolate Caliente", "Atole", "Champurrado", "Licor de Melón", "Licor de Café", "Licor de Cacao", 
+                "Licor de Naranja", "Licor de Hierbas", "Cerveza Oscura", "Cerveza Artesanal", "Cerveza IPA", "Cerveza Stout", "Cerveza Porter", "Cerveza Trigo", "Cerveza Sin Alcohol", "Sidra de Manzana", 
+                "Vino Espumoso", "Vermut Rojo", "Vermut Blanco", "Punch de Frutas", "Zumo de Limón", "Zumo de Toronja", "Jarabe de Goma", "Granadina", "Bitter Angostura", "Agua de Coco"
+            ],
+            "comidas": [
+                "Pizza", "Hamburguesa", "Tacos", "Sushi", "Paella", "Asado", "Pasta", "Hot Dog", "Empanadas", "Arepas", 
+                "Ceviche", "Pollo Frito", "Lasagna", "Burritos", "Quesadillas", "Enchiladas", "Tamales", "Pozole", "Mole", "Chiles Rellenos", 
+                "Torta Ahogada", "Carnitas", "Barbacoa", "Birria", "Fajitas", "Nachos", "Guacamole", "Salchipapa", "Lomo Saltado", "Causa Rellena", 
+                "Anticuchos", "Aji de Gallina", "Bandeja Paisa", "Sancocho", "Ajiaco", "Pupusas", "Gallo Pinto", "Vigorón", "Baleadas", "Chivito", 
+                "Milanesa a la Napolitana", "Empanada Salteña", "Churrasco", "Curry", "Ramen", "Tempura", "Okonomiyaki", "Takoyaki", "Dim Sum", "Pato Pekín", 
+                "Pad Thai", "Pho", "Banh Mi", "Kimchi", "Bibimbap", "Bulgogi", "Kebab", "Falafel", "Hummus", "Shawarma", 
+                "Musaka", "Gyros", "Baklava", "Fish and Chips", "Shepherd's Pie", "Full English Breakfast", "Bangers and Mash", "Ratatouille", "Coq au Vin", "Bouillabaisse", 
+                "Croissant", "Quiche Lorraine", "Fondue", "Raclette", "Schnitzel", "Pretzel", "Strudel", "Tortilla Española", "Paella Valenciana", "Gazpacho", 
+                "Jamón Ibérico", "Croquetas", "Fabada Asturiana", "Pulpo a la Gallega", "Caldereta", "Risotto", "Carpaccio", "Bruschetta", "Minestrone", "Ossobuco", 
+                "Gnocchi", "Ravioli", "Cannoli", "Tiramisú", "Gelato", "Waffles", "Pancakes", "Donas", "Brownie", "Cheesecake", 
+                "Tres Leches", "Churros", "Flan", "Alfajores", "Tequeños", "Cachapas", "Hallacas", "Bolón de Verde", "Encocado", "Seco de Pollo", 
+                "Chupe de Camarones", "Causa Limeña", "Arroz Chaufa", "Tallarin Saltado", "Cuy Chactado", "Papa a la Huancaína", "Ocopa", "Causa Acevichada", "Leche de Tigre", "Causa de Pollo"
+            ],
+            "fiesta": [
+                "Globos", "Pastel", "Piñata", "Música", "Confeti", "Regalos", "Luces", "Serpentina", "Bebidas", "Antifaces", 
+                "Velas", "Sorpresas", "DJ", "Bocinas", "Tarima", "Disfraces", "Máscaras", "Pitos", "Matatracas", "Gafas de Sol", 
+                "Sombreros", "Corbatas locas", "Colores neón", "Pulseras LED", "Bengalas", "Humo de colores", "Burbujas", "Cañón de confeti", "Photobooth", "Cartel de bienvenida", 
+                "Invitaciones", "Vasos rojos", "Hielera", "Chupitos", "Cócteles", "Tequilero", "Cervezas", "Vino", "Champaña", "Mesa de dulces", 
+                "Botanas", "Papas fritas", "Palomitas", "Nueces", "Chocolates", "Gomitas", "Brochetas", "Mini hamburguesas", "Pizzetas", "Taquiza", 
+                "Karaoke", "Micrófono", "Pantalla gigante", "Proyector", "Luces estroboscópicas", "Láser", "Bola disco", "Pista de baile", "Juegos de mesa", "Beer Pong", 
+                "Jenga gigante", "Rueda de shots", "Ruleta loca", "Cartas", "Dados", "Concursos", "Premios", "Diplomas", "Coronas", "Bandas de honor", 
+                "Baño portátil", "Limpieza", "Seguridad", "Invitados", "Anfitrión", "Cámara de fotos", "Cámara video", "Trípode", "Foco ring", "Cargador portátil", 
+                "Wi-Fi", "Playlist", "Baile sorpresa", "Vals", "Brindis", "Discurso", "Palabras emotivas", "Llanto de alegría", "Abrazos", "Selfies", 
+                "Historias IG", "TikTok", "Transmisión en vivo", "Hashtag", "Recuerditos", "Imanes", "Llaveros", "Tazas impresas", "Abanicos", "Pantuflas", 
+                "Kits de resaca", "Pastillas", "Suero oral", "Café cargado", "Desayuno", "Chilaquiles", "Menudo", "Pozole crudo", "Limpieza final", "Bolsas de basura", 
+                "Escoba", "Trapeador", "Aromatizante", "Despedida", "Agradecimientos", "Cierre", "Luces apagadas", "Puerta cerrada", "Llave maestra", "Fin de fiesta"
+            ],
+            "pitufo": [
+                "Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", 
+                "Pitufo Panadero", "Pitufo Granjero", "Pitufo Músico", "Pitufo Constructor", "Pitufo Armonía", "Pitufo Genio", "Pitufo Minero", "Pitufo Labrador", "Pitufo Pescador", "Pitufo Cobarde", 
+                "Pitufo Torpe", "Pitufo Curi", "Pitufo Somnámbulo", "Pitufo Llorón", "Pitufo Joyero", "Pitufo Sastre", "Pitufo Bombero", "Pitufo Relojero", "Pitufo Zapatero", "Pitufo Médico", 
+                "Pitufo Carpintero", "Pitufo Jardinero", "Pitufo Alquimista", "Pitufo Astronauta", "Pitufo Detective", "Pitufo Actor", "Pitufo Mago", "Pitufo Acróbata", "Pitufo Malabarista", "Pitufo Payaso", 
+                "Abuelo Pitufo", "Bebé Pitufo", "Pitufina Bebé", "Pitufo Salvaje", "Pitufo Natural", "Pitufo Duendecillo", "Pitufo Mecánico", "Pitufo Científico", "Pitufo Inventor", "Pitufo Fotógrafo", 
+                "Gargamel", "Azrael", "Balthazar", "Hogatha", "Scruple", "Clorhidris", "Gromit", "Montblanc", "Joka", "Bicho Loco", 
+                "Hombre de Nieve", "Duende Malo", "Bruja Malvada", "Dragón de Fuego", "Fantasioso", "Rey Gnomo", "Príncipe Gerardo", "Princesa Sabina", "Sir Lot", "Pillín", 
+                "Sassette", "Nanny", "Homunkulus", "Vexy", "Hackus", "Klaus", "Johan", "Pirluit", "Gauvain", "Berta", 
+                "Madam Pitufo", "Señor Otoño", "Señor Invierno", "Señor Verano", "Señor Primavera", "Madre Naturaleza", "Padre Tiempo", "Hada de los Sueños", "Espíritu del Bosque", "Duende de las CUEVAS", 
+                "Trolls del Río", "Gigante Goliat", "Ogro Gruñón", "Pájaro Gigante", "Abeja Reina", "Mariposa Real", "Perrito Buitre", "Gato Montes", "Zorro Astuto", "Lobo Feroz", 
+                "Búho Sabio", "Tortuga Veloz", "Rana Cantora", "Pez Dorado", "Delfín Azul", "Estrella de Mar", "Pulpo Gigante", "Sirena Encantada", "Unicornio Blanco", "Pegaso Alado", 
+                "Fénix Dorado", "Grifo Valiente", "Centauro Noble", "Elfo del Viento", "Hada Madrina", "Duende de la Suerte", "Trol de las Montañas", "Espectro Errante", "Sombra Oscura", "Cristal Mágico"
+            ],
+            "simpson": [
+                "Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", 
+                "Krusty", "Milhouse", "Apu", "Principal Skinner", "Director Skinner", "Edna Krabappel", "Abuelo Abe", "Ayudante de Santa", "Bola de Nieve II", "Patty", 
+                "Selma", "Selma y Patty", "Homero", "Marge", "Chief Wiggum", "Gorgori", "Ralph Wiggum", "Nelson Muntz", "Jimbo", "Kearney", 
+                "Dolph", "Martin Prince", "Sherri y Terri", "Janey", "Wendell", "Lewis", "Richard", "Ralph", "Milhouse", "Todd Flanders", 
+                "Rod Flanders", "Maude Flanders", "Helen Lovejoy", "Reverendo Lovejoy", "Dr. Hibbert", "Dr. Nick Riviera", "Profesor Frink", "Comic Book Guy", "Hombre de los Cómics", "Jasper", 
+                "Old Jewish Man", "Abuelo Judío", "Hans Topo", "Gorgori", "Lou", "Eddie", "Alcalde Quimby", "Gobernador", "Fat Tony", "Gordo Tony", 
+                "Legs", "Louie", "Frankie", "Snake Jailbird", "Culebra", "Bumblebee Man", "Hombre Abeja", "Rainer Wolfcastle", "McBain", "Troy McClure", 
+                "Lionel Hutz", "Duffman", "Señor Burns", "Smithers", "Waylon Smithers", "Herman", "Capitán McAllister", "Luigi Risotto", "Akira", "Uter", 
+                "Señor Teeny", "Poochie", "Blinky", "Pez de tres ojos", "Santa's Little Helper", "Snowball", "Snowball II", "Snowball III", "Coltrane", "Laddie", 
+                "Princesa", "Econo-Savage", "Marge con pelo azul", "Homero con pelo", "Homero gordo", "Homero en el espacio", "Barto", "El Barto", "Lisa saxofonista", "Maggie con chupete", 
+                "Ayudante de Santa", "Gato de la familia", "Cerdito Araña", "Spider-Pig", "Blinky", "Bebé de un ojo", "Monstruo de Springfield", "Monorriel", "Tom y Daly", "Rascatay Pica"
             ]
         };
 
         let unsubscribeJuego = null;
         let ultimoValorAnterior = "";
         let juegoActualGlobal = "50";
+        let maxSeleccionesGlobal = 2; 
         let estadoInvertidosGlobal = false;
         let estadoMexGlobal = false;
+        let estadoPokemonGlobal = false;
+        let estadoPaisGlobal = false;
+        let estadoAutosGlobal = false;
+        let estadoBebidaGlobal = false;
+        let estadoComidasGlobal = false;
+        let estadoFiestaGlobal = false;
+        let estadoPitufoGlobal = false;
+        let estadoSimpsonGlobal = false;
+        let estadoPowerGlobal = false;
+        let estadoTernaGlobal = false;
         
         const tiempoInicioCliente = Date.now();
 
-        function generarParesInvertidos() {
-            let pares = [];
-            let unicos = new Set();
-            for (let i = 1; i <= 90; i++) {
-                let s2 = String(Number(String(i).split("").reverse().join("")));
-                let menor = Math.min(i, Number(s2));
-                let mayor = Math.max(i, Number(s2));
-                if (menor !== mayor && menor < 90) {
-                    let clave = `${menor}-${mayor}`;
-                    if (!unicos.has(clave)) {
-                        unicos.add(clave);
-                        pares.push(clave);
-                    }
+        function configurarAutoLiberacion(nick) {
+            const refInvUser = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nick}`);
+            onDisconnect(refInvUser).remove();
+
+            const refTernaUser = ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion/${nick}`);
+            onDisconnect(refTernaUser).remove();
+
+            ['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].forEach(j => {
+                const refGenUser = ref(rtdb, `proyectos/${miCarpeta}/${j}Seleccion/${nick}`);
+                onDisconnect(refGenUser).remove();
+            });
+        }
+
+        function iniciarControlSesionUnica(nick, tokenLocal) {
+            const tokenRef = ref(rtdb, `proyectos/${miCarpeta}/sesionesActivas/${nick}`);
+            onValue(tokenRef, (snapshot) => {
+                const tokenRemoto = snapshot.val();
+                if (tokenRemoto && tokenRemoto !== tokenLocal) {
+                    alert("Tu sesión ha sido abierta en otro dispositivo o navegador.");
+                    window.cerrarSesionJugador(true); 
                 }
-            }
-            return pares;
+            });
         }
 
         function registrarPresencia(nick) {
             const estadoRef = ref(rtdb, `proyectos/${miCarpeta}/presencia/${nick}`);
             set(estadoRef, { estado: 'online', timestamp: Date.now() });
             onDisconnect(estadoRef).set({ estado: 'offline', timestamp: Date.now() });
+
+            configurarAutoLiberacion(nick);
         }
 
         function escucharConectados() {
@@ -320,66 +431,132 @@
                 
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
                     const dataInv = snapInv.val() || {};
-                    
-                    onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
-                        const dataMex = snapMex.val() || {};
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (snapTerna) => {
+                        const dataTerna = snapTerna.val() || {};
+                        onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion`), (snapVersus) => {
+                            const dataVersus = snapVersus.val() || {};
+                            onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
+                                const dataMex = snapMex.val() || {};
+                                onValue(ref(rtdb, `proyectos/${miCarpeta}/pokemonSeleccion`), (snapPoke) => {
+                                    const dataPoke = snapPoke.val() || {};
+                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/paisSeleccion`), (snapPais) => {
+                                        const dataPais = snapPais.val() || {};
+                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/autosSeleccion`), (snapAutos) => {
+                                            const dataAutos = snapAutos.val() || {};
+                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/bebidaSeleccion`), (snapBebida) => {
+                                                const dataBebida = snapBebida.val() || {};
+                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/comidasSeleccion`), (snapComidas) => {
+                                                    const dataComidas = snapComidas.val() || {};
+                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/fiestaSeleccion`), (snapFiesta) => {
+                                                        const dataFiesta = snapFiesta.val() || {};
+                                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/pitufoSeleccion`), (snapPitufo) => {
+                                                            const dataPitufo = snapPitufo.val() || {};
+                                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/simpsonSeleccion`), (snapSimp) => {
+                                                                const dataSimp = snapSimp.val() || {};
+                                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/powerSeleccion`), (snapPow) => {
+                                                                    const dataPow = snapPow.val() || {};
 
-                        onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
-                            const infoSorteo = snapSorteo.val() || {};
-                            const rawSacados = infoSorteo.sacados || [];
-                            const sacados = Array.isArray(rawSacados) ? rawSacados.map(String) : Object.values(rawSacados).map(String);
-                            
-                            const contenedorLista = document.getElementById('lista-conectados-jugador');
-                            const contadorElem = document.getElementById('count-conectados');
-                            
-                            let html = "";
-                            let totalOnline = 0;
+                                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
+                                                                        const infoSorteo = snapSorteo.val() || {};
+                                                                        const rawSalidos = infoSorteo.sacados || [];
+                                                                        const sacados = Array.isArray(rawSalidos) ? rawSalidos.map(String) : Object.values(rawSalidos).map(String);
+                                                                        
+                                                                        const contenedorLista = document.getElementById('lista-conectados-jugador');
+                                                                        const contadorElem = document.getElementById('count-conectados');
+                                                                        
+                                                                        let html = "";
+                                                                        let totalOnline = 0;
 
-                            Object.keys(dataPresencia).forEach(nick => {
-                                if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
-                                    totalOnline++;
-                                    let badgeHtml = "";
-                                    
-                                    if (juegoActualGlobal === 'inv') {
-                                        const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
-                                        if (seleccionUser) {
-                                            let partes = seleccionUser.split("-");
-                                            let p1 = partes[0];
-                                            let p2 = partes[1];
-                                            let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
-                                            let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
-                                            badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
-                                        } else {
-                                            badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
-                                        }
-                                    } else if (juegoActualGlobal === 'mex') {
-                                        const cartasUser = (dataMex[nick] && Array.isArray(dataMex[nick].cartas)) ? dataMex[nick].cartas : [];
-                                        if (cartasUser.length > 0) {
-                                            let cartasHtmlArr = cartasUser.map(c => {
-                                                let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
-                                                return `<span class="${claseSalida}">${c}</span>`;
+                                                                        Object.keys(dataPresencia).forEach(nick => {
+                                                                            if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
+                                                                                totalOnline++;
+                                                                                let badgeHtml = "";
+                                                                                
+                                                                                const juegoLower = String(juegoActualGlobal).toLowerCase();
+
+                                                                                if (juegoLower === 'inv') {
+                                                                                    const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
+                                                                                    if (seleccionUser) {
+                                                                                        let partes = seleccionUser.split("-");
+                                                                                        let p1 = partes[0];
+                                                                                        let p2 = partes[1];
+                                                                                        let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
+                                                                                        let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
+                                                                                        badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
+                                                                                    } else {
+                                                                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                                                                                    }
+                                                                                } else if (juegoLower === 'terna') {
+                                                                                    const seleccionTerna = dataTerna[nick] ? dataTerna[nick].terna : null;
+                                                                                    if (seleccionTerna) {
+                                                                                        let partes = seleccionTerna.split("-");
+                                                                                        let t1 = partes[0], t2 = partes[1], t3 = partes[2];
+                                                                                        let c1 = sacados.includes(t1) ? "num-inv-rojo" : "";
+                                                                                        let c2 = sacados.includes(t2) ? "num-inv-rojo" : "";
+                                                                                        let c3 = sacados.includes(t3) ? "num-inv-rojo" : "";
+                                                                                        badgeHtml = `<span class="badge-invertido"><span class="${c1}">${t1}</span>-<span class="${c2}">${t2}</span>-<span class="${c3}">${t3}</span></span>`;
+                                                                                    } else {
+                                                                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                                                                                    }
+                                                                                } else if (juegoLower === 'sumarversus') {
+                                                                                    const eqUser = dataVersus[nick] ? dataVersus[nick].equipo : null;
+                                                                                    if (eqUser) {
+                                                                                        let colorEq = eqUser === 'A' ? 'var(--cian)' : 'var(--rosa)';
+                                                                                        badgeHtml = `<span class="badge-invertido" style="color: ${colorEq}; border-color: ${colorEq};">EQUIPO ${eqUser}</span>`;
+                                                                                    } else {
+                                                                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN EQUIPO</span>`;
+                                                                                    }
+                                                                                } else if (['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
+                                                                                    let datasetActual = {};
+                                                                                    if (juegoLower === 'mex') datasetActual = dataMex;
+                                                                                    else if (juegoLower === 'pokemon') datasetActual = dataPoke;
+                                                                                    else if (juegoLower === 'pais') datasetActual = dataPais;
+                                                                                    else if (juegoLower === 'autos') datasetActual = dataAutos;
+                                                                                    else if (juegoLower === 'bebida') datasetActual = dataBebida;
+                                                                                    else if (juegoLower === 'comidas') datasetActual = dataComidas;
+                                                                                    else if (juegoLower === 'fiesta') datasetActual = dataFiesta;
+                                                                                    else if (juegoLower === 'pitufo') datasetActual = dataPitufo;
+                                                                                    else if (juegoLower === 'simpson') datasetActual = dataSimp;
+                                                                                    else if (juegoLower === 'power') datasetActual = dataPow;
+
+                                                                                    const cartasUser = (datasetActual[nick] && Array.isArray(datasetActual[nick].cartas)) ? datasetActual[nick].cartas : [];
+                                                                                    if (cartasUser.length > 0) {
+                                                                                        let cartasHtmlArr = cartasUser.map(c => {
+                                                                                            let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
+                                                                                            return `<span class="${claseSalida}">${c}</span>`;
+                                                                                        });
+                                                                                        badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
+                                                                                    } else {
+                                                                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
+                                                                                    }
+                                                                                }
+
+                                                                                html += `
+                                                                                <div class="item-conectado">
+                                                                                    <div style="display:flex; align-items:center; gap:6px; width: 100%;">
+                                                                                        <span class="punto-online"></span>
+                                                                                        <span style="font-weight: bold; text-transform: uppercase; color: #fff; word-break: break-all;">${nick}</span>
+                                                                                    </div>
+                                                                                    ${badgeHtml}
+                                                                                </div>`;
+                                                                            }
+                                                                        });
+
+                                                                        if (contadorElem) contadorElem.innerText = totalOnline;
+                                                                        if (contenedorLista) {
+                                                                            contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
+                                                                        }
+                                                                    });
+                                                                });
+                                                            });
+                                                        });
+                                                    });
+                                                });
                                             });
-                                            badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
-                                        } else {
-                                            badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
-                                        }
-                                    }
-
-                                    html += `
-                                    <div class="item-conectado">
-                                        <div style="display:flex; align-items:center; gap:6px; width: 100%;">
-                                            <span class="punto-online"></span>
-                                            <span style="font-weight: bold; text-transform: uppercase; color: #fff; word-break: break-all;">${nick}</span>
-                                        </div>
-                                        ${badgeHtml}
-                                    </div>`;
-                                }
+                                        });
+                                    });
+                                });
                             });
-
-                            if (contadorElem) contadorElem.innerText = totalOnline;
-                            if (contenedorLista) {
-                                contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
-                            }
                         });
                     });
                 });
@@ -389,26 +566,38 @@
         window.addEventListener('DOMContentLoaded', () => {
             escucharConectados();
             const nickGuardado = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            if (nickGuardado) {
+            const tokenGuardado = localStorage.getItem(`jugador_token_${miCarpeta}`);
+            if (nickGuardado && tokenGuardado) {
                 document.getElementById('capa-login-jugador').style.display = 'none';
                 document.getElementById('contenido-jugador').style.display = 'flex';
                 registrarPresencia(nickGuardado);
+                iniciarControlSesionUnica(nickGuardado, tokenGuardado);
                 iniciarSincronizacion();
             }
         });
 
-        window.cerrarSesionJugador = async () => {
+        window.cerrarSesionJugador = async (expulsadoPorOtro = false) => {
             const nickGuardado = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            if (nickGuardado) {
+            if (nickGuardado && !expulsadoPorOtro) {
                 const estadoRef = ref(rtdb, `proyectos/${miCarpeta}/presencia/${nickGuardado}`);
                 await set(estadoRef, { estado: 'offline', timestamp: Date.now() });
+
+                await set(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nickGuardado}`), null);
+                await set(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion/${nickGuardado}`), null);
+                await set(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion/${nickGuardado}`), null);
+                ['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].forEach(j => {
+                    set(ref(rtdb, `proyectos/${miCarpeta}/${j}Seleccion/${nickGuardado}`), null);
+                });
+                
+                await set(ref(rtdb, `proyectos/${miCarpeta}/sesionesActivas/${nickGuardado}`), null);
             }
             localStorage.removeItem(`jugador_sesion_${miCarpeta}`);
             localStorage.removeItem(`jugador_genero_${miCarpeta}`);
+            localStorage.removeItem(`jugador_token_${miCarpeta}`);
             location.reload();
         };
 
-        document.getElementById('btn-login-jugador').onclick = async () => {
+        async function intentarLoginJugador() {
             const nick = document.getElementById('login-nick').value.trim().toLowerCase();
             const pin = document.getElementById('login-pin').value.trim();
             const errLog = document.getElementById('err-log-jugador');
@@ -435,21 +624,31 @@
                 });
 
                 if(aut) {
+                    const tokenUnico = 'tok_' + Math.random().toString(36.2) + Date.now();
+                    await set(ref(rtdb, `proyectos/${miCarpeta}/sesionesActivas/${nick}`), tokenUnico);
+
                     localStorage.setItem(`jugador_sesion_${miCarpeta}`, nick);
                     localStorage.setItem(`jugador_genero_${miCarpeta}`, genero);
+                    localStorage.setItem(`jugador_token_${miCarpeta}`, tokenUnico);
+                    
                     registrarPresencia(nick);
 
                     document.getElementById('capa-login-jugador').style.display = 'none';
                     document.getElementById('contenido-jugador').style.display = 'flex';
+                    iniciarControlSesionUnica(nick, tokenUnico);
                     iniciarSincronizacion();
                 } else {
                     errLog.innerText = "DATOS INCORRECTOS";
                 }
             } catch (e) {
-                console.error(e);
                 errLog.innerText = "ERROR DE CONEXIÓN";
             }
-        };
+        }
+
+        document.getElementById('btn-login-jugador').onclick = intentarLoginJugador;
+
+        document.getElementById('login-nick').onkeydown = (e) => { if (e.key === 'Enter') intentarLoginJugador(); };
+        document.getElementById('login-pin').onkeydown = (e) => { if (e.key === 'Enter') intentarLoginJugador(); };
 
         function hablarTexto(texto) {
             if ('speechSynthesis' in window) {
@@ -464,7 +663,7 @@
 
         const chatRef = ref(rtdb, `proyectos/${miCarpeta}/chat/mensajes`);
 
-        document.getElementById('btn-enviar-chat').onclick = () => {
+        function enviarMensajeChat() {
             const input = document.getElementById('input-chat');
             const texto = input.value.trim();
             if (!texto) return;
@@ -476,6 +675,14 @@
                 timestamp: Date.now()
             });
             input.value = '';
+        }
+
+        document.getElementById('btn-enviar-chat').onclick = enviarMensajeChat;
+
+        document.getElementById('input-chat').onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                enviarMensajeChat();
+            }
         };
 
         document.getElementById('btn-limpiar-chat').onclick = () => {
@@ -505,11 +712,24 @@
                     }
                 }
 
+                maxSeleccionesGlobal = Number(data.maxSelecciones) || 2;
+
                 const nuevoJuego = data.juegoActivo || '50';
                 const cambioDeJuego = (juegoActualGlobal !== nuevoJuego);
                 juegoActualGlobal = nuevoJuego;
+                
                 estadoInvertidosGlobal = Boolean(data.estadoInvertidosComenzado);
                 estadoMexGlobal = Boolean(data.estadoMexComenzado);
+                estadoPokemonGlobal = Boolean(data.estadoPokemonComenzado);
+                estadoPaisGlobal = Boolean(data.estadoPaisComenzado) || Boolean(data.estadoPaisesComenzado);
+                estadoAutosGlobal = Boolean(data.estadoAutosComenzado);
+                estadoBebidaGlobal = Boolean(data.estadoBebidaComenzado);
+                estadoComidasGlobal = Boolean(data.estadoComidasComenzado);
+                estadoFiestaGlobal = Boolean(data.estadoFiestaComenzado);
+                estadoPitufoGlobal = Boolean(data.estadoPitufoComenzado);
+                estadoSimpsonGlobal = Boolean(data.estadoSimpsonComenzado);
+                estadoPowerGlobal = Boolean(data.estadoPowerComenzado);
+                estadoTernaGlobal = Boolean(data.estadoTernaComenzado);
                 
                 if (cambioDeJuego) {
                     escucharConectados();
@@ -537,64 +757,182 @@
                         bola.classList.add('animar-bola');
                     }
 
-                    renderizarTablero(juegoActualGlobal, sacados, estadoInvertidosGlobal, estadoMexGlobal);
+                    renderizarTablero(juegoActualGlobal, sacados);
                 });
             });
         }
 
-        function renderizarTablero(juego, sacados, invertidosComenzado, mexComenzado) {
+        function renderizarTablero(juego, sacados) {
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
             const juegoLower = String(juego).toLowerCase();
             let html = "";
 
-            if (juegoLower === 'inv' && !invertidosComenzado) {
-                const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-                
-                onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
-                    if (juegoActualGlobal !== 'inv') return;
+            const juegosConSeleccion = ['inv', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power', 'terna', 'sumarversus'];
+            const estadosComenzados = {
+                'inv': estadoInvertidosGlobal,
+                'mex': estadoMexGlobal, 'pokemon': estadoPokemonGlobal, 'pais': estadoPaisGlobal,
+                'autos': estadoAutosGlobal, 'bebida': estadoBebidaGlobal, 'comidas': estadoComidasGlobal,
+                'fiesta': estadoFiestaGlobal, 'pitufo': estadoPitufoGlobal, 'simpson': estadoSimpsonGlobal,
+                'power': estadoPowerGlobal, 'terna': estadoTernaGlobal, 'sumarversus': false
+            };
 
-                    const allSelections = sAllSel.val() || {};
-                    let paresOcupados = {}; 
-                    Object.keys(allSelections).forEach(user => {
-                        if (allSelections[user] && allSelections[user].par) {
-                            paresOcupados[allSelections[user].par] = user;
-                        }
+            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+
+            // FASE DE SELECCIÓN PARA SUMAR VERSUS (EQUIPO A vs EQUIPO B)
+            if (juegoLower === 'sumarversus') {
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusConfig`), (sConfig) => {
+                    const configData = sConfig.val() || {};
+                    const estaBloqueado = Boolean(configData.bloqueado);
+
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion`), (sAllSel) => {
+                        if (juegoActualGlobal !== 'sumarversus') return;
+                        const allSelections = sAllSel.val() || {};
+                        let miEquipo = allSelections[nickActual] ? allSelections[nickActual].equipo : null;
+
+                        onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/sumarversus`), (sSorteo) => {
+                            const infoSorteo = sSorteo.val() || {};
+                            let pA = infoSorteo.puntosA || 0;
+                            let pB = infoSorteo.puntosB || 0;
+
+                            grid.style.gridTemplateColumns = "1fr";
+                            grid.innerHTML = `
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 10px;">
+                                    <h2 style="color: var(--violeta); margin: 0; text-transform: uppercase;">SELECCIONA TU EQUIPO</h2>
+                                    ${estaBloqueado ? '<div style="color: var(--rojo); font-weight: bold; font-size: 12px;">🔒 CAMBIO DE EQUIPO BLOQUEADO POR EL ADMINISTRADOR</div>' : ''}
+                                    
+                                    <div style="display: flex; gap: 20px; width: 100%; justify-content: center; flex-wrap: wrap;">
+                                        <!-- BOTÓN EQUIPO A -->
+                                        <div onclick="window.seleccionarEquipoVersus('A', ${estaBloqueado})" style="flex: 1; min-width: 250px; background: ${miEquipo === 'A' ? 'var(--cian)' : '#121212'}; color: ${miEquipo === 'A' ? '#000' : '#fff'}; border: 2px solid var(--cian); padding: 30px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: ${miEquipo === 'A' ? '0 0 25px var(--cian)' : 'none'};">
+                                            <h3 style="margin: 0 0 10px 0; font-size: 22px;">EQUIPO A</h3>
+                                            <div style="font-size: 40px; font-weight: 900; margin-bottom: 10px;">${pA} PTS</div>
+                                            <div style="font-size: 13px; font-weight: bold;">${miEquipo === 'A' ? '✓ TU EQUIPO ACTUAL' : 'HACER CLICK PARA UNIRSE'}</div>
+                                        </div>
+
+                                        <!-- BOTÓN EQUIPO B -->
+                                        <div onclick="window.seleccionarEquipoVersus('B', ${estaBloqueado})" style="flex: 1; min-width: 250px; background: ${miEquipo === 'B' ? 'var(--rosa)' : '#121212'}; color: ${miEquipo === 'B' ? '#000' : '#fff'}; border: 2px solid var(--rosa); padding: 30px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: ${miEquipo === 'B' ? '0 0 25px var(--rosa)' : 'none'};">
+                                            <h3 style="margin: 0 0 10px 0; font-size: 22px;">EQUIPO B</h3>
+                                            <div style="font-size: 40px; font-weight: 900; margin-bottom: 10px;">${pB} PTS</div>
+                                            <div style="font-size: 13px; font-weight: bold;">${miEquipo === 'B' ? '✓ TU EQUIPO ACTUAL' : 'HACER CLICK PARA UNIRSE'}</div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        }, { onlyOnce: true });
                     });
-
-                    const parSeleccionadoMio = allSelections[nickActual] ? allSelections[nickActual].par : null;
-                    const pares = generarParesInvertidos();
-                    let gridHtml = "";
-
-                    pares.forEach(par => {
-                        const ocupadoPor = paresOcupados[par];
-                        const esMio = (par === parSeleccionadoMio);
-                        const estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
-
-                        let claseCss = "";
-                        let onclickAttr = `onclick="window.seleccionarParInvertido('${par}')"`;
-
-                        if (esMio) {
-                            claseCss = "invertido-seleccionado";
-                        } else if (estaOcupadoPorOtro) {
-                            claseCss = "invertido-ocupado";
-                            onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
-                        }
-
-                        gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 13px; font-weight: 900;">${par}</div>`;
-                    });
-
-                    grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(75px, 1fr))";
-                    grid.innerHTML = gridHtml;
                 });
                 return;
             }
 
-            if (juegoLower === 'mex' && !mexComenzado) {
-                const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-                
-                onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (sAllSel) => {
-                    if (juegoActualGlobal !== 'mex') return;
+            // FASE DE SELECCIÓN PARA INVERTIDOS (INV)
+            if (juegosConSeleccion.includes(juegoLower) && !estadosComenzados[juegoLower]) {
+                if (juegoLower === 'inv') {
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
+                        if (juegoActualGlobal !== 'inv') return;
+                        const allSelections = sAllSel.val() || {};
+                        let Ocupados = {};
+                        Object.keys(allSelections).forEach(user => {
+                            if (allSelections[user] && allSelections[user].par) {
+                                Ocupados[allSelections[user].par] = user;
+                            }
+                        });
+
+                        let miParSeleccionado = allSelections[nickActual] ? allSelections[nickActual].par : null;
+                        let gridHtml = "";
+
+                        let paresGenerados = [];
+                        for (let i = 1; i <= 89; i++) {
+                            let strI = i < 10 ? "0" + i : "" + i;
+                            let invStr = strI.split("").reverse().join("");
+                            let numInv = parseInt(invStr);
+                            
+                            if (i !== numInv && i < numInv) {
+                                let parStr = `${strI}-${invStr}`;
+                                paresGenerados.push(parStr);
+                            }
+                        }
+
+                        paresGenerados.forEach((parStr) => {
+                            let ocupadoPor = Ocupados[parStr];
+                            let esMio = (miParSeleccionado === parStr);
+                            let estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
+
+                            let claseCss = "";
+                            let onclickAttr = `onclick="window.seleccionarParInvertido('${parStr}')"`;
+
+                            if (esMio) {
+                                claseCss = "invertido-seleccionado";
+                            } else if (estaOcupadoPorOtro) {
+                                claseCss = "invertido-ocupado";
+                                onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
+                            }
+
+                            gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 13px; padding: 14px 4px; font-weight: 900;">${parStr}</div>`;
+                        });
+
+                        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(90px, 1fr))";
+                        grid.innerHTML = gridHtml;
+                    });
+                    return;
+                }
+
+                // FASE DE SELECCIÓN FIJA Y ESTRUCTURADA PARA TERNAS (TERNA)
+                if (juegoLower === 'terna') {
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (sAllSel) => {
+                        if (juegoActualGlobal !== 'terna') return;
+                        const allSelections = sAllSel.val() || {};
+                        let Ocupados = {};
+                        Object.keys(allSelections).forEach(user => {
+                            if (allSelections[user] && allSelections[user].terna) {
+                                Ocupados[allSelections[user].terna] = user;
+                            }
+                        });
+
+                        let miTernaSeleccionada = allSelections[nickActual] ? allSelections[nickActual].terna : null;
+                        let gridHtml = "";
+
+                        let ternasGeneradas = [];
+                        for (let i = 1; i <= 88; i += 3) {
+                            let t1 = i < 10 ? "0" + i : "" + i;
+                            let t2 = (i+1) < 10 ? "0" + (i+1) : "" + (i+1);
+                            let t3 = (i+2) < 10 ? "0" + (i+2) : "" + (i+2);
+                            let tStr = `${t1}-${t2}-${t3}`;
+                            ternasGeneradas.push(tStr);
+                        }
+                        for (let i = 1; i <= 50; i += 5) {
+                            let t1 = i < 10 ? "0" + i : "" + i;
+                            let nMed = i + 20;
+                            let nTer = i + 40;
+                            let tStr = `${t1}-${nMed}-${nTer}`;
+                            if(!ternasGeneradas.includes(tStr)) ternasGeneradas.push(tStr);
+                        }
+
+                        ternasGeneradas.forEach((ternaStr) => {
+                            let ocupadoPor = Ocupados[ternaStr];
+                            let esMio = (miTernaSeleccionada === ternaStr);
+                            let estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
+
+                            let claseCss = "";
+                            let onclickAttr = `onclick="window.seleccionarTernaUnica('${ternaStr}')"`;
+
+                            if (esMio) {
+                                claseCss = "invertido-seleccionado";
+                            } else if (estaOcupadoPorOtro) {
+                                claseCss = "invertido-ocupado";
+                                onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
+                            }
+
+                            gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 11px; padding: 12px 4px; font-weight: 900;">[ ${ternaStr.replace(/-/g, ' - ')} ]</div>`;
+                        });
+
+                        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(130px, 1fr))";
+                        grid.innerHTML = gridHtml;
+                    });
+                    return;
+                }
+
+                // FASE DE SELECCIÓN PARA OTROS JUEGOS
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/${juegoLower}Seleccion`), (sAllSel) => {
+                    if (juegoActualGlobal !== juegoLower) return;
 
                     const allSelections = sAllSel.val() || {};
                     let cartasOcupadas = {}; 
@@ -605,16 +943,16 @@
                     });
 
                     const misCartas = (allSelections[nickActual] && Array.isArray(allSelections[nickActual].cartas)) ? allSelections[nickActual].cartas : [];
-                    const elementos = listasJuegos['mex'];
+                    const elementos = listasJuegos[juegoLower];
                     let gridHtml = "";
 
-                    elementos.forEach((carta) => {
+                    elementos.forEach((carta, index) => {
                         const ocupadoPor = cartasOcupadas[carta];
                         const esMia = misCartas.includes(carta);
                         const estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
 
                         let claseCss = "";
-                        let onclickAttr = `onclick="window.seleccionarCartaMex('${carta}')"`;
+                        let onclickAttr = `onclick="window.seleccionarCartaGenerica('${juegoLower}', '${carta}')"`;
 
                         if (esMia) {
                             claseCss = "invertido-seleccionado";
@@ -623,7 +961,7 @@
                             onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
                         }
 
-                        gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 9px; padding: 10px 2px; font-weight: 900;">${carta}</div>`;
+                        gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 9px; padding: 10px 2px; font-weight: 900;">#${index + 1} ${carta}</div>`;
                     });
 
                     grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
@@ -632,72 +970,128 @@
                 return;
             }
 
-            if (listasJuegos[juegoLower] && juegoLower !== 'inv' && juegoLower !== 'mex') {
-                const elementos = listasJuegos[juegoLower];
-                elementos.forEach((el, index) => {
-                    const esta = sacados.includes(el);
-                    const prefijoNum = juegoLower === 'pokemon' ? `#${index + 1} ` : '';
-                    html += `<div class="celda ${esta ? 'marcada' : ''}" style="font-size: 10px; padding: 10px 2px;">${prefijoNum}${el}</div>`;
-                });
-                grid.style.gridTemplateColumns = juegoLower === 'pokemon' ? "repeat(auto-fill, minmax(105px, 1fr))" : "repeat(auto-fill, minmax(115px, 1fr))";
+            // SI INVERTIDOS YA COMENZÓ LA PARTIDA
+            if (juegoLower === 'inv' && estadosComenzados['inv']) {
+                let totalNums = 90;
+                grid.style.gridTemplateColumns = `repeat(10, 1fr)`;
+                for(let i=1; i<=totalNums; i++) {
+                    const esta = sacados.includes(String(i)) || sacados.includes(Number(i));
+                    html += `<div class="celda ${esta ? 'marcada' : ''}">${i}</div>`;
+                }
                 grid.innerHTML = html;
                 return;
             }
 
-            if (juegoLower === 'mex' && mexComenzado) {
-                const elementos = listasJuegos['mex'];
-                elementos.forEach((el) => {
+            // SI TERNAS YA COMENZÓ LA PARTIDA
+            if (juegoLower === 'terna' && estadosComenzados['terna']) {
+                let totalNums = 90;
+                grid.style.gridTemplateColumns = `repeat(10, 1fr)`;
+                for(let i=1; i<=totalNums; i++) {
+                    const esta = sacados.includes(String(i)) || sacados.includes(Number(i));
+                    html += `<div class="celda ${esta ? 'marcada' : ''}">${i}</div>`;
+                }
+                grid.innerHTML = html;
+                return;
+            }
+
+            // SI OTROS JUEGOS CON SELECCIÓN YA COMENZARON
+            if (juegosConSeleccion.includes(juegoLower) && estadosComenzados[juegoLower]) {
+                const elementos = listasJuegos[juegoLower];
+                elementos.forEach((el, index) => {
                     const esta = sacados.includes(el);
-                    html += `<div class="celda ${esta ? 'marcada' : ''}" style="font-size: 9px; padding: 10px 2px;">${el}</div>`;
+                    html += `<div class="celda ${esta ? 'marcada' : ''}" style="font-size: 9px; padding: 10px 2px;">#${index + 1} ${el}</div>`;
                 });
                 grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
                 grid.innerHTML = html;
                 return;
             }
 
+            // TABLEROS NUMÉRICOS TRADICIONALES (50, 72, 90, 100)
             let totalNums = 90;
             let columnas = 10;
 
             if (juegoLower === '72' || juegoLower === 'bingo72') { totalNums = 72; columnas = 9; }
             else if (juegoLower === '100' || juegoLower === 'bingo100') { totalNums = 100; }
-            else if (juegoLower === 'eliminatorias') { totalNums = 30; columnas = 6; }
 
             grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
             for(let i=1; i<=totalNums; i++) {
                 const esta = sacados.includes(i) || sacados.includes(String(i)) || sacados.includes(Number(i));
-                const textoCelda = juegoLower === 'eliminatorias' ? `P${i}` : i;
-                html += `<div class="celda ${esta ? 'marcada' : ''}">${textoCelda}</div>`;
+                html += `<div class="celda ${esta ? 'marcada' : ''}">${i}</div>`;
             }
             grid.innerHTML = html;
         }
 
         window.seleccionarParInvertido = (par) => {
             const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            const refGlobalInv = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`);
-            onValue(refGlobalInv, (snapshot) => {
+            const refGlobal = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`);
+
+            onValue(refGlobal, (snapshot) => {
                 const data = snapshot.val() || {};
                 let ocupado = false;
                 Object.keys(data).forEach(user => {
-                    if (user !== nickActual && data[user] && data[user].par === par) { ocupado = true; }
+                    if (user !== nickActual && data[user] && data[user].par === par) {
+                        ocupado = true;
+                    }
                 });
-                if (ocupado) { alert("¡Este par invertido ya ha sido elegido por otro jugador!"); return; }
-                guardarInvertidoElegido(par);
+
+                if (ocupado) {
+                    alert("¡Este par ya ha sido elegido por otro jugador!");
+                    return;
+                }
+
+                const refUser = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nickActual}`);
+                onValue(refUser, (snapUsr) => {
+                    let actual = snapUsr.val() || {};
+                    let nuevoPar = (actual.par === par) ? null : par;
+
+                    set(refUser, nuevoPar ? { par: nuevoPar, timestamp: Date.now() } : null);
+                }, { onlyOnce: true });
             }, { onlyOnce: true });
         };
 
-        function guardarInvertidoElegido(par) {
+        window.seleccionarTernaUnica = (terna) => {
             const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            const refSel = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nickActual}`);
-            set(refSel, {
-                par: par,
-                timestamp: Date.now()
-            });
-        }
+            const refGlobal = ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`);
 
-        window.seleccionarCartaMex = (carta) => {
+            onValue(refGlobal, (snapshot) => {
+                const data = snapshot.val() || {};
+                let ocupado = false;
+                Object.keys(data).forEach(user => {
+                    if (user !== nickActual && data[user] && data[user].terna === terna) {
+                        ocupado = true;
+                    }
+                });
+
+                if (ocupado) {
+                    alert("¡Esta terna ya ha sido elegida por otro jugador!");
+                    return;
+                }
+
+                const refUser = ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion/${nickActual}`);
+                onValue(refUser, (snapUsr) => {
+                    let actual = snapUsr.val() || {};
+                    let nuevaTerna = (actual.terna === terna) ? null : terna;
+
+                    set(refUser, nuevaTerna ? { terna: nuevaTerna, timestamp: Date.now() } : null);
+                }, { onlyOnce: true });
+            }, { onlyOnce: true });
+        };
+
+        window.seleccionarEquipoVersus = (equipo, bloqueado) => {
+            if (bloqueado) {
+                alert("El administrador ha bloqueado el cambio de equipos en este momento.");
+                return;
+            }
             const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            const refSel = ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion/${nickActual}/cartas`);
-            const refGlobal = ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`);
+            const refUser = ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion/${nickActual}`);
+            
+            set(refUser, { equipo: equipo, timestamp: Date.now() });
+        };
+
+        window.seleccionarCartaGenerica = (juego, carta) => {
+            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            const refSel = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion/${nickActual}/cartas`);
+            const refGlobal = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion`);
 
             onValue(refGlobal, (snapshot) => {
                 const data = snapshot.val() || {};
@@ -709,7 +1103,7 @@
                 });
 
                 if (ocupadaPorOtro) {
-                    alert("¡Esta carta ya ha sido elegida por otro jugador!");
+                    alert("¡Esta opción ya ha sido elegida por otro jugador!");
                     return;
                 }
 
@@ -720,14 +1114,15 @@
                     if (misCartas.includes(carta)) {
                         misCartas = misCartas.filter(c => c !== carta);
                     } else {
-                        if (misCartas.length >= 2) {
-                            alert("¡Solo puedes seleccionar un máximo de 2 cartas distintas!");
+                        if (misCartas.length >= maxSeleccionesGlobal) {
+                            alert(`¡Solo puedes seleccionar un máximo de ${maxSeleccionesGlobal} opciones distintas!`);
                             return;
                         }
                         misCartas.push(carta);
                     }
 
-                    set(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion/${nickActual}`), {
+                    const refUserGen = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion/${nickActual}`);
+                    set(refUserGen, {
                         cartas: misCartas,
                         timestamp: Date.now()
                     });

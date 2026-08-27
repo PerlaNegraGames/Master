@@ -10,11 +10,10 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             <div style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:15px; flex-wrap:wrap;">
                 <button id="btn-sacar-b90" class="btn-abrir" style="background:#39ff14; color:#000; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;">SACAR NÚMERO</button>
                 <button id="btn-auto-b90" class="btn-abrir" style="background:var(--amarillo); color:#000; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;">▶ AUTOMÁTICO</button>
-                <select id="sel-vel-b90" style="background:#000; border:1px solid var(--amarillo); color:#fff; padding:8px; border-radius:6px; font-weight:bold;">
-                    <option value="3000">3 Segundos</option>
-                    <option value="5000" selected>5 Segundos</option>
-                    <option value="8000">8 Segundos</option>
-                </select>
+                <div style="display:flex; align-items:center; gap:5px; background:#000; border:1px solid var(--amarillo); padding:4px 8px; border-radius:6px;">
+                    <span style="font-size:11px; color:#fff; font-weight:bold;">SEG:</span>
+                    <input type="number" id="sel-vel-b90" value="5" min="1" step="0.5" style="background:transparent; border:none; color:#fff; width:50px; font-weight:bold; text-align:center; outline:none;">
+                </div>
                 <button id="btn-pausa-b90" class="btn-abrir" style="background:#ff9900; color:#000; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer; display:none;">PAUSAR</button>
                 <button id="btn-reset-b90" class="btn-abrir" style="background:var(--rojo); color:#fff; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;">REINICIAR</button>
             </div>
@@ -75,11 +74,16 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
 
     const btnAuto = document.getElementById('btn-auto-b90');
     const btnPausa = document.getElementById('btn-pausa-b90');
-    const selVel = document.getElementById('sel-vel-b90');
+    const inpVel = document.getElementById('sel-vel-b90');
+
+    function obtenerMilisegundos() {
+        const val = parseFloat(inpVel.value);
+        return (isNaN(val) || val <= 0) ? 5000 : val * 1000;
+    }
 
     btnAuto.onclick = () => {
         if (intervaloAuto) return;
-        const velocidad = parseInt(selVel.value) || 5000;
+        const velocidad = obtenerMilisegundos();
         btnAuto.style.display = "none";
         btnPausa.style.display = "inline-block";
         btnPausa.innerText = "PAUSAR";
@@ -94,7 +98,7 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             btnPausa.innerText = "REANUDAR";
             await set(sorteoRef, { sacados: salidos, estado: "pausado", ultimo: salidos[salidos.length - 1] || null });
         } else {
-            const velocidad = parseInt(selVel.value) || 5000;
+            const velocidad = obtenerMilisegundos();
             btnPausa.innerText = "PAUSAR";
             intervaloAuto = setInterval(() => sacarNumeroAccion(), velocidad);
             await set(sorteoRef, { sacados: salidos, estado: "activo", ultimo: salidos[salidos.length - 1] || null });

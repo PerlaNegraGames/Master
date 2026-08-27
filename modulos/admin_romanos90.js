@@ -10,11 +10,10 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             <div style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:15px; flex-wrap:wrap;">
                 <button id="btn-sacar-rom" class="btn-abrir" style="background:var(--violeta); color:#fff;">SACAR NÚMERO</button>
                 <button id="btn-auto-rom" class="btn-abrir" style="background:var(--amarillo); color:#000;">▶ AUTOMÁTICO</button>
-                <select id="sel-vel-rom" style="background:#000; border:1px solid var(--amarillo); color:#fff; padding:8px; border-radius:6px; font-weight:bold;">
-                    <option value="3000">3 Segundos</option>
-                    <option value="5000" selected>5 Segundos</option>
-                    <option value="8000">8 Segundos</option>
-                </select>
+                <div style="display:flex; align-items:center; gap:5px; background:#000; border:1px solid var(--amarillo); padding:4px 8px; border-radius:6px;">
+                    <span style="font-size:11px; color:#fff; font-weight:bold;">SEG:</span>
+                    <input type="number" id="sel-vel-rom" value="5" min="1" step="0.5" style="background:transparent; border:none; color:#fff; width:50px; font-weight:bold; text-align:center; outline:none;">
+                </div>
                 <button id="btn-pausa-rom" class="btn-abrir" style="background:#ff9900; color:#000; display:none;">PAUSAR</button>
                 <button id="btn-reset-rom" class="btn-abrir" style="background:var(--rojo); color:#fff;">REINICIAR</button>
             </div>
@@ -74,11 +73,16 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
 
     const btnAuto = document.getElementById('btn-auto-rom');
     const btnPausa = document.getElementById('btn-pausa-rom');
-    const selVel = document.getElementById('sel-vel-rom');
+    const inpVel = document.getElementById('sel-vel-rom');
+
+    function obtenerMilisegundos() {
+        const val = parseFloat(inpVel.value);
+        return (isNaN(val) || val <= 0) ? 5000 : val * 1000;
+    }
 
     btnAuto.onclick = () => {
         if (intervaloAuto) return;
-        const vel = parseInt(selVel.value) || 5000;
+        const vel = obtenerMilisegundos();
         btnAuto.style.display = "none";
         btnPausa.style.display = "inline-block";
         btnPausa.innerText = "PAUSAR";
@@ -93,7 +97,7 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             btnPausa.innerText = "REANUDAR";
             await set(sorteoRef, { sacados: salidos, estado: "pausado", ultimo: salidos[salidos.length - 1] || null });
         } else {
-            const vel = parseInt(selVel.value) || 5000;
+            const vel = obtenerMilisegundos();
             btnPausa.innerText = "PAUSAR";
             intervaloAuto = setInterval(() => sacarAccion(), vel);
             await set(sorteoRef, { sacados: salidos, estado: "activo", ultimo: salidos[salidos.length - 1] || null });
@@ -115,4 +119,4 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             await set(sorteoRef, { sacados: [], estado: "detenido", ultimo: null });
         }
     };
-}   
+}

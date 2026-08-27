@@ -12,82 +12,35 @@
             --amarillo: #ffff00; --rojo: #ff0000; --violeta: #bc13fe;
         }
         body { 
-            background: #000; 
-            color: #fff; 
-            font-family: sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh;
+            background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
         #contenido-admin { width: 100%; display: none; flex-direction: column; align-items: center; } 
         .header-top { 
-            width: 100%; 
-            background: #050505; 
-            border-bottom: 1px solid #111; 
-            display: flex; 
-            justify-content: center !important;
-            padding: 15px 0; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-            box-sizing: border-box;
+            width: 100%; background: #050505; border-bottom: 1px solid #111; display: flex; justify-content: center !important; padding: 15px 0; position: sticky; top: 0; z-index: 100; box-sizing: border-box;
         }
-        .contenedor-central { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            width: 100%; 
-            max-width: 1350px; 
-            padding: 0 20px;
-            margin: 0 auto;
-        }
+        .contenedor-central { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1350px; padding: 0 20px; margin: 0 auto; }
         .logo-main { font-size: 24px; font-weight: 900; letter-spacing: 2px; }
-        
         .btn-efecto { background: #000; border: 1px solid #FF69B4; color: #FF69B4; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; text-transform: uppercase; transition: 0.3s; }
         .btn-efecto:hover { border-color: var(--cian); color: var(--cian); box-shadow: 0 0 10px var(--cian); }
-        
-        .layout-admin-principal {
-            display: flex; gap: 20px; width: 100%; max-width: 1350px; box-sizing: border-box; align-items: flex-start; justify-content: center; margin-top: 25px; padding: 0 20px;
-        }
-
-        .sidebar-conectados-admin {
-            width: 330px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0;
-        }
-        .sidebar-conectados-admin h3 {
-            color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px;
-        }
+        .layout-admin-principal { display: flex; gap: 20px; width: 100%; max-width: 1350px; box-sizing: border-box; align-items: flex-start; justify-content: center; margin-top: 25px; padding: 0 20px; }
+        .sidebar-conectados-admin { width: 330px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; }
+        .sidebar-conectados-admin h3 { color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; }
         #lista-conectados-admin-view { display: flex; flex-direction: column; gap: 8px; max-height: 550px; overflow-y: auto; }
-        .item-conectado {
-            display: flex; flex-direction: column; align-items: flex-start; gap: 6px; background: #111; padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a; box-sizing: border-box; width: 100%;
-        }
+        .item-conectado { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; background: #111; padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a; box-sizing: border-box; width: 100%; }
         .punto-online { width: 8px; height: 8px; background: var(--verde); border-radius: 50%; box-shadow: 0 0 6px var(--verde); flex-shrink: 0; }
-        .badge-invertido {
-            background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 0.5px; width: 100%; box-sizing: border-box; white-space: normal; word-break: break-word; text-align: left;
-        }
+        .badge-invertido { background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 0.5px; width: 100%; box-sizing: border-box; white-space: normal; word-break: break-word; text-align: left; }
         .num-inv-rojo { color: var(--rojo) !important; text-decoration: line-through; }
-
         .main-admin-columna { flex: 1; display: flex; flex-direction: column; align-items: center; max-width: 950px; }
-
         .menu-modos { width: 100%; padding: 20px; background: #080808; border: 1px solid #151515; border-radius: 15px; box-sizing: border-box; }
-        .buscador-container { position: relative; display: flex; gap: 10px; }
+        .buscador-container { position: relative; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
         #input-busqueda { flex-grow: 1; background: #000; border: 1px solid var(--verde); color: var(--verde); padding: 15px; border-radius: 10px; font-weight: 900; outline: none; box-shadow: inset 0 0 8px var(--verde); cursor: pointer; text-transform: uppercase; }
         #sugerencias { position: absolute; top: 60px; left: 0; width: calc(100% - 130px); background: #080808; border: 1px solid var(--verde); border-radius: 10px; z-index: 1000; display: none; max-height: 250px; overflow-y: auto; box-shadow: 0 0 15px var(--verde); }
         .sug-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #151515; font-weight: 900; text-transform: uppercase; transition: 0.2s; color: #fff; }
         .sug-item:hover { background: var(--verde); color: #000; box-shadow: 0 0 20px var(--verde); }
-        
-        .footer-sorteadores { width: 100%; margin: 30px 0 50px 0; padding: 20px; background: #050505; border: 1px solid #151515; border-radius: 15px; box-sizing: border-box; }
-        .sort-flex { display: flex; gap: 15px; align-items: center; }
-        .select-sorteador { flex: 1; background: #000; border: 1px solid var(--violeta); color: var(--violeta); padding: 12px; border-radius: 10px; font-weight: bold; outline: none; cursor: pointer; }
         .btn-abrir { background: var(--violeta); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 900; cursor: pointer; box-shadow: 0 0 15px var(--violeta); }
-        .btn-reg { flex: 0.8; background: #000; color: var(--amarillo); border: 1px solid var(--amarillo); padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 900; box-shadow: 0 0 10px var(--amarillo); }
-        
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 10000; }
         #modal-reg { background: #0a0a0a; border: 2px solid #222; width: 95%; max-width: 500px; padding: 20px; border-radius: 15px; display: flex; flex-direction: column; max-height: 85vh; }
         .item-reg { display: flex; align-items: center; background: #0a0a0a; border: 1px solid #222; margin-bottom: 5px; padding: 10px; border-radius: 6px; }
-        
         #capa-login { position: fixed; inset: 0; z-index: 99999; background: radial-gradient(circle, #000814 0%, #000000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .login-card { background: rgba(0, 0, 0, 0.9); border: 2px solid #800020; padding: 40px; border-radius: 30px; text-align: center; box-shadow: 0 0 30px rgba(128, 0, 32, 0.6); backdrop-filter: blur(10px); width: 100%; max-width: 350px; display: flex; flex-direction: column; align-items: center; }
         .input-container { position: relative; width: 100%; max-width: 280px; margin: 0 auto; }
@@ -95,7 +48,6 @@
         #pin-input:focus { border-color: #800020; box-shadow: 0 0 15px #800020; }
         .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #444; cursor: pointer; font-size: 18px; }
         #busc-reg { width: 100%; box-sizing: border-box; background: #000; border: 1px solid var(--amarillo); color: var(--amarillo); padding: 12px; margin-bottom: 15px; border-radius: 8px; outline: none; font-weight: 900; text-transform: uppercase; }
-        
         .status-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; display: inline-block; }
         .online { background: var(--verde); box-shadow: 0 0 8px var(--verde); }
         .offline { background: #444; }
@@ -125,6 +77,7 @@
             <div style="display:flex; gap:8px;">
                 <button class="btn-efecto" onclick="window.abrirModalFondo()" style="border-color: #FFFF00; color: #FFFF00;" title="CAMBIAR FONDO">🎨 DISEÑO</button>
                 <button class="btn-efecto" onclick="window.abrirModalXat()" style="border-color: #00F3FF; color: #00F3FF;" title="SALA DE XAT">💬 SALA DE XAT</button>
+                <button class="btn-efecto" id="btn-ver-reg-top" style="border-color: var(--amarillo); color: var(--amarillo);" title="REGISTRADOS">👤 REGISTRADOS (<span id="count-total">0</span>)</button>
                 <button class="btn-efecto" onclick="window.abrirPantallaJugador()" style="border-color: #39ff14; color: #39ff14;" title="PANTALLA JUGADOR">📺 JUGADOR</button>
                 <button class="btn-efecto" onclick="window.abrirModalPin()" style="border-color: #C71585; color: #C71585;" title="CAMBIAR CLAVE">⚙️ CLAVE</button>
                 <button onclick="cerrarSesion()" class="btn-efecto" style="border-color: #A020F0; color: #A020F0;" title="CERRAR SESIÓN"><i class="fas fa-power-off"></i> SALIR</button>
@@ -144,18 +97,19 @@
                     <input type="text" id="input-busqueda" placeholder="SELECCIONAR JUEGO..." readonly>
                     <div id="sugerencias"></div>
                     <button id="btn-aplicar-modo" class="btn-abrir" style="background:var(--verde); color:#000;">APLICAR</button>
+                    <!-- BOTÓN GLOBAL PARA REABRIR SELECCIÓN EN PLENA PARTIDA -->
+                    <button id="btn-reabrir-seleccion" class="btn-abrir" style="background:var(--amarillo); color:#000; display:none;" title="Permite que jugadores nuevos elijan carta sin reiniciar bolas">🔓 REABRIR SELECCIÓN</button>
+                    
+                    <!-- NUEVO: Selector de límite de elecciones -->
+                    <div id="contenedor-limite-elecciones" style="display:none; align-items: center; gap: 5px; background: #111; padding: 5px 10px; border-radius: 8px; border: 1px solid #333;">
+                        <label style="font-size: 10px; color: var(--cian); font-weight: bold;">MÁX. CARTAS:</label>
+                        <input type="number" id="input-max-cartas" value="2" min="1" max="10" style="width: 45px; background: #000; border: 1px solid #555; color: #fff; text-align: center; padding: 4px; border-radius: 4px; font-weight: bold; outline: none;">
+                        <button id="btn-guardar-limite" class="btn-abrir" style="background: var(--cian); color: #000; padding: 5px 10px; font-size: 10px;">GUARDAR</button>
+                    </div>
                 </div>
             </div>
 
             <div id="panel-juego" style="width:100%; margin-top:20px;"></div>
-
-            <div class="footer-sorteadores">
-                <div class="sort-flex">
-                    <select id="select-sorteador" class="select-sorteador"></select>
-                    <button id="btn-abrir-sort" class="btn-abrir">ABRIR</button>
-                    <button id="btn-ver-reg" class="btn-reg">👤 REGISTRADOS (<span id="count-total">0</span>)</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -261,12 +215,10 @@ const rtdb = getDatabase(app);
 window.JUEGOS_CONFIG = {
     "50": "BINGO 50", "72": "BINGO 72", "90": "BINGO 90", "100": "BINGO 100",
     "inv": "INVERTIDOS", "bingocartones": "Bingo De Cartones", "terna": "TERNAS",
-    "mex": "LOTERIA MEXICANA", "pokemon": "Pokemon", "romanos90": "ROMANOS 90"
-};
-
-window.SORTEADORES_CONFIG = {
-    "bingo50": "BINGO 50", "bingo72": "BINGO 72", "bingo90": "BINGO 90",
-    "bingo100": "BINGO 100", "bingo120": "TERNA 120", "lm": "LOTERÍA MEXICANA"
+    "mex": "LOTERIA MEXICANA", "pokemon": "Pokemon", "pais": "Paises", 
+    "autos": "AUTOS MARCAS", "bebida": "LOTERÍA BEBIDAS", "comidas": "LOTERÍA COMIDAS",
+    "fiesta": "LOTERÍA FIESTA", "pitufo": "LOTERÍA PITUFOS", "simpson": "LOS SIMPSONS", "romanos90": "ROMANOS 90",
+    "lm": "LM", "nuevo": "Nuevo", "parejasuma": "Pareja Suma", "power": "POWER", "sumaindi": "Suma Indi", "sumarversus": "Sumar Versus"
 };
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -277,6 +229,10 @@ let pinDeEntrada = sessionStorage.getItem(`admin_p_volatil`);
 let miSesionActual = null;
 let juegoActualGlobal = "50";
 window.presenciaGlobal = {}; 
+
+function normalizarTexto(txt) {
+    return String(txt || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
 
 document.getElementById('ver-password').onclick = function() {
     const input = document.getElementById('pin-input');
@@ -304,66 +260,135 @@ function escucharConectadosAdmin() {
         
         onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
             const dataInv = snapInv.val() || {};
-            
-            onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
-                const dataMex = snapMex.val() || {};
+            onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (snapTerna) => {
+                const dataTerna = snapTerna.val() || {};
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion`), (snapVersus) => {
+                    const dataVersus = snapVersus.val() || {};
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
+                        const dataMex = snapMex.val() || {};
+                        onValue(ref(rtdb, `proyectos/${miCarpeta}/pokemonSeleccion`), (snapPoke) => {
+                            const dataPoke = snapPoke.val() || {};
+                            onValue(ref(rtdb, `proyectos/${miCarpeta}/paisSeleccion`), (snapPais) => {
+                                const dataPais = snapPais.val() || {};
+                                onValue(ref(rtdb, `proyectos/${miCarpeta}/autosSeleccion`), (snapAutos) => {
+                                    const dataAutos = snapAutos.val() || {};
+                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/bebidaSeleccion`), (snapBebida) => {
+                                        const dataBebida = snapBebida.val() || {};
+                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/comidasSeleccion`), (snapComidas) => {
+                                            const dataComidas = snapComidas.val() || {};
+                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/fiestaSeleccion`), (snapFiesta) => {
+                                                const dataFiesta = snapFiesta.val() || {};
+                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/pitufoSeleccion`), (snapPitufo) => {
+                                                    const dataPitufo = snapPitufo.val() || {};
+                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/simpsonSeleccion`), (snapSimp) => {
+                                                        const dataSimp = snapSimp.val() || {};
+                                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/powerSeleccion`), (snapPow) => {
+                                                            const dataPow = snapPow.val() || {};
 
-                onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
-                    const infoSorteo = snapSorteo.val() || {};
-                    const rawSacados = infoSorteo.sacados || [];
-                    const sacados = Array.isArray(rawSacados) ? rawSacados.map(String) : Object.values(rawSacados).map(String);
-                    
-                    const contenedorLista = document.getElementById('lista-conectados-admin-view');
-                    const contadorElem = document.getElementById('count-conectados-admin');
-                    
-                    let html = "";
-                    let totalOnline = 0;
+                                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
+                                                                const infoSorteo = snapSorteo.val() || {};
+                                                                const rawSalidos = infoSorteo.sacados || [];
+                                                                const sacados = Array.isArray(rawSalidos) 
+                                                                    ? rawSalidos.map(s => normalizarTexto(s)) 
+                                                                    : Object.values(rawSalidos).map(s => normalizarTexto(s));
+                                                                
+                                                                const contenedorLista = document.getElementById('lista-conectados-admin-view');
+                                                                const contadorElem = document.getElementById('count-conectados-admin');
+                                                                
+                                                                let html = "";
+                                                                let totalOnline = 0;
 
-                    Object.keys(dataPresencia).forEach(nick => {
-                        if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
-                            totalOnline++;
-                            let badgeHtml = "";
-                            
-                            if (juegoActualGlobal === 'inv') {
-                                const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
-                                if (seleccionUser) {
-                                    let partes = seleccionUser.split("-");
-                                    let p1 = partes[0];
-                                    let p2 = partes[1];
-                                    let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
-                                    let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
-                                    badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
-                                } else {
-                                    badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
-                                }
-                            } else if (juegoActualGlobal === 'mex') {
-                                const cartasUser = (dataMex[nick] && Array.isArray(dataMex[nick].cartas)) ? dataMex[nick].cartas : [];
-                                if (cartasUser.length > 0) {
-                                    let cartasHtmlArr = cartasUser.map(c => {
-                                        let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
-                                        return `<span class="${claseSalida}">${c}</span>`;
+                                                                Object.keys(dataPresencia).forEach(nick => {
+                                                                    if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
+                                                                        totalOnline++;
+                                                                        let badgeHtml = "";
+                                                                        
+                                                                        const juegoLower = String(juegoActualGlobal).toLowerCase();
+
+                                                                        if (juegoLower === 'inv') {
+                                                                            const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
+                                                                            if (seleccionUser) {
+                                                                                let partes = seleccionUser.split("-");
+                                                                                let p1 = partes[0].trim();
+                                                                                let p2 = partes[1].trim();
+                                                                                let class1 = sacados.includes(normalizarTexto(p1)) ? "num-inv-rojo" : "";
+                                                                                let class2 = sacados.includes(normalizarTexto(p2)) ? "num-inv-rojo" : "";
+                                                                                badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
+                                                                            } else {
+                                                                                badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                                                                            }
+                                                                        } else if (juegoLower === 'terna') {
+                                                                            const seleccionTerna = dataTerna[nick] ? dataTerna[nick].terna : null;
+                                                                            if (seleccionTerna) {
+                                                                                let partes = seleccionTerna.split("-");
+                                                                                let t1 = partes[0].trim(), t2 = partes[1].trim(), t3 = partes[2].trim();
+                                                                                let c1 = sacados.includes(normalizarTexto(t1)) ? "num-inv-rojo" : "";
+                                                                                let c2 = sacados.includes(normalizarTexto(t2)) ? "num-inv-rojo" : "";
+                                                                                let c3 = sacados.includes(normalizarTexto(t3)) ? "num-inv-rojo" : "";
+                                                                                badgeHtml = `<span class="badge-invertido"><span class="${c1}">${t1}</span>-<span class="${c2}">${t2}</span>-<span class="${c3}">${t3}</span></span>`;
+                                                                            } else {
+                                                                                badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
+                                                                            }
+                                                                        } else if (juegoLower === 'sumarversus') {
+                                                                            const eqUser = dataVersus[nick] ? dataVersus[nick].equipo : null;
+                                                                            if (eqUser) {
+                                                                                let colorEq = eqUser === 'A' ? 'var(--cian)' : 'var(--rosa)';
+                                                                                badgeHtml = `<span class="badge-invertido" style="color: ${colorEq}; border-color: ${colorEq};">EQUIPO ${eqUser}</span>`;
+                                                                            } else {
+                                                                                badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN EQUIPO</span>`;
+                                                                            }
+                                                                        } else if (['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
+                                                                            let datasetActual = {};
+                                                                            if (juegoLower === 'mex') datasetActual = dataMex;
+                                                                            else if (juegoLower === 'pokemon') datasetActual = dataPoke;
+                                                                            else if (juegoLower === 'pais') datasetActual = dataPais;
+                                                                            else if (juegoLower === 'autos') datasetActual = dataAutos;
+                                                                            else if (juegoLower === 'bebida') datasetActual = dataBebida;
+                                                                            else if (juegoLower === 'comidas') datasetActual = dataComidas;
+                                                                            else if (juegoLower === 'fiesta') datasetActual = dataFiesta;
+                                                                            else if (juegoLower === 'pitufo') datasetActual = dataPitufo;
+                                                                            else if (juegoLower === 'simpson') datasetActual = dataSimp;
+                                                                            else if (juegoLower === 'power') datasetActual = dataPow;
+
+                                                                            const cartasUser = (datasetActual[nick] && Array.isArray(datasetActual[nick].cartas)) ? datasetActual[nick].cartas : [];
+                                                                            if (cartasUser.length > 0) {
+                                                                                let cartasHtmlArr = cartasUser.map(c => {
+                                                                                    let cClean = String(c).trim();
+                                                                                    let claseSalida = sacados.includes(normalizarTexto(cClean)) ? "num-inv-rojo" : "";
+                                                                                    return `<span class="${claseSalida}">${cClean}</span>`;
+                                                                                });
+                                                                                badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
+                                                                            } else {
+                                                                                badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
+                                                                            }
+                                                                        }
+
+                                                                        html += `
+                                                                        <div class="item-conectado">
+                                                                            <div style="display:flex; align-items:center; gap:6px; width: 100%;">
+                                                                                <span class="punto-online"></span>
+                                                                                <span style="font-weight: bold; text-transform: uppercase; color: #fff; word-break: break-all;">${nick}</span>
+                                                                            </div>
+                                                                            ${badgeHtml}
+                                                                        </div>`;
+                                                                    }
+                                                                });
+
+                                                                if (contadorElem) contadorElem.innerText = totalOnline;
+                                                                if (contenedorLista) {
+                                                                    contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
                                     });
-                                    badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
-                                } else {
-                                    badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
-                                }
-                            }
-
-                            html += `
-                            <div class="item-conectado">
-                                <div style="display:flex; align-items:center; gap:6px; width: 100%;">
-                                    <span class="punto-online"></span>
-                                    <span style="font-weight: bold; text-transform: uppercase; color: #fff; word-break: break-all;">${nick}</span>
-                                </div>
-                                ${badgeHtml}
-                            </div>`;
-                        }
+                                });
+                            });
+                        });
                     });
-
-                    if (contadorElem) contadorElem.innerText = totalOnline;
-                    if (contenedorLista) {
-                        contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
-                    }
                 });
             });
         });
@@ -387,19 +412,6 @@ function arrancarTodo() {
         if(!d) return;
 
         window.misJuegosDB = d.juegos || [];           
-        window.misSorteadoresDB = d.sorteadores || []; 
-
-        const selectSort = document.getElementById('select-sorteador');
-        const valSelectAnterior = selectSort.value;
-        const listaSorteadores = (window.misSorteadoresDB.length > 0) ? window.misSorteadoresDB : Object.keys(window.SORTEADORES_CONFIG);
-
-        selectSort.innerHTML = listaSorteadores.map(id => {
-            const idLimpio = String(id).trim();
-            const nombreLindo = window.SORTEADORES_CONFIG[idLimpio] || idLimpio.toUpperCase();
-            return `<option value="${idLimpio}">${nombreLindo}</option>`;
-        }).join('');
-
-        if(listaSorteadores.includes(valSelectAnterior)) selectSort.value = valSelectAnterior;
 
         if (miSesionActual === null) miSesionActual = d.sessionToken;
 
@@ -415,6 +427,22 @@ function arrancarTodo() {
 
         const juegoActivoLimpio = d.juegoActivo ? String(d.juegoActivo).trim() : null;
         
+        const juegosConSeleccionAdmin = ['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'];
+        const btnReabrir = document.getElementById('btn-reabrir-seleccion');
+        const contenedorLimite = document.getElementById('contenedor-limite-elecciones');
+        const inputMaxCartas = document.getElementById('input-max-cartas');
+
+        if (juegosConSeleccionAdmin.includes(juegoActivoLimpio)) {
+            btnReabrir.style.display = 'block';
+            contenedorLimite.style.display = 'flex';
+            if (d.maxSelecciones) {
+                inputMaxCartas.value = d.maxSelecciones;
+            }
+        } else {
+            btnReabrir.style.display = 'none';
+            contenedorLimite.style.display = 'none';
+        }
+
         if(juegoActivoLimpio && modoActivo !== juegoActivoLimpio) { 
             modoActivo = juegoActivoLimpio; 
             juegoActualGlobal = juegoActivoLimpio;
@@ -440,7 +468,6 @@ window.renderUsuarios = (lista) => {
     document.getElementById('lista-usuarios').innerHTML = lista.map(u => {
         const esH = (u.sexo === 'H' || u.genero === 'HOMBRE');
         const colorG = esH ? 'var(--cian)' : 'var(--rosa)';
-        
         const nickKey = (u.nick || u.id || "").trim().toLowerCase();
         const estadoUsr = window.presenciaGlobal[nickKey] || { estado: 'offline' };
         const esOnline = estadoUsr.estado === 'online';
@@ -453,16 +480,12 @@ window.renderUsuarios = (lista) => {
                 ${esH ? '♂' : '♀'}
             </span>
             <div style="flex:1; margin-left:12px;">
-                <div style="font-weight:900; font-size:16px; text-transform:uppercase;">
-                    ${u.nick || u.id}
-                </div>
+                <div style="font-weight:900; font-size:16px; text-transform:uppercase;">${u.nick || u.id}</div>
                 <div style="font-size:11px; margin-top:2px;">
                     <span>PIN: ${u.pin || '----'}</span> | <span style="color:${esOnline ? 'var(--verde)' : '#666'}">${esOnline ? 'ONLINE' : 'OFFLINE'}</span>
                 </div>
             </div>
-            <button onclick="window.borrarU('${u.id}')" style="border:1px solid var(--rojo); color:var(--rojo); background:none; font-size:9px; padding:8px 12px; border-radius:5px; cursor:pointer;">
-                ELIMINAR
-            </button>
+            <button onclick="window.borrarU('${u.id}')" style="border:1px solid var(--rojo); color:var(--rojo); background:none; font-size:9px; padding:8px 12px; border-radius:5px; cursor:pointer;">ELIMINAR</button>
         </div>`;
     }).join('');
 };
@@ -479,33 +502,20 @@ window.crearUsuarioAdmin = async () => {
     const sexo = document.getElementById('nuevo-sexo').value;
     const errDiv = document.getElementById('err-crear-usr');
 
-    if (!nick || !pin) {
-        errDiv.innerText = "COMPLETA NICK Y PIN";
-        return;
-    }
+    if (!nick || !pin) { errDiv.innerText = "COMPLETA NICK Y PIN"; return; }
 
     try {
         const userRef = doc(db, "proyectos", miCarpeta, "registrados", nick);
-        await setDoc(userRef, {
-            nick: nick,
-            pin: pin,
-            sexo: sexo,
-            genero: sexo === 'H' ? 'HOMBRE' : 'MUJER',
-            creado: Date.now()
-        });
+        await setDoc(userRef, { nick: nick, pin: pin, sexo: sexo, genero: sexo === 'H' ? 'HOMBRE' : 'MUJER', creado: Date.now() });
         document.getElementById('nuevo-nick').value = '';
         document.getElementById('nuevo-pin').value = '';
         errDiv.innerText = "";
         alert("¡Usuario creado con éxito!");
-    } catch (e) {
-        errDiv.innerText = "ERROR AL CREAR USUARIO";
-        console.error(e);
-    }
+    } catch (e) { errDiv.innerText = "ERROR AL CREAR USUARIO"; }
 };
 
 window.abrirModalFondo = () => document.getElementById('modal-fondo').style.display = 'flex';
 window.cerrarModalFondo = () => document.getElementById('modal-fondo').style.display = 'none';
-
 window.abrirModalXat = () => document.getElementById('modal-xat').style.display = 'flex';
 window.cerrarModalXat = () => document.getElementById('modal-xat').style.display = 'none';
 
@@ -513,7 +523,6 @@ window.guardarUrlXat = async () => {
     const url = document.getElementById('input-url-xat').value.trim();
     await updateDoc(doc(db, "proyectos", miCarpeta), { urlXat: url });
     cerrarModalXat();
-    alert("¡Sala de Xat actualizada!");
 };
 
 window.abrirPantallaJugador = () => {
@@ -537,51 +546,88 @@ window.cambiarSexo = async (id, s) => {
 };
 
 let usuarioAEliminar = null;
-window.borrarU = (id) => {
-    usuarioAEliminar = id;
-    document.getElementById('txt-confirmar-usuario').innerText = "ID: " + id;
-    document.getElementById('modal-confirmar-borrar').style.display = 'flex';
-};
-
+window.borrarU = (id) => { usuarioAEliminar = id; document.getElementById('txt-confirmar-usuario').innerText = "ID: " + id; document.getElementById('modal-confirmar-borrar').style.display = 'flex'; };
 window.cerrarModalBorrar = () => document.getElementById('modal-confirmar-borrar').style.display = 'none';
 
 document.getElementById('btn-si-borrar').onclick = async () => {
-    if (usuarioAEliminar) {
-        await deleteDoc(doc(db, "proyectos", miCarpeta, "registrados", usuarioAEliminar));
-        cerrarModalBorrar();
-    }
+    if (usuarioAEliminar) { await deleteDoc(doc(db, "proyectos", miCarpeta, "registrados", usuarioAEliminar)); cerrarModalBorrar(); }
 };
 
 window.cerrarRegistrados = () => document.getElementById('overlay-reg').style.display = 'none';
-document.getElementById('btn-ver-reg').onclick = () => document.getElementById('overlay-reg').style.display = 'flex';
+document.getElementById('btn-ver-reg-top').onclick = () => document.getElementById('overlay-reg').style.display = 'flex';
 
 let tempJuego = null;
-document.getElementById('input-busqueda').onclick = () => {
-    const sug = document.getElementById('sugerencias');
-    const listaJuegos = (window.misJuegosDB && window.misJuegosDB.length > 0) ? window.misJuegosDB : Object.keys(window.JUEGOS_CONFIG);
-    sug.innerHTML = listaJuegos.map(id => {
-        const idLimpio = String(id).trim();
-        const nombreLindo = window.JUEGOS_CONFIG[idLimpio] || idLimpio.toUpperCase();
-        return `<div class="sug-item" onclick="window.seleccionarJuego('${idLimpio}')">${nombreLindo}</div>`;
-    }).join('');
-    sug.style.display = 'block';
+
+const inputBusqueda = document.getElementById('input-busqueda');
+const sugerenciasDiv = document.getElementById('sugerencias');
+
+inputBusqueda.onclick = (e) => {
+    e.stopPropagation();
+    if (sugerenciasDiv.style.display === 'block') {
+        sugerenciasDiv.style.display = 'none';
+    } else {
+        const listaJuegos = (window.misJuegosDB && window.misJuegosDB.length > 0) ? window.misJuegosDB : Object.keys(window.JUEGOS_CONFIG);
+        sugerenciasDiv.innerHTML = listaJuegos.map(id => {
+            const idLimpio = String(id).trim();
+            const nombreLindo = window.JUEGOS_CONFIG[idLimpio] || idLimpio.toUpperCase();
+            return `<div class="sug-item" onclick="window.seleccionarJuego('${idLimpio}')">${nombreLindo}</div>`;
+        }).join('');
+        sugerenciasDiv.style.display = 'block';
+    }
 };
+
+document.addEventListener('click', (e) => {
+    if (!document.querySelector('.buscador-container').contains(e.target)) {
+        sugerenciasDiv.style.display = 'none';
+    }
+});
 
 window.seleccionarJuego = (id) => {
     tempJuego = String(id).trim(); 
-    document.getElementById('input-busqueda').value = window.JUEGOS_CONFIG[tempJuego] || tempJuego.toUpperCase();
-    document.getElementById('sugerencias').style.display = 'none';
+    inputBusqueda.value = window.JUEGOS_CONFIG[tempJuego] || tempJuego.toUpperCase();
+    sugerenciasDiv.style.display = 'none';
 };
 
 document.getElementById('btn-aplicar-modo').onclick = async () => {
     if (tempJuego) {
-        await updateDoc(doc(db, "proyectos", miCarpeta), { juegoActivo: tempJuego, estadoInvertidosComenzado: false, estadoMexComenzado: false });
+        await updateDoc(doc(db, "proyectos", miCarpeta), { 
+            juegoActivo: tempJuego, 
+            estadoInvertidosComenzado: false, 
+            estadoMexComenzado: false, 
+            estadoPokemonComenzado: false, 
+            estadoPaisComenzado: false,
+            estadoAutosComenzado: false,
+            estadoBebidaComenzado: false,
+            estadoComidasComenzado: false,
+            estadoFiestaComenzado: false,
+            estadoPitufoComenzado: false,
+            estadoSimpsonComenzado: false,
+            estadoPowerComenzado: false,
+            estadoTernaComenzado: false 
+        });
     }
 };
 
-document.getElementById('btn-abrir-sort').onclick = () => {
-    const cod = document.getElementById('select-sorteador').value;
-    if (cod) window.open(`sorteadores.html?c=${cod}&p=${miCarpeta}`, "Sorteador", "width=1100,height=850");
+document.getElementById('btn-reabrir-seleccion').onclick = async () => {
+    if (!modoActivo) return;
+    
+    let campoEstado = "";
+    if (modoActivo === 'inv') campoEstado = "estadoInvertidosComenzado";
+    else if (modoActivo === 'terna') campoEstado = "estadoTernaComenzado";
+    else campoEstado = `estado${modoActivo.charAt(0).toUpperCase() + modoActivo.slice(1)}Comenzado`;
+
+    if (confirm(`¿Deseas reabrir la fase de selección para el juego ${modoActivo.toUpperCase()} sin perder las bolas extraídas?`)) {
+        let objUpdate = {};
+        objUpdate[campoEstado] = false; 
+        await updateDoc(doc(db, "proyectos", miCarpeta), objUpdate);
+        alert("¡Selección reabierta con éxito! Los jugadores ya pueden elegir sus opciones.");
+    }
+};
+
+document.getElementById('btn-guardar-limite').onclick = async () => {
+    const nuevoLimite = parseInt(document.getElementById('input-max-cartas').value) || 2;
+    await updateDoc(doc(db, "proyectos", miCarpeta), { maxSelecciones: nuevoLimite });
+    alert(`¡Límite actualizado a ${nuevoLimite} opciones por jugador!`);
 };
 
 window.cerrarSesion = () => { sessionStorage.clear(); location.reload(); };
@@ -589,41 +635,31 @@ window.cerrarSesion = () => { sessionStorage.clear(); location.reload(); };
 async function cargarMod(m) { 
     const p = document.getElementById('panel-juego'); 
     if (!m) return;
-
     const juegoLimpio = String(m).trim();
     const rutaModulo = `./modulos/admin_${encodeURIComponent(juegoLimpio)}.js?v=${Date.now()}`;
-    
     try { 
         const mod = await import(rutaModulo); 
-        if (mod && mod.iniciar) { 
-            p.innerHTML = ''; 
-            mod.iniciar(p, db, miCarpeta, rtdb); 
-        } else {
-            p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ El módulo "admin_${juegoLimpio}.js" no exporta la función "iniciar".</div>`;
-        }
+        if (mod && mod.iniciar) { p.innerHTML = ''; mod.iniciar(p, db, miCarpeta, rtdb); } 
     } catch(e) { 
-        console.error("Error detallado al cargar el módulo:", e);
-        p.innerHTML = `
-            <div style="color:var(--rojo); text-align:center; padding:20px; border: 1px dashed var(--rojo); border-radius:10px; margin:20px;">
-                ⚠️ <b>No se pudo cargar el módulo:</b> admin_${juegoLimpio}.js<br>
-                <small style="color:#bbb; display:block; margin-top:8px;">
-                    Verifica que el archivo exista en <code>/modulos/admin_${juegoLimpio}.js</code> y no tenga errores de sintaxis.
-                </small>
-            </div>`;
+        p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ El módulo "admin_${juegoLimpio}.js" no existe o no tiene exportación válida.</div>`;
     }
 }
 
 if (pinDeEntrada) arrancarTodo();
 else document.getElementById('capa-login').style.display = 'flex';
 
-document.getElementById('btn-login').onclick = async () => {
+async function intentarLogin() {
     const pinIn = document.getElementById('pin-input').value;
     const res = await validarLoginLocal(pinIn);
-    if (res.valida) {
-        sessionStorage.setItem(`admin_p_volatil`, pinIn);
-        location.reload();
-    } else {
-        document.getElementById('err-log').innerText = res.msg;
+    if (res.valida) { sessionStorage.setItem(`admin_p_volatil`, pinIn); location.reload(); } 
+    else { document.getElementById('err-log').innerText = res.msg; }
+}
+
+document.getElementById('btn-login').onclick = intentarLogin;
+
+document.getElementById('pin-input').onkeydown = (e) => {
+    if (e.key === 'Enter') {
+        intentarLogin();
     }
 };
 </script>

@@ -11,11 +11,10 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             <div style="display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:15px; flex-wrap:wrap;">
                 <button id="btn-sacar-100" class="btn-abrir" style="background:var(--cian); color:#000;">SACAR NÚMERO</button>
                 <button id="btn-auto-100" class="btn-abrir" style="background:var(--amarillo); color:#000;">▶ AUTOMÁTICO</button>
-                <select id="sel-vel-100" style="background:#000; border:1px solid var(--amarillo); color:#fff; padding:8px; border-radius:6px; font-weight:bold;">
-                    <option value="3000">3 Segundos</option>
-                    <option value="5000" selected>5 Segundos</option>
-                    <option value="8000">8 Segundos</option>
-                </select>
+                <div style="display:flex; align-items:center; gap:5px; background:#000; border:1px solid var(--amarillo); padding:4px 8px; border-radius:6px;">
+                    <span style="font-size:11px; color:#fff; font-weight:bold;">SEG:</span>
+                    <input type="number" id="sel-vel-100" value="5" min="1" step="0.5" style="background:transparent; border:none; color:#fff; width:50px; font-weight:bold; text-align:center; outline:none;">
+                </div>
                 <button id="btn-pausa-100" class="btn-abrir" style="background:#ff9900; color:#000; display:none;">PAUSAR</button>
                 <button id="btn-reset-100" class="btn-abrir" style="background:var(--rojo); color:#fff;">REINICIAR</button>
             </div>
@@ -78,11 +77,16 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
 
     const btnAuto = document.getElementById('btn-auto-100');
     const btnPausa = document.getElementById('btn-pausa-100');
-    const selVel = document.getElementById('sel-vel-100');
+    const inpVel = document.getElementById('sel-vel-100');
+
+    function obtenerMilisegundos() {
+        const val = parseFloat(inpVel.value);
+        return (isNaN(val) || val <= 0) ? 5000 : val * 1000;
+    }
 
     btnAuto.onclick = () => {
         if (intervaloAuto) return;
-        const velocidad = parseInt(selVel.value) || 5000;
+        const velocidad = obtenerMilisegundos();
         btnAuto.style.display = "none";
         btnPausa.style.display = "inline-block";
         btnPausa.innerText = "PAUSAR";
@@ -99,7 +103,7 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
             await set(sorteoRef1, payload);
             await set(sorteoRef2, payload);
         } else {
-            const velocidad = parseInt(selVel.value) || 5000;
+            const velocidad = obtenerMilisegundos();
             btnPausa.innerText = "PAUSAR";
             intervaloAuto = setInterval(() => sacarNumeroAccion(), velocidad);
             const payload = { sacados: numerosSalidos, estado: "activo", ultimo: numerosSalidos[numerosSalidos.length - 1] || null };
