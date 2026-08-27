@@ -231,32 +231,42 @@
     </div>
 </div>
 
-<!-- MODAL DE DISEÑO / FONDO CON GENERADOR VISUAL DE DEGRADADO -->
+<!-- MODAL DE DISEÑO / FONDO CON CREADOR DE DEGRADADOS AVANZADO Y ORDEN DE COLORES -->
 <div id="modal-fondo" class="modal-overlay">
     <div style="background: #0a0a0a; border: 2px solid var(--rosa); padding: 20px; border-radius: 15px; width: 440px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000; box-sizing: border-box;">
         <h2 style="color:var(--rosa); text-align:center; margin: 0 0 10px 0; font-size: 18px;">DISEÑO DE FONDO</h2>
         <p style="font-size:10px; color:#aaa; margin-bottom:10px; text-transform: uppercase; font-weight: bold; line-height: 1.4;">
-            Ingresa URL, Color Hex o genera tu degradado radial automáticamente:
+            Crea tu degradado personalizado, añade colores, ordénalos con ⬆️ ⬇️ o ingresa una URL:
         </p>
         
-        <!-- GENERADOR VISUAL DE DEGRADADO -->
+        <!-- GENERADOR VISUAL DE DEGRADADO AVANZADO -->
         <div style="background: #111; border: 1px dashed var(--rosa); padding: 12px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box;">
-            <div style="font-size: 10px; color: var(--rosa); font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">✨ Creador de Degradado Radial</div>
-            <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                <div style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
-                    <span>Color 1:</span>
-                    <input type="color" id="picker-color1" value="#871ff7" style="background:none; border:none; width: 30px; height: 25px; cursor: pointer;">
-                </div>
-                <div style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
-                    <span>Color 2:</span>
-                    <input type="color" id="picker-color2" value="#b450ee" style="background:none; border:none; width: 30px; height: 25px; cursor: pointer;">
-                </div>
-                <button onclick="window.generarDegradadoRadial()" class="btn-abrir" style="background: var(--rosa); color: #000; padding: 6px 12px; font-size: 10px; height: 30px;">GENERAR</button>
+            <div style="font-size: 10px; color: var(--rosa); font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">✨ Creador Avanzado de Degradados</div>
+            
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 11px; font-weight: bold;">Tipo:</span>
+                <select id="select-tipo-grad" style="flex: 1; background: #000; color: #fff; border: 1px solid #444; padding: 6px; border-radius: 6px; font-size: 11px; outline: none; font-weight: bold;">
+                    <option value="radial-circle">Radial (Circular)</option>
+                    <option value="linear-to-right">Lineal (Izquierda a Derecha)</option>
+                    <option value="linear-to-bottom">Lineal (Arriba a Abajo)</option>
+                    <option value="linear-45deg">Lineal (45 grados)</option>
+                </select>
             </div>
+
+            <div style="font-size: 10px; color: #aaa; margin-bottom: 5px; font-weight: bold;">COLORES DEL DEGRADADO:</div>
+            <div id="contenedor-selectores-color" style="display: flex; flex-direction: column; gap: 6px; max-height: 140px; overflow-y: auto; margin-bottom: 10px; padding-right: 5px;">
+                <!-- Se inyectan dinámicamente -->
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                <button onclick="window.agregarSelectorColor()" class="btn-abrir" style="background: #222; color: var(--rosa); border: 1px solid var(--rosa); padding: 6px 10px; font-size: 10px; flex: 1;"><i class="fas fa-plus"></i> AÑADIR</button>
+                <button onclick="window.generarDegradadoAvanzado()" class="btn-abrir" style="background: var(--rosa); color: #000; padding: 6px 12px; font-size: 10px; flex: 1.5; font-weight: 900;">GENERAR CSS</button>
+            </div>
+
             <div id="preview-degradado" style="width: 100%; height: 25px; border-radius: 5px; background: radial-gradient(circle, #871ff7, #b450ee); border: 1px solid #333;"></div>
         </div>
 
-        <input type="text" id="input-url-fondo" placeholder="https://... o #111111 o radial-gradient(...)" style="width:100%; background:#000; border:1px solid #333; color:#fff; padding:10px; border-radius:8px; margin-bottom:15px; box-sizing:border-box; outline: none; font-size: 11px;">
+        <input type="text" id="input-url-fondo" placeholder="https://... o #111111 o gradient(...)" style="width:100%; background:#000; border:1px solid #333; color:#fff; padding:10px; border-radius:8px; margin-bottom:15px; box-sizing:border-box; outline: none; font-size: 11px;">
         <div style="display:flex; gap:10px;">
             <button onclick="guardarNuevoFondo()" class="btn-abrir" style="flex:1.5; background:var(--rosa); height: 40px; font-size: 11px;">APLICAR</button>
             <button onclick="cerrarModalFondo()" class="btn-efecto" style="flex:1; height: 40px;">CERRAR</button>
@@ -526,7 +536,6 @@ document.getElementById('ver-password').onclick = function() {
     this.classList.toggle('fa-eye-slash');
 };
 
-// Función para alternar el diseño responsivo móvil manualmente
 window.alternarModoMovil = () => {
     const body = document.body;
     body.classList.toggle('modo-movil');
@@ -1079,7 +1088,10 @@ window.crearUsuarioAdmin = async () => {
     } catch (e) { errDiv.innerText = "ERROR AL CREAR USUARIO"; }
 };
 
-window.abrirModalFondo = () => document.getElementById('modal-fondo').style.display = 'flex';
+window.abrirModalFondo = () => {
+    document.getElementById('modal-fondo').style.display = 'flex';
+    inicializarSelectoresColorDefault();
+};
 window.cerrarModalFondo = () => document.getElementById('modal-fondo').style.display = 'none';
 window.abrirModalXat = () => document.getElementById('modal-xat').style.display = 'flex';
 window.cerrarModalXat = () => document.getElementById('modal-xat').style.display = 'none';
@@ -1103,29 +1115,117 @@ window.abrirPantallaJugador = () => {
     window.open(`pantalla_jugador.html?p=${miCarpeta}`, "PantallaJugador", "width=1750,height=850");
 };
 
-// Lógica del generador visual de degradados
-const picker1 = document.getElementById('picker-color1');
-const picker2 = document.getElementById('picker-color2');
+// Lógica del Creador Avanzado de Degradados con Subir / Bajar
+const contenedorColores = document.getElementById('contenedor-selectores-color');
 const previewDeg = document.getElementById('preview-degradado');
 const inputFondo = document.getElementById('input-url-fondo');
+const selectTipoGrad = document.getElementById('select-tipo-grad');
 
-function actualizarPreview() {
-    const c1 = picker1.value;
-    const c2 = picker2.value;
-    const cssDeg = `radial-gradient(circle, ${c1}, ${c2})`;
-    previewDeg.style.background = cssDeg;
+function inicializarSelectoresColorDefault() {
+    if (contenedorColores.children.length === 0) {
+        agregarSelectorColorDefecto('#871ff7');
+        agregarSelectorColorDefecto('#b450ee');
+        actualizarPreviewAvanzado();
+    }
 }
 
-if (picker1 && picker2) {
-    picker1.oninput = actualizarPreview;
-    picker2.oninput = actualizarPreview;
+window.agregarSelectorColor = () => {
+    agregarSelectorColorDefecto('#00f3ff');
+    actualizarPreviewAvanzado();
+};
+
+function agregarSelectorColorDefecto(hexColor) {
+    const div = document.createElement('div');
+    div.style.cssText = "display: flex; align-items: center; gap: 5px; background: #151515; padding: 5px; border-radius: 6px; border: 1px solid #222;";
+    
+    const inputColor = document.createElement('input');
+    inputColor.type = "color";
+    inputColor.value = hexColor;
+    inputColor.style.cssText = "background:none; border:none; width: 30px; height: 24px; cursor: pointer;";
+    inputColor.oninput = actualizarPreviewAvanzado;
+
+    const span = document.createElement('span');
+    span.style.cssText = "font-size: 10px; color: #ccc; flex: 1;";
+    span.innerText = "Color";
+
+    // Botón Subir ⬆️
+    const btnSubir = document.createElement('button');
+    btnSubir.innerHTML = '⬆️';
+    btnSubir.title = "Subir posición";
+    btnSubir.style.cssText = "background: #222; color: #fff; border: 1px solid #444; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 9px;";
+    btnSubir.onclick = () => {
+        const prev = div.previousElementSibling;
+        if (prev) {
+            contenedorColores.insertBefore(div, prev);
+            actualizarPreviewAvanzado();
+        }
+    };
+
+    // Botón Bajar ⬇️
+    const btnBajar = document.createElement('button');
+    btnBajar.innerHTML = '⬇️';
+    btnBajar.title = "Bajar posición";
+    btnBajar.style.cssText = "background: #222; color: #fff; border: 1px solid #444; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 9px;";
+    btnBajar.onclick = () => {
+        const next = div.nextElementSibling;
+        if (next) {
+            contenedorColores.insertBefore(next, div);
+            actualizarPreviewAvanzado();
+        }
+    };
+
+    // Botón Borrar 🗑️
+    const btnBorrar = document.createElement('button');
+    btnBorrar.innerHTML = '❌';
+    btnBorrar.title = "Eliminar color";
+    btnBorrar.style.cssText = "background: #300; color: #fff; border: 1px solid #500; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 9px;";
+    btnBorrar.onclick = () => {
+        if (contenedorColores.children.length > 2) {
+            div.remove();
+            actualizarPreviewAvanzado();
+        } else {
+            alert("Se requieren al menos 2 colores para un degradado.");
+        }
+    };
+
+    div.appendChild(inputColor);
+    div.appendChild(span);
+    div.appendChild(btnSubir);
+    div.appendChild(btnBajar);
+    div.appendChild(btnBorrar);
+    contenedorColores.appendChild(div);
 }
 
-window.generarDegradadoRadial = () => {
-    const c1 = picker1.value;
-    const c2 = picker2.value;
-    const cssDeg = `radial-gradient(circle, ${c1}, ${c2})`;
-    inputFondo.value = cssDeg;
+function construirCssDegradado() {
+    const inputs = contenedorColores.querySelectorAll('input[type="color"]');
+    const colores = Array.from(inputs).map(inp => inp.value);
+    const tipo = selectTipoGrad.value;
+    const listaColores = colores.join(', ');
+
+    if (tipo === 'radial-circle') {
+        return `radial-gradient(circle, ${listaColores})`;
+    } else if (tipo === 'linear-to-right') {
+        return `linear-gradient(to right, ${listaColores})`;
+    } else if (tipo === 'linear-to-bottom') {
+        return `linear-gradient(to bottom, ${listaColores})`;
+    } else if (tipo === 'linear-45deg') {
+        return `linear-gradient(45deg, ${listaColores})`;
+    }
+    return `radial-gradient(circle, ${listaColores})`;
+}
+
+function actualizarPreviewAvanzado() {
+    const css = construirCssDegradado();
+    previewDeg.style.background = css;
+}
+
+if (selectTipoGrad) {
+    selectTipoGrad.onchange = actualizarPreviewAvanzado;
+}
+
+window.generarDegradadoAvanzado = () => {
+    const css = construirCssDegradado();
+    inputFondo.value = css;
 };
 
 window.guardarNuevoFondo = async () => { 
