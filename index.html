@@ -11,25 +11,66 @@
             --cian: #00ffff; --rosa: #ff00ff; --verde: #39ff14; 
             --amarillo: #ffff00; --rojo: #ff0000; --violeta: #bc13fe;
         }
-        body { 
-            background: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            box-sizing: border-box;
         }
+
+        body { 
+            color: #fff; 
+            font-family: sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            max-width: 1440px; 
+            margin: 0 auto;
+            padding: 10px;
+        }
+
         #contenido-admin { width: 100%; display: none; flex-direction: column; align-items: center; } 
         .header-top { 
             width: 100%; background: #050505; border-bottom: 1px solid #111; display: flex; justify-content: center !important; padding: 15px 0; position: sticky; top: 0; z-index: 100; box-sizing: border-box;
         }
-        .contenedor-central { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1350px; padding: 0 20px; margin: 0 auto; }
+        .contenedor-central { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1450px; padding: 0 20px; margin: 0 auto; flex-wrap: wrap; gap: 10px; }
         .logo-main { font-size: 24px; font-weight: 900; letter-spacing: 2px; }
         .btn-efecto { background: #000; border: 1px solid #FF69B4; color: #FF69B4; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; text-transform: uppercase; transition: 0.3s; }
         .btn-efecto:hover { border-color: var(--cian); color: var(--cian); box-shadow: 0 0 10px var(--cian); }
-        .layout-admin-principal { display: flex; gap: 20px; width: 100%; max-width: 1350px; box-sizing: border-box; align-items: flex-start; justify-content: center; margin-top: 25px; padding: 0 20px; }
-        .sidebar-conectados-admin { width: 330px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; }
+        
+        .layout-admin-principal { display: flex; gap: 20px; width: 100%; max-width: 1450px; box-sizing: border-box; align-items: flex-start; justify-content: center; margin-top: 25px; padding: 0 20px; }
+        
+        .sidebar-conectados-admin, .sidebar-desconectados-admin { width: 280px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; }
         .sidebar-conectados-admin h3 { color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; }
-        #lista-conectados-admin-view { display: flex; flex-direction: column; gap: 8px; max-height: 550px; overflow-y: auto; }
-        .item-conectado { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; background: #111; padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a; box-sizing: border-box; width: 100%; }
+        .sidebar-desconectados-admin h3 { color: #888; font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; }
+        
+        #lista-conectados-admin-view, #lista-desconectados-admin-view, #lista-temporales-admin-view { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
+        .item-conectado, .item-desconectado, .item-temporal { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; background: #111; padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a; box-sizing: border-box; width: 100%; }
+        
+        .item-desconectado { cursor: pointer; transition: 0.2s; }
+        .item-desconectado:hover { border-color: var(--amarillo); background: #151515; }
+
         .punto-online { width: 8px; height: 8px; background: var(--verde); border-radius: 50%; box-shadow: 0 0 6px var(--verde); flex-shrink: 0; }
+        .punto-offline { width: 8px; height: 8px; background: #555; border-radius: 50%; flex-shrink: 0; }
+        .punto-temporal { width: 8px; height: 8px; background: var(--amarillo); border-radius: 50%; box-shadow: 0 0 6px var(--amarillo); flex-shrink: 0; }
+
         .badge-invertido { background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 0.5px; width: 100%; box-sizing: border-box; white-space: normal; word-break: break-word; text-align: left; }
         .num-inv-rojo { color: var(--rojo) !important; text-decoration: line-through; }
+        
+        .btn-celda-admin {
+            background: #151515; color: #aaa; padding: 12px 6px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 11px; border: 2px solid #333; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; display: flex; align-items: center; justify-content: center; user-select: none; box-sizing: border-box;
+        }
+        .btn-celda-admin:hover { border-color: var(--cian); color: var(--cian); background: #1a1a1a; transform: translateY(-2px); }
+        .btn-celda-seleccionada {
+            background: var(--amarillo) !important; color: #000 !important; border-color: #fff !important; box-shadow: 0 0 15px rgba(255, 255, 0, 0.6); transform: scale(1.02);
+        }
+        .btn-celda-ocupada {
+            background: #250505 !important; color: #555 !important; border-color: #400 !important; cursor: not-allowed; opacity: 0.6; transform: none !important; box-shadow: none !important;
+        }
+
         .main-admin-columna { flex: 1; display: flex; flex-direction: column; align-items: center; max-width: 950px; }
         .menu-modos { width: 100%; padding: 20px; background: #080808; border: 1px solid #151515; border-radius: 15px; box-sizing: border-box; }
         .buscador-container { position: relative; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
@@ -38,11 +79,11 @@
         .sug-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #151515; font-weight: 900; text-transform: uppercase; transition: 0.2s; color: #fff; }
         .sug-item:hover { background: var(--verde); color: #000; box-shadow: 0 0 20px var(--verde); }
         .btn-abrir { background: var(--violeta); color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 900; cursor: pointer; box-shadow: 0 0 15px var(--violeta); }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 10000; }
-        #modal-reg { background: #0a0a0a; border: 2px solid #222; width: 95%; max-width: 500px; padding: 20px; border-radius: 15px; display: flex; flex-direction: column; max-height: 85vh; }
-        .item-reg { display: flex; align-items: center; background: #0a0a0a; border: 1px solid #222; margin-bottom: 5px; padding: 10px; border-radius: 6px; }
-        #capa-login { position: fixed; inset: 0; z-index: 99999; background: radial-gradient(circle, #000814 0%, #000000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .login-card { background: rgba(0, 0, 0, 0.9); border: 2px solid #800020; padding: 40px; border-radius: 30px; text-align: center; box-shadow: 0 0 30px rgba(128, 0, 32, 0.6); backdrop-filter: blur(10px); width: 100%; max-width: 350px; display: flex; flex-direction: column; align-items: center; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 10000; padding: 10px; box-sizing: border-box; }
+        #modal-reg { background: #0a0a0a; border: 2px solid #222; width: 95%; max-width: 500px; padding: 20px; border-radius: 15px; display: flex; flex-direction: column; max-height: 85vh; box-sizing: border-box; }
+        .item-reg { display: flex; align-items: center; background: #0a0a0a; border: 1px solid #222; margin-bottom: 5px; padding: 10px; border-radius: 6px; box-sizing: border-box; }
+        #capa-login { position: fixed; inset: 0; z-index: 99999; background: radial-gradient(circle, #000814 0%, #000000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100vw !important; left: 0 !important; }
+        .login-card { background: rgba(0, 0, 0, 0.9); border: 2px solid #800020; padding: 40px; border-radius: 30px; text-align: center; box-shadow: 0 0 30px rgba(128, 0, 32, 0.6); backdrop-filter: blur(10px); width: 100%; max-width: 350px; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
         .input-container { position: relative; width: 100%; max-width: 280px; margin: 0 auto; }
         #pin-input { background: #000 !important; border: 1px solid #4a0012; color: #fff; padding: 10px; padding-right: 45px; text-align: center; font-size: 20px; width: 100%; outline: none; border-radius: 12px; transition: 0.4s; font-weight: bold; box-sizing: border-box; }
         #pin-input:focus { border-color: #800020; box-shadow: 0 0 15px #800020; }
@@ -51,6 +92,29 @@
         .status-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; display: inline-block; }
         .online { background: var(--verde); box-shadow: 0 0 8px var(--verde); }
         .offline { background: #444; }
+
+        /* MODO MÓVIL FORZADO / RESPONSIVO AUTOMÁTICO */
+        body.modo-movil .layout-admin-principal {
+            flex-direction: column !important;
+            align-items: center !important;
+        }
+        body.modo-movil .sidebar-conectados-admin,
+        body.modo-movil .main-admin-columna,
+        body.modo-movil .sidebar-desconectados-admin {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        @media (max-width: 1400px) {
+            .layout-admin-principal {
+                flex-direction: column;
+                align-items: center;
+            }
+            .sidebar-conectados-admin, .main-admin-columna, .sidebar-desconectados-admin {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -74,21 +138,29 @@
     <div class="header-top">
         <div class="contenedor-central">
             <div class="logo-main">PERLANEGRA<span style="color:var(--cian)">GAMES</span></div>
-            <div style="display:flex; gap:8px;">
+            <div style="display:flex; gap:8px; flex-wrap: wrap; align-items: center;">
+                <button onclick="window.alternarModoMovil()" id="btn-modo-movil" class="btn-efecto" style="border-color: var(--verde); color: var(--verde);" title="CAMBIAR VISTA MÓVIL/PC"><i class="fas fa-mobile-alt"></i> MÓVIL</button>
                 <button class="btn-efecto" onclick="window.abrirModalFondo()" style="border-color: #FFFF00; color: #FFFF00;" title="CAMBIAR FONDO">🎨 DISEÑO</button>
                 <button class="btn-efecto" onclick="window.abrirModalXat()" style="border-color: #00F3FF; color: #00F3FF;" title="SALA DE XAT">💬 SALA DE XAT</button>
+                <button class="btn-efecto" onclick="window.abrirModalEnlaceBola()" style="border-color: #39ff14; color: #39ff14;" title="ENLACE A BOLA">🔗 ENLACE BOLA</button>
                 <button class="btn-efecto" id="btn-ver-reg-top" style="border-color: var(--amarillo); color: var(--amarillo);" title="REGISTRADOS">👤 REGISTRADOS (<span id="count-total">0</span>)</button>
                 <button class="btn-efecto" onclick="window.abrirPantallaJugador()" style="border-color: #39ff14; color: #39ff14;" title="PANTALLA JUGADOR">📺 JUGADOR</button>
-                <button class="btn-efecto" onclick="window.abrirModalPin()" style="border-color: #C71585; color: #C71585;" title="CAMBIAR CLAVE">⚙️ CLAVE</button>
+                <button class="btn-efecto" onclick="window.abrirModalPin()" style="border-color: #C71585; color: #C71585;" title="⚙️ CLAVE">⚙️ CLAVE</button>
                 <button onclick="cerrarSesion()" class="btn-efecto" style="border-color: #A020F0; color: #A020F0;" title="CERRAR SESIÓN"><i class="fas fa-power-off"></i> SALIR</button>
             </div>
         </div>
     </div>
 
     <div class="layout-admin-principal">
-        <div class="sidebar-conectados-admin">
-            <h3>🟢 Conectados (<span id="count-conectados-admin">0</span>)</h3>
-            <div id="lista-conectados-admin-view"></div>
+        <div class="sidebar-conectados-admin" style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <h3>🟢 Conectados (<span id="count-conectados-admin">0</span>)</h3>
+                <div id="lista-conectados-admin-view"></div>
+            </div>
+            <div>
+                <h3>⚡ Temporales / Admin (<span id="count-temporales-admin">0</span>)</h3>
+                <div id="lista-temporales-admin-view"></div>
+            </div>
         </div>
 
         <div class="main-admin-columna">
@@ -97,10 +169,8 @@
                     <input type="text" id="input-busqueda" placeholder="SELECCIONAR JUEGO..." readonly>
                     <div id="sugerencias"></div>
                     <button id="btn-aplicar-modo" class="btn-abrir" style="background:var(--verde); color:#000;">APLICAR</button>
-                    <!-- BOTÓN GLOBAL PARA REABRIR SELECCIÓN EN PLENA PARTIDA -->
                     <button id="btn-reabrir-seleccion" class="btn-abrir" style="background:var(--amarillo); color:#000; display:none;" title="Permite que jugadores nuevos elijan carta sin reiniciar bolas">🔓 REABRIR SELECCIÓN</button>
                     
-                    <!-- NUEVO: Selector de límite de elecciones -->
                     <div id="contenedor-limite-elecciones" style="display:none; align-items: center; gap: 5px; background: #111; padding: 5px 10px; border-radius: 8px; border: 1px solid #333;">
                         <label style="font-size: 10px; color: var(--cian); font-weight: bold;">MÁX. CARTAS:</label>
                         <input type="number" id="input-max-cartas" value="2" min="1" max="10" style="width: 45px; background: #000; border: 1px solid #555; color: #fff; text-align: center; padding: 4px; border-radius: 4px; font-weight: bold; outline: none;">
@@ -110,6 +180,23 @@
             </div>
 
             <div id="panel-juego" style="width:100%; margin-top:20px;"></div>
+        </div>
+
+        <div class="sidebar-desconectados-admin">
+            <h3>⚪ Desconectados (<span id="count-desconectados-admin">0</span>)</h3>
+            <p style="font-size: 9px; color: #666; margin: 0 0 10px 0;">* Haz clic en un usuario para gestionar sus selecciones.</p>
+            <div id="lista-desconectados-admin-view"></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-eleccion-admin" class="modal-overlay">
+    <div style="background: #0a0a0a; border: 2px solid var(--amarillo); padding: 25px; border-radius: 15px; width: 480px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 0 30px #000; box-sizing: border-box;">
+        <h2 id="modal-eleccion-titulo" style="color:var(--amarillo); text-align:center; margin: 0 0 5px 0; font-size: 16px; text-transform: uppercase;">GESTIONAR USUARIO</h2>
+        <p id="modal-eleccion-subtitulo" style="font-size:11px; color:#aaa; text-align:center; margin-bottom: 15px; text-transform: uppercase; font-weight: bold;"></p>
+        <div id="modal-eleccion-grid" style="display: grid; gap: 6px; overflow-y: auto; max-height: 400px; padding: 5px; background: #111; border-radius: 8px; border: 1px solid #222;"></div>
+        <div style="display:flex; gap:10px; margin-top: 15px;">
+            <button onclick="cerrarModalEleccionAdmin()" class="btn-efecto" style="flex:1; height: 40px; border-color: red; color: red;">CERRAR</button>
         </div>
     </div>
 </div>
@@ -121,7 +208,7 @@
             <button onclick="cerrarRegistrados()" class="btn-efecto" style="border-color:red; color:red;">CERRAR</button>
         </div>
         
-        <div style="background:#121212; padding:12px; border-radius:8px; margin-bottom:12px; border:1px solid var(--amarillo);">
+        <div style="background:#121212; padding:12px; border-radius:8px; margin-bottom:12px; border:1px solid var(--amarillo); box-sizing: border-box;">
             <h4 style="color:var(--amarillo); margin:0 0 8px 0; font-size:12px; text-transform:uppercase;">➕ CREAR NUEVO USUARIO</h4>
             <div style="display:flex; gap:6px; flex-wrap:wrap;">
                 <input type="text" id="nuevo-nick" placeholder="NICK / USUARIO" style="flex:1; background:#000; border:1px solid #444; color:#fff; padding:8px; border-radius:6px; font-size:11px; outline:none; text-transform:uppercase;">
@@ -135,7 +222,7 @@
             <div id="err-crear-usr" style="color:var(--rojo); font-size:10px; margin-top:5px; font-weight:bold;"></div>
         </div>
 
-        <div id="area-contadores" style="display:flex; gap:10px; margin-bottom:10px; background:#111; padding:10px; border-radius:8px; border:1px solid #222; justify-content:center; font-weight:900; font-size:12px;">
+        <div id="area-contadores" style="display:flex; gap:10px; margin-bottom:10px; background:#111; padding:10px; border-radius:8px; border:1px solid #222; justify-content:center; font-weight:900; font-size:12px; box-sizing: border-box;">
             <span style="color:var(--cian)">♂ HOMBRES: <span id="c-h">0</span></span>
             <span style="color:var(--rosa)">♀ MUJERES: <span id="c-m">0</span></span>
         </div>
@@ -144,11 +231,32 @@
     </div>
 </div>
 
+<!-- MODAL DE DISEÑO / FONDO CON GENERADOR VISUAL DE DEGRADADO -->
 <div id="modal-fondo" class="modal-overlay">
-    <div style="background: #0a0a0a; border: 2px solid var(--rosa); padding: 20px; border-radius: 15px; width: 380px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000;">
-        <h2 style="color:var(--rosa); text-align:center; margin: 0 0 15px 0; font-size: 18px;">DISEÑO DE FONDO</h2>
-        <p style="font-size:10px; color:#666; margin-bottom:5px; text-transform: uppercase; font-weight: bold;">URL Imagen o Color Hex:</p>
-        <input type="text" id="input-url-fondo" placeholder="https://... o #000" style="width:100%; background:#000; border:1px solid #333; color:#fff; padding:10px; border-radius:8px; margin-bottom:15px; box-sizing:border-box; outline: none;">
+    <div style="background: #0a0a0a; border: 2px solid var(--rosa); padding: 20px; border-radius: 15px; width: 440px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000; box-sizing: border-box;">
+        <h2 style="color:var(--rosa); text-align:center; margin: 0 0 10px 0; font-size: 18px;">DISEÑO DE FONDO</h2>
+        <p style="font-size:10px; color:#aaa; margin-bottom:10px; text-transform: uppercase; font-weight: bold; line-height: 1.4;">
+            Ingresa URL, Color Hex o genera tu degradado radial automáticamente:
+        </p>
+        
+        <!-- GENERADOR VISUAL DE DEGRADADO -->
+        <div style="background: #111; border: 1px dashed var(--rosa); padding: 12px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box;">
+            <div style="font-size: 10px; color: var(--rosa); font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">✨ Creador de Degradado Radial</div>
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
+                    <span>Color 1:</span>
+                    <input type="color" id="picker-color1" value="#871ff7" style="background:none; border:none; width: 30px; height: 25px; cursor: pointer;">
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px; font-size: 11px;">
+                    <span>Color 2:</span>
+                    <input type="color" id="picker-color2" value="#b450ee" style="background:none; border:none; width: 30px; height: 25px; cursor: pointer;">
+                </div>
+                <button onclick="window.generarDegradadoRadial()" class="btn-abrir" style="background: var(--rosa); color: #000; padding: 6px 12px; font-size: 10px; height: 30px;">GENERAR</button>
+            </div>
+            <div id="preview-degradado" style="width: 100%; height: 25px; border-radius: 5px; background: radial-gradient(circle, #871ff7, #b450ee); border: 1px solid #333;"></div>
+        </div>
+
+        <input type="text" id="input-url-fondo" placeholder="https://... o #111111 o radial-gradient(...)" style="width:100%; background:#000; border:1px solid #333; color:#fff; padding:10px; border-radius:8px; margin-bottom:15px; box-sizing:border-box; outline: none; font-size: 11px;">
         <div style="display:flex; gap:10px;">
             <button onclick="guardarNuevoFondo()" class="btn-abrir" style="flex:1.5; background:var(--rosa); height: 40px; font-size: 11px;">APLICAR</button>
             <button onclick="cerrarModalFondo()" class="btn-efecto" style="flex:1; height: 40px;">CERRAR</button>
@@ -157,7 +265,7 @@
 </div>
 
 <div id="modal-xat" class="modal-overlay">
-    <div style="background: #0a0a0a; border: 2px solid var(--cian); padding: 20px; border-radius: 15px; width: 380px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000;">
+    <div style="background: #0a0a0a; border: 2px solid var(--cian); padding: 20px; border-radius: 15px; width: 380px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000; box-sizing: border-box;">
         <h2 style="color:var(--cian); text-align:center; margin: 0 0 15px 0; font-size: 18px;">CONFIGURAR SALA DE XAT</h2>
         <p style="font-size:10px; color:#666; margin-bottom:5px; text-transform: uppercase; font-weight: bold;">URL de la página web (Iframe):</p>
         <input type="text" id="input-url-xat" placeholder="https://..." style="width:100%; background:#000; border:1px solid #333; color:#fff; padding:10px; border-radius:8px; margin-bottom:15px; box-sizing:border-box; outline: none;">
@@ -168,20 +276,45 @@
     </div>
 </div>
 
+<div id="modal-enlace-bola" class="modal-overlay">
+    <div style="background: #0a0a0a; border: 2px solid var(--verde); padding: 20px; border-radius: 15px; width: 380px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000; box-sizing: border-box;">
+        <h2 style="color:var(--verde); text-align:center; margin: 0 0 15px 0; font-size: 18px;">CONFIGURAR ENLACE A BOLA</h2>
+        <p style="font-size:10px; color:#666; margin-bottom:5px; text-transform: uppercase; font-weight: bold;">URL del Enlace a Bola (325x385):</p>
+        <input type="text" id="input-url-enlace-bola" placeholder="https://..." style="width:100%; background:#000; border:1px solid #333; color:#fff; padding:10px; border-radius:8px; margin-bottom:15px; box-sizing:border-box; outline: none;">
+        <div style="display:flex; gap:10px;">
+            <button onclick="window.guardarUrlEnlaceBola()" class="btn-abrir" style="flex:1.5; background:var(--verde); color:#000; height: 40px; font-size: 11px;">GUARDAR</button>
+            <button onclick="window.cerrarModalEnlaceBola()" class="btn-efecto" style="flex:1; height: 40px;">CERRAR</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-verificar-pin" class="modal-overlay">
+    <div style="background: #0a0a0a; border: 2px solid var(--violeta); padding: 25px; border-radius: 15px; width: 320px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000; text-align: center; box-sizing: border-box;">
+        <h2 style="color:var(--violeta); margin: 0 0 10px 0; font-size: 18px;">SEGURIDAD MAESTRA</h2>
+        <p style="font-size:10px; color:#aaa; margin-bottom: 20px; text-transform: uppercase; font-weight: bold;">Ingresa el PIN Maestro para cambiar la clave</p>
+        <input type="password" id="input-verificar-actual" placeholder="PIN MAESTRO" style="width:100%; background:#000; border:1px solid var(--violeta); color:#fff; padding:12px; border-radius:10px; text-align:center; font-size:16px; margin-bottom:10px; box-sizing:border-box; outline:none; font-weight: bold;">
+        <div id="err-verif-pin" style="color:var(--rojo); font-size:10px; margin-bottom:10px; font-weight:bold; text-transform: uppercase;"></div>
+        <div style="display:flex; gap:10px;">
+            <button onclick="verificarPinMaestroParaCambio()" class="btn-abrir" style="flex:1.5; background:var(--violeta); color:#fff; height: 40px; font-size: 11px;">VERIFICAR</button>
+            <button onclick="cerrarModalVerificarPin()" class="btn-efecto" style="flex:1; height: 40px;">CANCELAR</button>
+        </div>
+    </div>
+</div>
+
 <div id="modal-cambiar-pin" class="modal-overlay">
-    <div style="background: #0a0a0a; border: 2px solid var(--verde); padding: 25px; border-radius: 15px; width: 320px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000;">
+    <div style="background: #0a0a0a; border: 2px solid var(--verde); padding: 25px; border-radius: 15px; width: 320px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000; box-sizing: border-box;">
         <h2 style="color:var(--verde); text-align:center; margin: 0 0 10px 0; font-size: 18px;">SEGURIDAD</h2>
-        <p style="font-size:10px; color:#666; text-align:center; margin-bottom: 20px; text-transform: uppercase;">Establecer nuevo PIN de acceso</p>
+        <p style="font-size:10px; color:#666; text-align:center; margin-bottom: 20px; text-transform: uppercase;">Establecer nuevo PIN de acceso al panel</p>
         <input type="text" id="nuevo-pin-input" placeholder="MÍNIMO 4 DÍGITOS" style="width:100%; background:#000; border:1px solid var(--verde); color:var(--verde); padding:12px; border-radius:10px; text-align:center; font-size:18px; margin-bottom:20px; box-sizing:border-box; outline:none; font-weight: bold;">
         <div style="display:flex; gap:10px;">
-            <button onclick="guardarNuevoPin()" class="btn-abrir" style="flex:1.5; background:var(--verde); color:#000; height: 40px; font-size: 11px;">ACTUALIZAR</button>
+            <button id="btn-actualizar-pin" onclick="guardarNuevoPin()" class="btn-abrir" style="flex:1.5; background:var(--verde); color:#000; height: 40px; font-size: 11px;">ACTUALIZAR</button>
             <button onclick="cerrarModalPin()" class="btn-efecto" style="flex:1; height: 40px;">CANCELAR</button>
         </div>
     </div>
 </div>
 
 <div id="modal-confirmar-borrar" class="modal-overlay" style="z-index: 10001;">
-    <div style="background: #0a0a0a; border: 2px solid var(--rojo); padding: 25px; border-radius: 15px; width: 300px; text-align: center; box-shadow: 0 0 30px rgba(255,0,0,0.2);">
+    <div style="background: #0a0a0a; border: 2px solid var(--rojo); padding: 25px; border-radius: 15px; width: 300px; text-align: center; box-shadow: 0 0 30px rgba(255,0,0,0.2); box-sizing: border-box;">
         <i class="fas fa-user-times" style="color: var(--rojo); font-size: 40px; margin-bottom: 15px;"></i>
         <h2 style="color: #fff; font-size: 16px; margin: 0 0 10px 0; text-transform: uppercase;">¿Eliminar Usuario?</h2>
         <p id="txt-confirmar-usuario" style="color: #666; font-size: 12px; margin-bottom: 20px; font-weight: bold;"></p>
@@ -192,10 +325,18 @@
     </div>
 </div>
 
+<div id="modal-aviso-personalizado" class="modal-overlay" style="z-index: 20000;">
+    <div style="background: #0a0a0a; border: 2px solid var(--verde); padding: 25px; border-radius: 15px; width: 320px; text-align: center; box-shadow: 0 0 30px rgba(57,255,20,0.2); box-sizing: border-box;">
+        <h2 style="color: var(--verde); font-size: 16px; margin: 0 0 10px 0; text-transform: uppercase;">¡Clave Actualizada!</h2>
+        <p id="texto-aviso-timer" style="color: #ccc; font-size: 12px; margin-bottom: 20px; font-weight: bold;">Se guardó correctamente en Firebase. La sesión se cerrará en 5 segundos...</p>
+        <button onclick="forzarCierreSesionInmediato()" class="btn-abrir" style="width: 100%; background: var(--verde); color: #000; height: 35px; font-size: 11px;">CERRAR AHORA</button>
+    </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, doc, getDoc, onSnapshot, updateDoc, collection, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getFirestore, doc, getDoc, onSnapshot, updateDoc, collection, addDoc, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getDatabase, ref, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBd1fw2nWohvcveNCilf6xg4xZDCNdmEQw",
@@ -221,6 +362,152 @@ window.JUEGOS_CONFIG = {
     "lm": "LM", "nuevo": "Nuevo", "parejasuma": "Pareja Suma", "power": "POWER", "sumaindi": "Suma Indi", "sumarversus": "Sumar Versus"
 };
 
+const listasJuegosAdmin = {
+    "power": [
+        "Abas", "Action", "Adele", "Aero", "Aliens", "All", "Alpha", "Always", "Amor", "Animate",
+        "Apex", "Aqua", "Arcade", "Arrow", "Art", "Asylum", "Auto", "Avatar", "Baby", "Badge",
+        "Ball", "Balloons", "Band", "Banner", "Base", "Bat", "Beam", "Bear", "Beast", "Bed",
+        "Beer", "Bell", "Belly", "Big", "Bike", "Bird", "Birth", "Bite", "Black", "Blaze",
+        "Blind", "Blink", "Blob", "Blood", "Blue", "Board", "Boat", "Bomb", "Bone", "Book",
+        "Boom", "Boot", "Boss", "Bottle", "Bounce", "Box", "Boy", "Brain", "Bread", "Break",
+        "Brick", "Bridge", "Bright", "Bring", "Broken", "Brothers", "Brown", "Brush", "Bubble", "Buckle",
+        "Bud", "Bug", "Build", "Bulb", "Bull", "Bullet", "Bunny", "Burn", "Bus", "Bush",
+        "Bust", "Busy", "Butter", "Button", "Buy", "Buzz", "Cactus", "Cake", "Calm", "Camera",
+        "Camp", "Can", "Candle", "Candy", "Canoe", "Cap", "Car", "Card", "Care", "Carpet",
+        "Carrot", "Cart", "Case", "Cash", "Castle", "Cat", "Catch", "Cater", "Cause", "Cave",
+        "CD", "Cell", "Cent", "Chain", "Chair", "Chalk", "Chance", "Change", "Channel", "Chaos"
+    ],
+    "mex": [
+        "El Gallo", "El Diablito", "La Dama", "El Catrín", "El Paraguas", "La Sirena", "La Escalera", "La Botella", "El Barril", "El Árbol", 
+        "El Melón", "El Valiente", "El Gorrito", "La Muerte", "La Pera", "La Bandera", "El Bandolón", "El Violoncello", "La Garza", "El Pájaro", 
+        "La Mano", "La Bota", "El Cotorro", "El Borracho", "El Negrito", "El Corazón", "La Sandía", "El Tambor", "El Músico", "El Arpa", 
+        "La Rana", "La Estrellita", "El Mundo", "El Apache", "El Nopal", "El Alacrán", "La Rosa", "La Calavera", "La Campana", "El Cantarito", 
+        "El Venado", "El Sol", "La Corona", "La Chalupa", "El Pino", "El Pescado", "La Palma", "La Maceta", "El Faro", "El Catrín 2", 
+        "La Guitarra", "La Manzana", "El Sombrero", "El Colibrí", "El Cascabel", "El Tecolote", "El Chapulín", "El metate", "El Molcajete", "El Sarape",
+        "El Cántaro", "La Olla", "Los Jarritos", "El Comal", "El Soplador", "El Equipal", "El Chiquihuite", "El Guacamole", "El Ajolote", "El Xoloitzcuintle",
+        "El Tacos", "El Alebrije", "El Trompo", "El papalote", "La Pirinola", "El Balero", "La Matatena", "El Rehilete", "La Catrina", "El Venadito",
+        "La Zopilota", "El Tejón", "La ardilla", "El Zorrillo", "El Coyote", "El Tecolote", "La Lechuza", "El Buho", "La Mariposa", "El Gusano",
+        "La Hormiga", "La Abeja", "La Mosca", "El Mosquito", "La Cucaracha", "El Caracol", "La Tortuga", "El Cangrejo", "La Langosta", "La Medusa",
+        "La Ballena", "El Tiburón", "La Foca", "El Pingüino", "El Oso", "El Tigre", "El León", "El Elefante", "La Jirafa", "El Mono",
+        "El Cerdito", "La Vaca", "El Toro", "El Caballo", "La Cabra", "La Oveja", "El Perrito", "El Gato", "El Loro", "El Canario"
+    ],
+    "pais": [
+        "Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argelia", "Argentina", "Armenia", 
+        "Australia", "Austria", "Azerbaiyán", "Bahamas", "Bangladés", "Barbados", "Baréin", "Bélgica", "Belice", "Benín", 
+        "Bielorrusia", "Birmania", "Bolivia", "Bosnia y Herzegovina", "Botsuana", "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", 
+        "Bután", "Cabo Verde", "Camboya", "Camerún", "Canadá", "Catar", "Chad", "Chile", "China", "Chipre", 
+        "Colombia", "Comoras", "Congo", "Corea del Norte", "Corea del Sur", "Costa de Marfil", "Costa Rica", "Croacia", "Cuba", "Dinamarca", 
+        "Dominica", "Ecuador", "Egipto", "El Salvador", "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos", 
+        "Estonia", "Etiopía", "Filipinas", "Finlandia", "Fiyi", "Francia", "Gabón", "Gambia", "Georgia", "Ghana", 
+        "Granada", "Grecia", "Guatemala", "Guinea", "Guinea Ecuatorial", "Guinea-Bisáu", "Guyana", "Haití", "Honduras", "Hungría", 
+        "India", "Indonesia", "Irak", "Irán", "Irlanda", "Islandia", "Islas Marshall", "Islas Salomón", "Israel", "Italia", 
+        "Jamaica", "Japón", "Jordania", "Kazajistán", "Kenia", "Kirguistán", "Kiribati", "Kuwait", "Laos", "Lesoto", 
+        "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania", "Luxemburgo", "Madagascar", "Malasia", "Malaui", 
+        "Maldivas", "Malí", "Malta", "Marruecos", "Mauricio", "Mauritania", "México", "Micronesia", "Moldavia", "Mónaco",
+        "Mongolia", "Montenegro", "Mozambique", "Namibia", "Nauru", "Nepal", "Nicaragua", "Níger", "Nigeria", "Noruega"
+    ],
+    "pokemon": [
+        "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Caterpie",
+        "Metapod", "Butterfree", "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata", "Raticate",
+        "Spearow", "Fearow", "Ekans", "Arbok", "Pikachu", "Raichu", "Sandshrew", "Sandslash", "Nidoran♀", "Nidorina",
+        "Nidoqueen", "Nidoran♂", "Nidorino", "Nidoking", "Clefairy", "Clefable", "Vulpix", "Ninetales", "Jigglypuff", "Wigglytuff",
+        "Zubat", "Golbat", "Oddish", "Gloom", "Vileplume", "Paras", "Parasect", "Venonat", "Venomoth", "Diglett",
+        "Dugtrio", "Meowth", "Persian", "Psyduck", "Golduck", "Mankey", "Primeape", "Growlithe", "Arcanine", "Poliwag",
+        "Poliwhirl", "Poliwrath", "Abra", "Kadabra", "Alakazam", "Machop", "Machoke", "Machamp", "Bellsprout", "Weepinbell",
+        "Victreebel", "Tentacool", "Tentacruel", "Geodude", "Graveler", "Golem", "Ponyta", "Rapidash", "Slowpoke", "Slowbro",
+        "Magnemite", "Magneton", "Farfetch'd", "Doduo", "Dodrio", "Seel", "Dewgong", "Grimer", "Muk", "Shellder",
+        "Cloyster", "Gastly", "Haunter", "Gengar", "Onix", "Drowzee", "Hypno", "Krabby", "Kingler", "Voltorb",
+        "Electrode", "Exeggcute", "Exeggutor", "Cubone", "Marowak", "Hitmonlee", "Hitmonchan", "Lickitung", "Koffing", "Weezing",
+        "Rhyhorn", "Rhydon", "Chansey", "Tangela", "Kangaskhan", "Horsea", "Seadra", "Goldeen", "Seaking", "Staryu",
+        "Starmie", "Mr. Mime", "Scyther", "Jynx", "Electabuzz", "Magmar", "Pinsir", "Tauros", "Magikarp", "Gyarados",
+        "Lapras", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto",
+        "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres", "Dratini", "Dragonair", "Dragonite"
+    ],
+    "autos": [
+        "Ferrari", "Porsche", "Lamborghini", "BMW", "Mercedes-Benz", "Audi", "Toyota", "Ford", "Chevrolet", "Nissan", 
+        "Honda", "Volkswagen", "Aston Martin", "Bugatti", "Maserati", "Bentley", "Rolls-Royce", "Jaguar", "Land Rover", "Volvo", 
+        "Subaru", "Mazda", "Mitsubishi", "Lexus", "Infiniti", "Acura", "Alfa Romeo", "Fiat", "Renault", "Peugeot", 
+        "Citroën", "Tesla", "Hyundai", "Kia", "Genesis", "Mini", "Smart", "SEAT", "Skoda", "Cupra", 
+        "Pagani", "Koenigsegg", "McLaren", "Lotus", "Alpine", "Dodge", "Chrysler", "Jeep", "Ram", "GMC", 
+        "Buick", "Cadillac", "Lincoln", "Pontiac", "Mercury", "Saturn", "Hummer", "Scion", "De Tomaso", "Lancia", 
+        "Saab", "Opel", "Vauxhall", "Dacia", "Holden", "Perodua", "Proton", "Mahindra", "Tata", "Maruti Suzuki", 
+        "BYD", "Geely", "Chery", "Great Wall", "Nio", "XPeng", "Li Auto", "Hongqi", "SAIC Motor", "Changan", 
+        "Zotye", "Haval", "Baojun", "Wuling", "Foton", "JAC", "Dongfeng", "GAC", "Roewe", "Lynk & Co", 
+        "Polestar", "Rivian", "Lucid", "Fisker", "Isuzu", "Daihatsu", "Hino", "UD Trucks", "Scania", "MAN", 
+        "DAF", "Iveco", "Kenworth", "Peterbilt", "Freightliner", "Mack", "Western Star", "KTM", "Yamaha", "Suzuki", 
+        "Kawasaki", "Ducati", "Harley-Davidson", "Triumph", "Royal Enfield", "Aprilia", "Moto Guzzi", "Husqvarna", "Indian", "BMW Motorrad"
+    ],
+    "bebida": [
+        "Cerveza", "Tequila", "Ron", "Whisky", "Vodka", "Ginebra", "Sangría", "Margarita", "Mojito", "Pisco", 
+        "Vino Tinto", "Champán", "Brandy", "Cognac", "Mezcal", "Fernet", "Anís", "Sidra", "Pulque", "Sake", 
+        "Vermouth", "Campari", "Aperol", "Jägermeister", "Baileys", "Kahlúa", "Frangelico", "Amaretto", "Sambuca", "Grappa", 
+        "Absenta", "Bourbon", "Scotch", "Vodka Tonic", "Piña Colada", "Daiquiri", "Cosmopolitan", "Manhattan", "Negroni", "Old Fashioned", 
+        "Gin Tonic", "Bloody Mary", "Caipirinha", "Cuba Libre", "Tequila Sunrise", "Mimosa", "Bellini", "Mai Tai", "Zombie", "Long Island", 
+        "Michelada", "Clamato", "Vino Blanco", "Vino Rosado", "Prosecco", "Cava", "Oporto", "Sherry", "Calvados", "Pacharán", 
+        "Chinchón", "Søn", "Hidromiel", "Kombucha", "Agua Mineral", "Agua Tónica", "Refresco Cola", "Refresco Limón", "Refresco Naranja", "Agua Horchata", 
+        "Agua Jamaica", "Agua Limón", "Jugo de Naranja", "Jugo de Manzana", "Jugo de Piña", "Jugo de Uva", "Jugo de Arándano", "Jugo de Tomate", "Limonada", "Naranjada", 
+        "Café Espresso", "Café Americano", "Café Capuchino", "Café Latte", "Café Mocha", "Café Helado", "Café Carajillo", "Café Irlandés", "Té Negro", "Té Verde", 
+        "Té de Manzanilla", "Té de Menta", "Té Chai", "Mate", "Chocolate Caliente", "Atole", "Champurrado", "Licor de Melón", "Licor de Café", "Licor de Cacao", 
+        "Licor de Naranja", "Licor de Hierbas", "Cerveza Oscura", "Cerveza Artesanal", "Cerveza IPA", "Cerveza Stout", "Cerveza Porter", "Cerveza Trigo", "Cerveza Sin Alcohol", "Sidra de Manzana", 
+        "Vino Espumoso", "Vermut Rojo", "Vermut Blanco", "Punch de Frutas", "Zumo de Limón", "Zumo de Toronja", "Jarabe de Goma", "Granadina", "Bitter Angostura", "Agua de Coco"
+    ],
+    "comidas": [
+        "Pizza", "Hamburguesa", "Tacos", "Sushi", "Paella", "Asado", "Pasta", "Hot Dog", "Empanadas", "Arepas", 
+        "Ceviche", "Pollo Frito", "Lasagna", "Burritos", "Quesadillas", "Enchiladas", "Tamales", "Pozole", "Mole", "Chiles Rellenos", 
+        "Torta Ahogada", "Carnitas", "Barbacoa", "Birria", "Fajitas", "Nachos", "Guacamole", "Salchipapa", "Lomo Saltado", "Causa Rellena", 
+        "Anticuchos", "Aji de Gallina", "Bandeja Paisa", "Sancocho", "Ajiaco", "Pupusas", "Gallo Pinto", "Vigorón", "Baleadas", "Chivito", 
+        "Milanesa a la Napolitana", "Empanada Salteña", "Churrasco", "Curry", "Ramen", "Tempura", "Okonomiyaki", "Takoyaki", "Dim Sum", "Pato Pekín", 
+        "Pad Thai", "Pho", "Banh Mi", "Kimchi", "Bibimbap", "Bulgogi", "Kebab", "Falafel", "Hummus", "Shawarma", 
+        "Musaka", "Gyros", "Baklava", "Fish and Chips", "Shepherd's Pie", "Full English Breakfast", "Bangers and Mash", "Ratatouille", "Coq au Vin", "Bouillabaisse", 
+        "Croissant", "Quiche Lorraine", "Fondue", "Raclette", "Schnitzel", "Pretzel", "Strudel", "Tortilla Española", "Paella Valenciana", "Gazpacho", 
+        "Jamón Ibérico", "Croquetas", "Fabada Asturiana", "Pulpo a la Gallega", "Caldereta", "Risotto", "Carpaccio", "Bruschetta", "Minestrone", "Ossobuco", 
+        "Gnocchi", "Ravioli", "Cannoli", "Tiramisú", "Gelato", "Waffles", "Pancakes", "Donas", "Brownie", "Cheesecake", 
+        "Tres Leches", "Churros", "Flan", "Alfajores", "Tequeños", "Cachapas", "Hallacas", "Bolón de Verde", "Encocado", "Seco de Pollo", 
+        "Chupe de Camarones", "Causa Limeña", "Arroz Chaufa", "Tallarin Saltado", "Cuy Chactado", "Papa a la Huancaína", "Ocopa", "Causa Acevichada", "Leche de Tigre", "Causa de Pollo"
+    ],
+    "fiesta": [
+        "Globos", "Pastel", "Piñata", "Música", "Confeti", "Regalos", "Luces", "Serpentina", "Bebidas", "Antifaces", 
+        "Velas", "Sorpresas", "DJ", "Bocinas", "Tarima", "Disfraces", "Máscaras", "Pitos", "Matatracas", "Gafas de Sol", 
+        "Sombreros", "Corbatas locas", "Colores neón", "Pulseras LED", "Bengalas", "Humo de colores", "Burbujas", "Cañón de confeti", "Photobooth", "Cartel de bienvenida", 
+        "Invitaciones", "Vasos rojos", "Hielera", "Chupitos", "Cócteles", "Tequilero", "Cervezas", "Vino", "Champaña", "Mesa de dulces", 
+        "Botanas", "Papas fritas", "Palomitas", "Nueces", "Chocolates", "Gomitas", "Brochetas", "Mini hamburguesas", "Pizzetas", "Taquiza", 
+        "Karaoke", "Micrófono", "Pantalla gigante", "Proyector", "Luces estroboscópicas", "Láser", "Bola disco", "Pista de baile", "Juegos de mesa", "Beer Pong", 
+        "Jenga gigante", "Rueda de shots", "Ruleta loca", "Cartas", "Dados", "Concursos", "Premios", "Diplomas", "Coronas", "Bandas de honor", 
+        "Baño portátil", "Limpieza", "Seguridad", "Invitados", "Anfitrión", "Cámara de fotos", "Cámara video", "Trípode", "Foco ring", "Cargador portátil", 
+        "Wi-Fi", "Playlist", "Baile sorpresa", "Vals", "Brindis", "Discurso", "Palabras emotivas", "Llanto de alegría", "Abrazos", "Selfies", 
+        "Historias IG", "TikTok", "Transmisión en vivo", "Hashtag", "Recuerditos", "Imanes", "Llaveros", "Tazas impresas", "Abanicos", "Pantuflas", 
+        "Kits de resaca", "Pastillas", "Suero oral", "Café cargado", "Desayuno", "Chilaquiles", "Menudo", "Pozole crudo", "Limpieza final", "Bolsas de basura", 
+        "Escoba", "Trapeador", "Aromatizante", "Despedida", "Agradecimientos", "Cierre", "Luces apagadas", "Puerta cerrada", "Llave maestra", "Fin de fiesta"
+    ],
+    "pitufo": [
+        "Papá Pitufo", "Pitufina", "Pitufo Filósofo", "Pitufo Fortachón", "Pitufo Goloso", "Pitufo Bromista", "Pitufo Pintor", "Pitufo Poeta", "Pitufo Perezoso", "Pitufo Vanidoso", 
+        "Pitufo Panadero", "Pitufo Granjero", "Pitufo Músico", "Pitufo Constructor", "Pitufo Armonía", "Pitufo Genio", "Pitufo Minero", "Pitufo Labrador", "Pitufo Pescador", "Pitufo Cobarde", 
+        "Pitufo Torpe", "Pitufo Curi", "Pitufo Somnámbulo", "Pitufo Llorón", "Pitufo Joyero", "Pitufo Sastre", "Pitufo Bombero", "Pitufo Relojero", "Pitufo Zapatero", "Pitufo Médico", 
+        "Pitufo Carpintero", "Pitufo Jardinero", "Pitufo Alquimista", "Pitufo Astronauta", "Pitufo Detective", "Pitufo Actor", "Pitufo Mago", "Pitufo Acróbata", "Pitufo Malabarista", "Pitufo Payaso", 
+        "Abuelo Pitufo", "Bebé Pitufo", "Pitufina Bebé", "Pitufo Salvaje", "Pitufo Natural", "Pitufo Duendecillo", "Pitufo Mecánico", "Pitufo Científico", "Pitufo Inventor", "Pitufo Fotógrafo", 
+        "Gargamel", "Azrael", "Balthazar", "Hogatha", "Scruple", "Clorhidris", "Gromit", "Montblanc", "Joka", "Bicho Loco", 
+        "Hombre de Nieve", "Duende Malo", "Bruja Malvada", "Dragón de Fuego", "Fantasioso", "Rey Gnomo", "Príncipe Gerardo", "Princesa Sabina", "Sir Lot", "Pillín", 
+        "Sassette", "Nanny", "Homunkulus", "Vexy", "Hackus", "Klaus", "Johan", "Pirluit", "Gauvain", "Berta", 
+        "Madam Pitufo", "Señor Otoño", "Señor Invierno", "Señor Verano", "Señor Primavera", "Madre Naturaleza", "Padre Tiempo", "Hada de los Sueños", "Espíritu del Bosque", "Duende de las CUEVAS", 
+        "Trolls del Río", "Gigante Goliat", "Ogro Gruñón", "Pájaro Gigante", "Abeja Reina", "Mariposa Real", "Perrito Buitre", "Gato Montes", "Zorro Astuto", "Lobo Feroz", 
+        "Búho Sabio", "Tortuga Veloz", "Rana Cantora", "Pez Dorado", "Delfín Azul", "Estrella de Mar", "Pulpo Gigante", "Sirena Encantada", "Unicornio Blanco", "Pegaso Alado", 
+        "Fénix Dorado", "Grifo Valiente", "Centauro Noble", "Elfo del Viento", "Hada Madrina", "Duende de la Suerte", "Trol de las Montañas", "Espectro Errante", "Sombra Oscura", "Cristal Mágico"
+    ],
+    "simpson": [
+        "Homero", "Marge", "Bart", "Lisa", "Maggie", "Ned Flanders", "Sr. Burns", "Smithers", "Moe", "Barney", 
+        "Krusty", "Milhouse", "Apu", "Principal Skinner", "Director Skinner", "Edna Krabappel", "Abuelo Abe", "Ayudante de Santa", "Bola de Nieve II", "Patty", 
+        "Selma", "Selma y Patty", "Homero", "Marge", "Chief Wiggum", "Gorgori", "Ralph Wiggum", "Nelson Muntz", "Jimbo", "Kearney", 
+        "Dolph", "Martin Prince", "Sherri y Terri", "Janey", "Wendell", "Lewis", "Richard", "Ralph", "Milhouse", "Todd Flanders", 
+        "Rod Flanders", "Maude Flanders", "Helen Lovejoy", "Reverendo Lovejoy", "Dr. Hibbert", "Dr. Nick Riviera", "Profesor Frink", "Comic Book Guy", "Hombre de los Cómics", "Jasper", 
+        "Old Jewish Man", "Abuelo Judío", "Hans Topo", "Gorgori", "Lou", "Eddie", "Alcalde Quimby", "Gobernador", "Fat Tony", "Gordo Tony", 
+        "Legs", "Louie", "Frankie", "Snake Jailbird", "Culebra", "Bumblebee Man", "Hombre Abeja", "Rainer Wolfcastle", "McBain", "Troy McClure", 
+        "Lionel Hutz", "Duffman", "Señor Burns", "Smithers", "Waylon Smithers", "Herman", "Capitán McAllister", "Luigi Risotto", "Akira", "Uter", 
+        "Señor Teeny", "Poochie", "Blinky", "Pez de tres ojos", "Santa's Little Helper", "Snowball", "Snowball II", "Snowball III", "Coltrane", "Laddie", 
+        "Princesa", "Econo-Savage", "Marge con pelo azul", "Homero con pelo", "Homero gordo", "Homero en el espacio", "Barto", "El Barto", "Lisa saxofonista", "Maggie con chupete", 
+        "Ayudante de Santa", "Gato de la familia", "Cerdito Araña", "Spider-Pig", "Blinky", "Bebé de un ojo", "Monstruo de Springfield", "Monorriel", "Tom y Daly", "Rascatay Pica"
+    ]
+};
+
 const urlParams = new URLSearchParams(window.location.search);
 const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || "gh";
 
@@ -228,11 +515,9 @@ let usuariosLocal = [], modoActivo = null;
 let pinDeEntrada = sessionStorage.getItem(`admin_p_volatil`);
 let miSesionActual = null;
 let juegoActualGlobal = "50";
+let maxSeleccionesGlobal = 2;
+let cambiandoClaveEnEsteMomento = false;
 window.presenciaGlobal = {}; 
-
-function normalizarTexto(txt) {
-    return String(txt || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
 
 document.getElementById('ver-password').onclick = function() {
     const input = document.getElementById('pin-input');
@@ -241,143 +526,124 @@ document.getElementById('ver-password').onclick = function() {
     this.classList.toggle('fa-eye-slash');
 };
 
+// Función para alternar el diseño responsivo móvil manualmente
+window.alternarModoMovil = () => {
+    const body = document.body;
+    body.classList.toggle('modo-movil');
+    const btn = document.getElementById('btn-modo-movil');
+    if (body.classList.contains('modo-movil')) {
+        btn.innerHTML = '<i class="fas fa-desktop"></i> PC';
+        btn.style.borderColor = "var(--cian)";
+        btn.style.color = "var(--cian)";
+    } else {
+        btn.innerHTML = '<i class="fas fa-mobile-alt"></i> MÓVIL';
+        btn.style.borderColor = "var(--verde)";
+        btn.style.color = "var(--verde)";
+    }
+};
+
+async function registrarAccesoSeguridad() {
+    try {
+        let ipInfo = { ip: "Desconocida", city: "Desconocida", country: "Desconocido" };
+        try {
+            const res = await fetch('https://ipapi.co/json/');
+            ipInfo = await res.json();
+        } catch(e) {}
+
+        const colRef = collection(db, "proyectos", miCarpeta, "historial_accesos");
+        await addDoc(colRef, {
+            ip: ipInfo.ip || "No detectada",
+            ubicacion: `${ipInfo.city || 'Desconocida'}, ${ipInfo.country_name || 'Desconocido'}`,
+            navegador: navigator.userAgent,
+            fecha: new Date().toISOString(),
+            timestamp: Date.now()
+        });
+    } catch(e) {}
+}
+
 async function validarLoginLocal(pin) {
     try {
         const pRef = doc(db, "proyectos", miCarpeta);
         const snap = await getDoc(pRef);
         if (!snap.exists()) return { valida: false, msg: "PROYECTO NO EXISTE" };
         const data = snap.data();
-        if (pin !== String(data.pinAdmin)) return { valida: false, msg: "PIN INCORRECTO" };
-        return { valida: true, sessionToken: data.sessionToken || `SES_${Date.now()}` };
+        
+        const pinIngresado = String(pin || "").trim();
+        const pinAdminReal = String(data.pinAdmin || "").trim();
+
+        if (pinIngresado !== pinAdminReal) return { valida: false, msg: "PIN INCORRECTO" };
+        
+        let tokenSesion = data.sessionToken;
+        if (!tokenSesion) {
+            tokenSesion = `SES_${Date.now()}`;
+            await updateDoc(pRef, { sessionToken: tokenSesion });
+        }
+
+        return { valida: true, sessionToken: tokenSesion };
     } catch (e) {
         return { valida: false, msg: "ERROR DE CONEXIÓN" };
+    }
+}
+
+async function validarPinMaestro(pinIngresado) {
+    try {
+        const pRef = doc(db, "proyectos", miCarpeta);
+        const snap = await getDoc(pRef);
+        if (!snap.exists()) return false;
+        const data = snap.data();
+        
+        const pinInt = String(pinIngresado || "").trim();
+        const pinMaestroReal = String(data.pinMaster || data.pinAdmin || "").trim(); 
+        
+        return pinInt === pinMaestroReal;
+    } catch (e) {
+        return false;
     }
 }
 
 function escucharConectadosAdmin() {
     onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snapshot) => {
         const dataPresencia = snapshot.val() || {};
-        
-        onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
-            const dataInv = snapInv.val() || {};
-            onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (snapTerna) => {
-                const dataTerna = snapTerna.val() || {};
-                onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion`), (snapVersus) => {
-                    const dataVersus = snapVersus.val() || {};
-                    onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
-                        const dataMex = snapMex.val() || {};
-                        onValue(ref(rtdb, `proyectos/${miCarpeta}/pokemonSeleccion`), (snapPoke) => {
-                            const dataPoke = snapPoke.val() || {};
-                            onValue(ref(rtdb, `proyectos/${miCarpeta}/paisSeleccion`), (snapPais) => {
-                                const dataPais = snapPais.val() || {};
-                                onValue(ref(rtdb, `proyectos/${miCarpeta}/autosSeleccion`), (snapAutos) => {
-                                    const dataAutos = snapAutos.val() || {};
-                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/bebidaSeleccion`), (snapBebida) => {
-                                        const dataBebida = snapBebida.val() || {};
-                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/comidasSeleccion`), (snapComidas) => {
-                                            const dataComidas = snapComidas.val() || {};
-                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/fiestaSeleccion`), (snapFiesta) => {
-                                                const dataFiesta = snapFiesta.val() || {};
-                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/pitufoSeleccion`), (snapPitufo) => {
-                                                    const dataPitufo = snapPitufo.val() || {};
-                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/simpsonSeleccion`), (snapSimp) => {
-                                                        const dataSimp = snapSimp.val() || {};
-                                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/powerSeleccion`), (snapPow) => {
-                                                            const dataPow = snapPow.val() || {};
+        window.presenciaGlobal = dataPresencia;
 
-                                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
-                                                                const infoSorteo = snapSorteo.val() || {};
+        onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sInv) => {
+            const dataInv = sInv.val() || {};
+            onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (sTerna) => {
+                const dataTerna = sTerna.val() || {};
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion`), (sVersus) => {
+                    const dataVersus = sVersus.val() || {};
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (sMex) => {
+                        const dataMex = sMex.val() || {};
+                        onValue(ref(rtdb, `proyectos/${miCarpeta}/pokemonSeleccion`), (sPoke) => {
+                            const dataPoke = sPoke.val() || {};
+                            onValue(ref(rtdb, `proyectos/${miCarpeta}/paisSeleccion`), (sPais) => {
+                                const dataPais = sPais.val() || {};
+                                onValue(ref(rtdb, `proyectos/${miCarpeta}/autosSeleccion`), (sAutos) => {
+                                    const dataAutos = sAutos.val() || {};
+                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/bebidaSeleccion`), (sBebida) => {
+                                        const dataBebida = sBebida.val() || {};
+                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/comidasSeleccion`), (sComidas) => {
+                                            const dataComidas = sComidas.val() || {};
+                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/fiestaSeleccion`), (sFiesta) => {
+                                                const dataFiesta = sFiesta.val() || {};
+                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/pitufoSeleccion`), (sPitufo) => {
+                                                    const dataPitufo = sPitufo.val() || {};
+                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/simpsonSeleccion`), (sSimp) => {
+                                                        const dataSimp = sSimp.val() || {};
+                                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/powerSeleccion`), (sPow) => {
+                                                            const dataPow = sPow.val() || {};
+
+                                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (sSorteo) => {
+                                                                const infoSorteo = sSorteo.val() || {};
                                                                 const rawSalidos = infoSorteo.sacados || [];
-                                                                const sacados = Array.isArray(rawSalidos) 
-                                                                    ? rawSalidos.map(s => normalizarTexto(s)) 
-                                                                    : Object.values(rawSalidos).map(s => normalizarTexto(s));
-                                                                
-                                                                const contenedorLista = document.getElementById('lista-conectados-admin-view');
-                                                                const contadorElem = document.getElementById('count-conectados-admin');
-                                                                
-                                                                let html = "";
-                                                                let totalOnline = 0;
+                                                                const sacados = Array.isArray(rawSalidos) ? rawSalidos.map(String) : Object.values(rawSalidos).map(String);
 
-                                                                Object.keys(dataPresencia).forEach(nick => {
-                                                                    if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
-                                                                        totalOnline++;
-                                                                        let badgeHtml = "";
-                                                                        
-                                                                        const juegoLower = String(juegoActualGlobal).toLowerCase();
-
-                                                                        if (juegoLower === 'inv') {
-                                                                            const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
-                                                                            if (seleccionUser) {
-                                                                                let partes = seleccionUser.split("-");
-                                                                                let p1 = partes[0].trim();
-                                                                                let p2 = partes[1].trim();
-                                                                                let class1 = sacados.includes(normalizarTexto(p1)) ? "num-inv-rojo" : "";
-                                                                                let class2 = sacados.includes(normalizarTexto(p2)) ? "num-inv-rojo" : "";
-                                                                                badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
-                                                                            } else {
-                                                                                badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
-                                                                            }
-                                                                        } else if (juegoLower === 'terna') {
-                                                                            const seleccionTerna = dataTerna[nick] ? dataTerna[nick].terna : null;
-                                                                            if (seleccionTerna) {
-                                                                                let partes = seleccionTerna.split("-");
-                                                                                let t1 = partes[0].trim(), t2 = partes[1].trim(), t3 = partes[2].trim();
-                                                                                let c1 = sacados.includes(normalizarTexto(t1)) ? "num-inv-rojo" : "";
-                                                                                let c2 = sacados.includes(normalizarTexto(t2)) ? "num-inv-rojo" : "";
-                                                                                let c3 = sacados.includes(normalizarTexto(t3)) ? "num-inv-rojo" : "";
-                                                                                badgeHtml = `<span class="badge-invertido"><span class="${c1}">${t1}</span>-<span class="${c2}">${t2}</span>-<span class="${c3}">${t3}</span></span>`;
-                                                                            } else {
-                                                                                badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
-                                                                            }
-                                                                        } else if (juegoLower === 'sumarversus') {
-                                                                            const eqUser = dataVersus[nick] ? dataVersus[nick].equipo : null;
-                                                                            if (eqUser) {
-                                                                                let colorEq = eqUser === 'A' ? 'var(--cian)' : 'var(--rosa)';
-                                                                                badgeHtml = `<span class="badge-invertido" style="color: ${colorEq}; border-color: ${colorEq};">EQUIPO ${eqUser}</span>`;
-                                                                            } else {
-                                                                                badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN EQUIPO</span>`;
-                                                                            }
-                                                                        } else if (['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
-                                                                            let datasetActual = {};
-                                                                            if (juegoLower === 'mex') datasetActual = dataMex;
-                                                                            else if (juegoLower === 'pokemon') datasetActual = dataPoke;
-                                                                            else if (juegoLower === 'pais') datasetActual = dataPais;
-                                                                            else if (juegoLower === 'autos') datasetActual = dataAutos;
-                                                                            else if (juegoLower === 'bebida') datasetActual = dataBebida;
-                                                                            else if (juegoLower === 'comidas') datasetActual = dataComidas;
-                                                                            else if (juegoLower === 'fiesta') datasetActual = dataFiesta;
-                                                                            else if (juegoLower === 'pitufo') datasetActual = dataPitufo;
-                                                                            else if (juegoLower === 'simpson') datasetActual = dataSimp;
-                                                                            else if (juegoLower === 'power') datasetActual = dataPow;
-
-                                                                            const cartasUser = (datasetActual[nick] && Array.isArray(datasetActual[nick].cartas)) ? datasetActual[nick].cartas : [];
-                                                                            if (cartasUser.length > 0) {
-                                                                                let cartasHtmlArr = cartasUser.map(c => {
-                                                                                    let cClean = String(c).trim();
-                                                                                    let claseSalida = sacados.includes(normalizarTexto(cClean)) ? "num-inv-rojo" : "";
-                                                                                    return `<span class="${claseSalida}">${cClean}</span>`;
-                                                                                });
-                                                                                badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
-                                                                            } else {
-                                                                                badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
-                                                                            }
-                                                                        }
-
-                                                                        html += `
-                                                                        <div class="item-conectado">
-                                                                            <div style="display:flex; align-items:center; gap:6px; width: 100%;">
-                                                                                <span class="punto-online"></span>
-                                                                                <span style="font-weight: bold; text-transform: uppercase; color: #fff; word-break: break-all;">${nick}</span>
-                                                                            </div>
-                                                                            ${badgeHtml}
-                                                                        </div>`;
-                                                                    }
-                                                                });
-
-                                                                if (contadorElem) contadorElem.innerText = totalOnline;
-                                                                if (contenedorLista) {
-                                                                    contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
-                                                                }
+                                                                renderizarListasEstado({
+                                                                    inv: dataInv, terna: dataTerna, sumarversus: dataVersus,
+                                                                    mex: dataMex, pokemon: dataPoke, pais: dataPais, autos: dataAutos,
+                                                                    bebida: dataBebida, comidas: dataComidas, fiesta: dataFiesta,
+                                                                    pitufo: dataPitufo, simpson: dataSimp, power: dataPow
+                                                                }, sacados);
                                                             });
                                                         });
                                                     });
@@ -395,6 +661,289 @@ function escucharConectadosAdmin() {
     });
 }
 
+function renderizarListasEstado(todasSelecciones = {}, sacados = []) {
+    const contenedorLista = document.getElementById('lista-conectados-admin-view');
+    const contenedorTemporales = document.getElementById('lista-temporales-admin-view');
+    const contenedorDesconectados = document.getElementById('lista-desconectados-admin-view');
+    const contadorElem = document.getElementById('count-conectados-admin');
+    const contadorTemporalesElem = document.getElementById('count-temporales-admin');
+    const contadorDesconectadosElem = document.getElementById('count-desconectados-admin');
+
+    if (!contenedorLista || !contenedorDesconectados) return;
+
+    let htmlOnline = "";
+    let htmlTemporal = "";
+    let htmlOffline = "";
+    let totalOnline = 0;
+    let totalTemporal = 0;
+    let totalOffline = 0;
+
+    const estadosUnicos = new Map();
+
+    usuariosLocal.forEach(u => {
+        const nickOriginal = String(u.nick || u.id || "").trim();
+        if (!nickOriginal) return;
+        const nickKey = nickOriginal.toUpperCase();
+        
+        const infoPresencia = window.presenciaGlobal[nickOriginal] || window.presenciaGlobal[nickKey] || window.presenciaGlobal[nickOriginal.toLowerCase()];
+        const esOnline = infoPresencia && infoPresencia.estado === 'online';
+
+        estadosUnicos.set(nickKey, { nick: nickOriginal, online: esOnline });
+    });
+
+    Object.keys(window.presenciaGlobal).forEach(nickRTDB => {
+        const nickOriginal = String(nickRTDB).trim();
+        if (!nickOriginal) return;
+        const nickKey = nickOriginal.toUpperCase();
+        const esOnline = window.presenciaGlobal[nickRTDB].estado === 'online';
+
+        if (!estadosUnicos.has(nickKey)) {
+            estadosUnicos.set(nickKey, { nick: nickOriginal, online: esOnline });
+        } else if (esOnline) {
+            estadosUnicos.get(nickKey).online = true;
+        }
+    });
+
+    estadosUnicos.forEach((data) => {
+        const nickOriginal = data.nick;
+        const juegoLower = String(juegoActualGlobal).toLowerCase();
+
+        let tieneSeleccion = false;
+        let badgeHtml = "";
+
+        const buscarSeleccionUsuario = (dataset) => {
+            if (!dataset) return null;
+            if (dataset[nickOriginal]) return dataset[nickOriginal];
+            const foundKey = Object.keys(dataset).find(k => k.trim().toUpperCase() === nickOriginal.toUpperCase());
+            return foundKey ? dataset[foundKey] : null;
+        };
+
+        if (juegoLower === 'inv') {
+            const selObj = buscarSeleccionUsuario(todasSelecciones.inv);
+            if (selObj && selObj.par) {
+                tieneSeleccion = true;
+                let partes = selObj.par.split("-");
+                let p1 = partes[0];
+                let p2 = partes[1];
+                let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
+                let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
+                badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
+            }
+        } else if (juegoLower === 'terna') {
+            const selObj = buscarSeleccionUsuario(todasSelecciones.terna);
+            if (selObj && selObj.terna) {
+                tieneSeleccion = true;
+                let partes = selObj.terna.split("-");
+                let t1 = partes[0], t2 = partes[1], t3 = partes[2];
+                let c1 = sacados.includes(t1) ? "num-inv-rojo" : "";
+                let c2 = sacados.includes(t2) ? "num-inv-rojo" : "";
+                let c3 = sacados.includes(t3) ? "num-inv-rojo" : "";
+                badgeHtml = `<span class="badge-invertido"><span class="${c1}">${t1}</span>-<span class="${c2}">${t2}</span>-<span class="${c3}">${t3}</span></span>`;
+            }
+        } else if (juegoLower === 'sumarversus') {
+            const selObj = buscarSeleccionUsuario(todasSelecciones.sumarversus);
+            if (selObj && selObj.equipo) {
+                tieneSeleccion = true;
+                let colorEq = selObj.equipo === 'A' ? 'var(--cian)' : 'var(--rosa)';
+                badgeHtml = `<span class="badge-invertido" style="color: ${colorEq}; border-color: ${colorEq};">EQUIPO ${selObj.equipo}</span>`;
+            }
+        } else if (['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
+            const dataset = todasSelecciones[juegoLower];
+            const selObj = buscarSeleccionUsuario(dataset);
+            if (selObj && Array.isArray(selObj.cartas) && selObj.cartas.length > 0) {
+                tieneSeleccion = true;
+                let cartasHtmlArr = selObj.cartas.map(c => {
+                    let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
+                    return `<span class="${claseSalida}">${c}</span>`;
+                });
+                badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
+            }
+        }
+
+        if (data.online) {
+            totalOnline++;
+            htmlOnline += `
+            <div class="item-conectado">
+                <div style="display:flex; align-items:center; gap:6px; width: 100%;">
+                    <span class="punto-online"></span>
+                    <span style="font-weight: bold; text-transform: uppercase; color: #fff; word-break: break-all;">${data.nick}</span>
+                </div>
+                ${badgeHtml}
+            </div>`;
+        } else if (!data.online && tieneSeleccion) {
+            totalTemporal++;
+            htmlTemporal += `
+            <div class="item-temporal" onclick="window.abrirModalEleccionAdmin('${data.nick}')" style="cursor: pointer;" title="Modificar selección">
+                <div style="display:flex; align-items:center; gap:6px; width: 100%;">
+                    <span class="punto-temporal"></span>
+                    <span style="font-weight: bold; text-transform: uppercase; color: var(--amarillo); word-break: break-all;">${data.nick} (Admin)</span>
+                </div>
+                ${badgeHtml}
+            </div>`;
+        } else {
+            totalOffline++;
+            htmlOffline += `
+            <div class="item-desconectado" onclick="window.abrirModalEleccionAdmin('${data.nick}')" title="Elegir números por este usuario">
+                <div style="display:flex; align-items:center; gap:6px; width: 100%;">
+                    <span class="punto-offline"></span>
+                    <span style="font-weight: bold; text-transform: uppercase; color: #888; word-break: break-all;">${data.nick}</span>
+                </div>
+            </div>`;
+        }
+    });
+
+    if (contadorElem) contadorElem.innerText = totalOnline;
+    if (contadorTemporalesElem) contadorTemporalesElem.innerText = totalTemporal;
+    if (contadorDesconectadosElem) contadorDesconectadosElem.innerText = totalOffline;
+
+    contenedorLista.innerHTML = htmlOnline || '<div style="color: #555; font-size: 11px; text-align: center; padding: 5px;">Nadie conectado</div>';
+    if (contenedorTemporales) contenedorTemporales.innerHTML = htmlTemporal || '<div style="color: #555; font-size: 11px; text-align: center; padding: 5px;">Sin temporales</div>';
+    contenedorDesconectados.innerHTML = htmlOffline || '<div style="color: #555; font-size: 11px; text-align: center; padding: 5px;">Nadie desconectado</div>';
+}
+
+window.abrirModalEleccionAdmin = (nickUsuario) => {
+    const juegoLower = String(juegoActualGlobal).toLowerCase();
+    const modal = document.getElementById('modal-eleccion-admin');
+    const titulo = document.getElementById('modal-eleccion-titulo');
+    const subtitulo = document.getElementById('modal-eleccion-subtitulo');
+    const grid = document.getElementById('modal-eleccion-grid');
+
+    titulo.innerText = `Gestionar: ${nickUsuario}`;
+    subtitulo.innerText = `Juego: ${juegoActualGlobal.toUpperCase()} (Haz clic para seleccionar o retirar)`;
+    grid.innerHTML = "";
+
+    if (juegoLower === 'inv') {
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(85px, 1fr))";
+        let paresGenerados = [];
+        for (let i = 1; i <= 89; i++) {
+            let strI = i < 10 ? "0" + i : "" + i;
+            let invStr = strI.split("").reverse().join("");
+            let numInv = parseInt(invStr);
+            if (i !== numInv && i < numInv) {
+                paresGenerados.push(`${strI}-${invStr}`);
+            }
+        }
+
+        onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snap) => {
+            const allSel = snap.val() || {};
+            let ocupados = {};
+            Object.keys(allSel).forEach(u => {
+                if (allSel[u] && allSel[u].par) ocupados[allSel[u].par] = u;
+            });
+            let miPar = allSel[nickUsuario] ? allSel[nickUsuario].par : null;
+
+            grid.innerHTML = paresGenerados.map(par => {
+                let ocupadoPor = ocupados[par];
+                let esMio = (miPar === par);
+                let clase = esMio ? "btn-celda-seleccionada" : (ocupadoPor && ocupadoPor !== nickUsuario ? "btn-celda-ocupada" : "");
+                return `<div class="btn-celda-admin ${clase}" onclick="window.adminSeleccionarPar('${nickUsuario}', '${par}')">${par}</div>`;
+            }).join('');
+        }, { onlyOnce: true });
+
+    } else if (juegoLower === 'terna') {
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(115px, 1fr))";
+        let ternasGeneradas = [];
+        for (let i = 1; i <= 88; i += 3) {
+            let t1 = i < 10 ? "0" + i : "" + i;
+            let t2 = (i+1) < 10 ? "0" + (i+1) : "" + (i+1);
+            let t3 = (i+2) < 10 ? "0" + (i+2) : "" + (i+2);
+            ternasGeneradas.push(`${t1}-${t2}-${t3}`);
+        }
+
+        onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (snap) => {
+            const allSel = snap.val() || {};
+            let ocupados = {};
+            Object.keys(allSel).forEach(u => {
+                if (allSel[u] && allSel[u].terna) ocupados[allSel[u].terna] = u;
+            });
+            let miTerna = allSel[nickUsuario] ? allSel[nickUsuario].terna : null;
+
+            grid.innerHTML = ternasGeneradas.map(terna => {
+                let ocupadoPor = ocupados[terna];
+                let esMio = (miTerna === terna);
+                let clase = esMio ? "btn-celda-seleccionada" : (ocupadoPor && ocupadoPor !== nickUsuario ? "btn-celda-ocupada" : "");
+                return `<div class="btn-celda-admin ${clase}" onclick="window.adminSeleccionarTerna('${nickUsuario}', '${terna}')" style="font-size:10px;">${terna}</div>`;
+            }).join('');
+        }, { onlyOnce: true });
+
+    } else if (listasJuegosAdmin[juegoLower]) {
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
+        const elementos = listasJuegosAdmin[juegoLower];
+
+        onValue(ref(rtdb, `proyectos/${miCarpeta}/${juegoLower}Seleccion`), (snap) => {
+            const allSel = snap.val() || {};
+            let ocupados = {};
+            Object.keys(allSel).forEach(u => {
+                if (allSel[u] && Array.isArray(allSel[u].cartas)) {
+                    allSel[u].cartas.forEach(c => ocupados[c] = u);
+                }
+            });
+            let misCartas = (allSel[nickUsuario] && Array.isArray(allSel[nickUsuario].cartas)) ? allSel[nickUsuario].cartas : [];
+
+            grid.innerHTML = elementos.map((elem, idx) => {
+                let ocupadoPor = ocupados[elem];
+                let esMio = misCartas.includes(elem);
+                let clase = esMio ? "btn-celda-seleccionada" : (ocupadoPor && ocupadoPor !== nickUsuario ? "btn-celda-ocupada" : "");
+                return `<div class="btn-celda-admin ${clase}" onclick="window.adminSeleccionarCarta('${nickUsuario}', '${juegoLower}', '${elem}')" style="font-size:9px;">#${idx+1}<br>${elem}</div>`;
+            }).join('');
+        }, { onlyOnce: true });
+    } else {
+        grid.innerHTML = `<div style="padding:20px; text-align:center; color:#888;">Este juego no requiere selección previa de números/cartas.</div>`;
+    }
+
+    modal.style.display = 'flex';
+};
+
+window.cerrarModalEleccionAdmin = () => {
+    document.getElementById('modal-eleccion-admin').style.display = 'none';
+};
+
+window.adminSeleccionarPar = async (nick, par) => {
+    const refUser = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nick}`);
+    onValue(refUser, async (snap) => {
+        let actual = snap.val() || {};
+        let nuevoPar = (actual.par === par) ? null : par;
+        await set(refUser, nuevoPar ? { par: nuevoPar, timestamp: Date.now() } : null);
+        window.abrirModalEleccionAdmin(nick);
+    }, { onlyOnce: true });
+};
+
+window.adminSeleccionarTerna = async (nick, terna) => {
+    const refUser = ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion/${nick}`);
+    onValue(refUser, async (snap) => {
+        let actual = snap.val() || {};
+        let nuevaTerna = (actual.terna === terna) ? null : terna;
+        await set(refUser, nuevaTerna ? { terna: nuevaTerna, timestamp: Date.now() } : null);
+        window.abrirModalEleccionAdmin(nick);
+    }, { onlyOnce: true });
+};
+
+window.adminSeleccionarCarta = async (nick, juego, carta) => {
+    const refSel = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion/${nick}/cartas`);
+    onValue(refSel, async (snap) => {
+        let misCartas = snap.val() || [];
+        if (!Array.isArray(misCartas)) misCartas = Object.values(misCartas);
+
+        if (misCartas.includes(carta)) {
+            misCartas = misCartas.filter(c => c !== carta);
+        } else {
+            if (misCartas.length >= maxSeleccionesGlobal) {
+                alert(`Límite máximo de ${maxSeleccionesGlobal} opciones alcanzado.`);
+                return;
+            }
+            misCartas.push(carta);
+        }
+
+        const refUserGen = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion/${nick}`);
+        if (misCartas.length > 0) {
+            await set(refUserGen, { cartas: misCartas, timestamp: Date.now() });
+        } else {
+            await set(refUserGen, null);
+        }
+        window.abrirModalEleccionAdmin(nick);
+    }, { onlyOnce: true });
+};
+
 function arrancarTodo() {
     document.getElementById('contenido-admin').style.display = 'flex';
     document.getElementById('capa-login').style.display = 'none';
@@ -402,31 +951,41 @@ function arrancarTodo() {
 
     escucharConectadosAdmin();
 
-    onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snap) => {
-        window.presenciaGlobal = snap.val() || {};
-        window.renderUsuarios(usuariosLocal);
-    });
-
     onSnapshot(refProy, (snap) => {
         const d = snap.data();
         if(!d) return;
 
-        window.misJuegosDB = d.juegos || [];           
+        if (!cambiandoClaveEnEsteMomento && miSesionActual !== null && d.sessionToken && miSesionActual !== d.sessionToken) {
+            alert("La clave de administración ha sido modificada. Por seguridad, tu sesión ha sido cerrada.");
+            sessionStorage.clear();
+            location.reload();
+            return;
+        }
 
+        window.misJuegosDB = d.juegos || [];           
         if (miSesionActual === null) miSesionActual = d.sessionToken;
+        maxSeleccionesGlobal = Number(d.maxSelecciones) || 2;
 
         if(d.fondoPersonalizado) {
-            document.body.style.background = d.fondoPersonalizado.includes('http') 
-                ? `url('${d.fondoPersonalizado}') center/cover no-repeat fixed` 
-                : d.fondoPersonalizado;
+            const fondo = d.fondoPersonalizado.trim();
+            if (fondo.startsWith('http') || fondo.includes('imgur.com') || fondo.includes('imgur') || fondo.includes('/')) {
+                document.body.style.background = `url('${fondo}') center/cover no-repeat fixed`;
+            } else if (fondo.includes('gradient') || fondo.includes('rgb')) {
+                document.body.style.background = fondo;
+            } else {
+                document.body.style.background = fondo;
+            }
         }
 
         if(d.urlXat) {
             document.getElementById('input-url-xat').value = d.urlXat;
         }
 
+        if(d.urlEnlaceBola) {
+            document.getElementById('input-url-enlace-bola').value = d.urlEnlaceBola;
+        }
+
         const juegoActivoLimpio = d.juegoActivo ? String(d.juegoActivo).trim() : null;
-        
         const juegosConSeleccionAdmin = ['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'];
         const btnReabrir = document.getElementById('btn-reabrir-seleccion');
         const contenedorLimite = document.getElementById('contenedor-limite-elecciones');
@@ -446,7 +1005,6 @@ function arrancarTodo() {
         if(juegoActivoLimpio && modoActivo !== juegoActivoLimpio) { 
             modoActivo = juegoActivoLimpio; 
             juegoActualGlobal = juegoActivoLimpio;
-            escucharConectadosAdmin();
             cargarMod(juegoActivoLimpio); 
         }
     });
@@ -460,6 +1018,7 @@ function arrancarTodo() {
         document.getElementById('count-total').innerText = snap.size;
         document.getElementById('c-h').innerText = h; 
         document.getElementById('c-m').innerText = m;
+        
         window.renderUsuarios(usuariosLocal);
     });
 }
@@ -469,8 +1028,14 @@ window.renderUsuarios = (lista) => {
         const esH = (u.sexo === 'H' || u.genero === 'HOMBRE');
         const colorG = esH ? 'var(--cian)' : 'var(--rosa)';
         const nickKey = (u.nick || u.id || "").trim().toLowerCase();
-        const estadoUsr = window.presenciaGlobal[nickKey] || { estado: 'offline' };
-        const esOnline = estadoUsr.estado === 'online';
+        
+        let esOnline = false;
+        Object.keys(window.presenciaGlobal).forEach(k => {
+            if (k.toLowerCase() === nickKey && window.presenciaGlobal[k].estado === 'online') {
+                esOnline = true;
+            }
+        });
+
         const claseEstado = esOnline ? 'online' : 'offline';
 
         return `
@@ -519,26 +1084,125 @@ window.cerrarModalFondo = () => document.getElementById('modal-fondo').style.dis
 window.abrirModalXat = () => document.getElementById('modal-xat').style.display = 'flex';
 window.cerrarModalXat = () => document.getElementById('modal-xat').style.display = 'none';
 
+window.abrirModalEnlaceBola = () => document.getElementById('modal-enlace-bola').style.display = 'flex';
+window.cerrarModalEnlaceBola = () => document.getElementById('modal-enlace-bola').style.display = 'none';
+
 window.guardarUrlXat = async () => {
     const url = document.getElementById('input-url-xat').value.trim();
     await updateDoc(doc(db, "proyectos", miCarpeta), { urlXat: url });
     cerrarModalXat();
 };
 
+window.guardarUrlEnlaceBola = async () => {
+    const url = document.getElementById('input-url-enlace-bola').value.trim();
+    await updateDoc(doc(db, "proyectos", miCarpeta), { urlEnlaceBola: url });
+    cerrarModalEnlaceBola();
+};
+
 window.abrirPantallaJugador = () => {
     window.open(`pantalla_jugador.html?p=${miCarpeta}`, "PantallaJugador", "width=1750,height=850");
 };
 
-window.guardarNuevoFondo = async () => { 
-    const url = document.getElementById('input-url-fondo').value.trim(); 
-    if(url) { await updateDoc(doc(db, "proyectos", miCarpeta), { fondoPersonalizado: url }); cerrarModalFondo(); } 
+// Lógica del generador visual de degradados
+const picker1 = document.getElementById('picker-color1');
+const picker2 = document.getElementById('picker-color2');
+const previewDeg = document.getElementById('preview-degradado');
+const inputFondo = document.getElementById('input-url-fondo');
+
+function actualizarPreview() {
+    const c1 = picker1.value;
+    const c2 = picker2.value;
+    const cssDeg = `radial-gradient(circle, ${c1}, ${c2})`;
+    previewDeg.style.background = cssDeg;
+}
+
+if (picker1 && picker2) {
+    picker1.oninput = actualizarPreview;
+    picker2.oninput = actualizarPreview;
+}
+
+window.generarDegradadoRadial = () => {
+    const c1 = picker1.value;
+    const c2 = picker2.value;
+    const cssDeg = `radial-gradient(circle, ${c1}, ${c2})`;
+    inputFondo.value = cssDeg;
 };
 
-window.abrirModalPin = () => document.getElementById('modal-cambiar-pin').style.display = 'flex';
+window.guardarNuevoFondo = async () => { 
+    const valor = document.getElementById('input-url-fondo').value.trim(); 
+    if(valor) { 
+        await updateDoc(doc(db, "proyectos", miCarpeta), { fondoPersonalizado: valor }); 
+        cerrarModalFondo(); 
+    } 
+};
+
+window.abrirModalPin = () => {
+    document.getElementById('input-verificar-actual').value = '';
+    document.getElementById('err-verif-pin').innerText = '';
+    document.getElementById('modal-verificar-pin').style.display = 'flex';
+};
+window.cerrarModalVerificarPin = () => document.getElementById('modal-verificar-pin').style.display = 'none';
+
+window.verificarPinMaestroParaCambio = async () => {
+    const pinIngresado = document.getElementById('input-verificar-actual').value.trim();
+    const errDiv = document.getElementById('err-verif-pin');
+
+    if (!pinIngresado) {
+        errDiv.innerText = "INGRESA EL PIN MAESTRO";
+        return;
+    }
+
+    const esValido = await validarPinMaestro(pinIngresado);
+    if (esValido) {
+        cerrarModalVerificarPin();
+        document.getElementById('nuevo-pin-input').value = '';
+        document.getElementById('modal-cambiar-pin').style.display = 'flex';
+    } else {
+        errDiv.innerText = "PIN MAESTRO INCORRECTO";
+    }
+};
+
 window.cerrarModalPin = () => document.getElementById('modal-cambiar-pin').style.display = 'none';
+
 window.guardarNuevoPin = async () => { 
     const p = document.getElementById('nuevo-pin-input').value.trim(); 
-    if(p.length >= 4){ await updateDoc(doc(db, "proyectos", miCarpeta), { pinAdmin: p }); sessionStorage.setItem(`admin_p_volatil`, p); location.reload(); } 
+    if (p.length >= 4) { 
+        const btnActualizar = document.getElementById('btn-actualizar-pin');
+        try {
+            btnActualizar.disabled = true;
+            btnActualizar.innerText = "GUARDANDO...";
+            cambiandoClaveEnEsteMomento = true;
+
+            const nuevoToken = `SES_${Date.now()}_${Math.random()}`;
+            const pRef = doc(db, "proyectos", miCarpeta);
+            await updateDoc(pRef, { 
+                pinAdmin: p,
+                sessionToken: nuevoToken
+            }); 
+            
+            sessionStorage.setItem(`admin_p_volatil`, p); 
+            cerrarModalPin();
+            document.getElementById('modal-aviso-personalizado').style.display = 'flex';
+
+            setTimeout(() => {
+                sessionStorage.clear();
+                location.reload(); 
+            }, 5000);
+
+        } catch (error) {
+            cambiandoClaveEnEsteMomento = false;
+            alert("Hubo un error al actualizar la clave en la base de datos.");
+            btnActualizar.innerText = "ACTUALIZAR";
+            btnActualizar.disabled = false;
+        }
+    } else {
+        alert("El PIN debe tener al menos 4 dígitos.");
+    }
+};
+
+window.forzarCierreSesionInmediato = () => {
+    sessionStorage.clear();
+    location.reload();
 };
 
 window.cambiarSexo = async (id, s) => { 
@@ -546,18 +1210,43 @@ window.cambiarSexo = async (id, s) => {
 };
 
 let usuarioAEliminar = null;
-window.borrarU = (id) => { usuarioAEliminar = id; document.getElementById('txt-confirmar-usuario').innerText = "ID: " + id; document.getElementById('modal-confirmar-borrar').style.display = 'flex'; };
+let idUsuarioRealtime = null;
+
+window.borrarU = (id) => { 
+    usuarioAEliminar = id; 
+    idUsuarioRealtime = null;
+    const nickLower = String(id).trim().toLowerCase();
+    
+    Object.keys(window.presenciaGlobal).forEach(k => {
+        if (k.toLowerCase() === nickLower) {
+            idUsuarioRealtime = k;
+        }
+    });
+
+    document.getElementById('txt-confirmar-usuario').innerText = "ID: " + id; 
+    document.getElementById('modal-confirmar-borrar').style.display = 'flex'; 
+};
+
 window.cerrarModalBorrar = () => document.getElementById('modal-confirmar-borrar').style.display = 'none';
 
 document.getElementById('btn-si-borrar').onclick = async () => {
-    if (usuarioAEliminar) { await deleteDoc(doc(db, "proyectos", miCarpeta, "registrados", usuarioAEliminar)); cerrarModalBorrar(); }
+    if (usuarioAEliminar) { 
+        try {
+            await deleteDoc(doc(db, "proyectos", miCarpeta, "registrados", usuarioAEliminar));
+            if (idUsuarioRealtime) {
+                await remove(ref(rtdb, `proyectos/${miCarpeta}/presencia/${idUsuarioRealtime}`));
+            }
+            cerrarModalBorrar();
+            usuarioAEliminar = null;
+            idUsuarioRealtime = null;
+        } catch (e) {}
+    }
 };
 
 window.cerrarRegistrados = () => document.getElementById('overlay-reg').style.display = 'none';
 document.getElementById('btn-ver-reg-top').onclick = () => document.getElementById('overlay-reg').style.display = 'flex';
 
 let tempJuego = null;
-
 const inputBusqueda = document.getElementById('input-busqueda');
 const sugerenciasDiv = document.getElementById('sugerencias');
 
@@ -620,7 +1309,7 @@ document.getElementById('btn-reabrir-seleccion').onclick = async () => {
         let objUpdate = {};
         objUpdate[campoEstado] = false; 
         await updateDoc(doc(db, "proyectos", miCarpeta), objUpdate);
-        alert("¡Selección reabierta con éxito! Los jugadores ya pueden elegir sus opciones.");
+        alert("¡Selección reabierta con éxito!");
     }
 };
 
@@ -650,18 +1339,17 @@ else document.getElementById('capa-login').style.display = 'flex';
 
 async function intentarLogin() {
     const pinIn = document.getElementById('pin-input').value;
-    const res = await validarLoginLocal(pinIn);
-    if (res.valida) { sessionStorage.setItem(`admin_p_volatil`, pinIn); location.reload(); } 
-    else { document.getElementById('err-log').innerText = res.msg; }
+    const resLogin = await validarLoginLocal(pinIn);
+    if (resLogin.valida) { 
+        sessionStorage.setItem(`admin_p_volatil`, pinIn); 
+        await registrarAccesoSeguridad();
+        location.reload(); 
+    } 
+    else { document.getElementById('err-log').innerText = resLogin.msg; }
 }
 
 document.getElementById('btn-login').onclick = intentarLogin;
-
-document.getElementById('pin-input').onkeydown = (e) => {
-    if (e.key === 'Enter') {
-        intentarLogin();
-    }
-};
+document.getElementById('pin-input').onkeydown = (e) => { if (e.key === 'Enter') intentarLogin(); };
 </script>
 </body>
 </html>

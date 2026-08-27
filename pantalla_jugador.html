@@ -22,7 +22,7 @@
             color: var(--texto);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -49,7 +49,7 @@
         .btn-efecto:hover { border-color: var(--cian); color: var(--cian); box-shadow: 0 0 15px var(--cian); transform: translateY(-2px); }
 
         #capa-login-jugador {
-            position: fixed; inset: 0; z-index: 99999; background: radial-gradient(circle, #111 0%, #000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.4s ease-out;
+            position: fixed; inset: 0; z-index: 99999; background: radial-gradient(circle, #111 0%, #000 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.4s ease-out; padding: 20px; box-sizing: border-box;
         }
 
         .login-card {
@@ -75,36 +75,43 @@
         }
 
         .header-top { 
-            width: 100%; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid #151515; display: flex; justify-content: center; padding: 15px 0; margin-bottom: 20px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;
+            width: 100%; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(8px); border-bottom: 1px solid #151515; display: flex; justify-content: center; padding: 12px 0; margin-bottom: 20px; box-sizing: border-box; position: sticky; top: 0; z-index: 100;
         }
-        .contenedor-central { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1700px; padding: 0 20px; }
+        .contenedor-central { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1700px; padding: 0 15px; flex-wrap: wrap; gap: 10px; }
 
         .layout-principal {
             display: flex; gap: 20px; width: 100%; max-width: 1700px; box-sizing: border-box; align-items: flex-start; justify-content: center;
         }
 
         .sidebar-conectados {
-            width: 330px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0;
+            width: 330px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; gap: 15px;
         }
         .sidebar-conectados h3 {
             color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px;
         }
-        #lista-conectados-jugador { display: flex; flex-direction: column; gap: 8px; max-height: 550px; overflow-y: auto; }
-        .item-conectado {
+        .sidebar-conectados h3.temporales-title {
+            color: var(--amarillo);
+        }
+        #lista-conectados-jugador, #lista-temporales-jugador { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
+        .item-conectado, .item-temporal {
             display: flex; flex-direction: column; align-items: flex-start; gap: 6px; background: #111; padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a; box-sizing: border-box; width: 100%;
         }
         .punto-online { width: 8px; height: 8px; background: var(--verde); border-radius: 50%; box-shadow: 0 0 6px var(--verde); flex-shrink: 0; }
+        .punto-temporal { width: 8px; height: 8px; background: var(--amarillo); border-radius: 50%; box-shadow: 0 0 6px var(--amarillo); flex-shrink: 0; }
 
         .main-columna { width: 750px; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
 
         .sidebar-derecha {
-            width: 650px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+            width: 650px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 15px;
         }
         .sidebar-derecha h3 {
-            color: var(--cian); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; width: 100%; text-align: center;
+            color: var(--cian); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 0; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; width: 100%; text-align: center;
         }
-        .contenedor-iframe-web { width: 650px; height: 486px; border: 1px solid #333; border-radius: 8px; overflow: hidden; background: #000; }
+        .contenedor-iframe-web { width: 100%; max-width: 650px; height: 486px; border: 1px solid #333; border-radius: 8px; overflow: hidden; background: #000; box-sizing: border-box; }
         .contenedor-iframe-web iframe { width: 100%; height: 100%; border: none; }
+
+        .contenedor-iframe-bola { width: 100%; max-width: 325px; height: 385px; border: 1px solid #333; border-radius: 8px; overflow: hidden; background: #000; display: none; box-sizing: border-box; }
+        .contenedor-iframe-bola iframe { width: 100%; height: 100%; border: none; }
 
         .header-transmision { text-align: center; margin-bottom: 20px; }
         .header-transmision h1 { color: var(--verde); margin: 0 0 5px 0; font-size: 26px; letter-spacing: 2px; text-shadow: 0 0 15px rgba(57, 255, 20, 0.4); }
@@ -128,7 +135,7 @@
         }
 
         .celda {
-            background: #121212; color: #666; padding: 12px 4px; border-radius: 6px; text-align: center; font-weight: bold; font-size: 11px; border: 1px solid #1a1a1a; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; text-transform: uppercase; cursor: pointer;
+            background: #121212; color: #666; padding: 12px 4px; border-radius: 6px; text-align: center; font-weight: bold; font-size: 11px; border: 1px solid #1a1a1a; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; text-transform: uppercase; cursor: pointer; box-sizing: border-box;
         }
         .celda:hover { border-color: var(--amarillo); color: var(--amarillo); }
 
@@ -147,6 +154,35 @@
             background: #1a1a1a; border: 1px dashed var(--amarillo); color: var(--amarillo); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; letter-spacing: 0.5px; width: 100%; box-sizing: border-box; white-space: normal; word-break: break-word; text-align: left;
         }
         .num-inv-rojo { color: var(--rojo) !important; text-decoration: line-through; }
+
+        /* MODO MÓVIL FORZADO O RESPONSIVO AUTOMÁTICO */
+        body.modo-movil .layout-principal {
+            flex-direction: column !important;
+            align-items: center !important;
+        }
+        body.modo-movil .sidebar-conectados,
+        body.modo-movil .main-columna,
+        body.modo-movil .sidebar-derecha {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        body.modo-movil .contenedor-iframe-web {
+            height: 300px !important;
+        }
+
+        @media (max-width: 1400px) {
+            .layout-principal {
+                flex-direction: column;
+                align-items: center;
+            }
+            .sidebar-conectados, .main-columna, .sidebar-derecha {
+                width: 100%;
+                max-width: 100%;
+            }
+            .contenedor-iframe-web {
+                height: 350px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -170,14 +206,23 @@
         <div class="header-top">
             <div class="contenedor-central">
                 <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px;">PERLANEGRA<span style="color:var(--cian)">GAMES</span></div>
-                <button onclick="window.cerrarSesionJugador()" class="btn-efecto" style="border-color: #A020F0; color: #A020F0;" title="SALIR"><i class="fas fa-power-off"></i> SALIR</button>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button onclick="window.alternarModoMovil()" id="btn-modo-movil" class="btn-efecto" style="border-color: var(--verde); color: var(--verde);" title="CAMBIAR VISTA MÓVIL/PC"><i class="fas fa-mobile-alt"></i> MÓVIL</button>
+                    <button onclick="window.cerrarSesionJugador()" class="btn-efecto" style="border-color: #A020F0; color: #A020F0;" title="SALIR"><i class="fas fa-power-off"></i> SALIR</button>
+                </div>
             </div>
         </div>
 
         <div class="layout-principal">
             <div class="sidebar-conectados">
-                <h3>🟢 Conectados (<span id="count-conectados">0</span>)</h3>
-                <div id="lista-conectados-jugador"></div>
+                <div>
+                    <h3>🟢 Conectados (<span id="count-conectados">0</span>)</h3>
+                    <div id="lista-conectados-jugador"></div>
+                </div>
+                <div>
+                    <h3 class="temporales-title">⚡ Temporales (<span id="count-temporales-jugador">0</span>)</h3>
+                    <div id="lista-temporales-jugador"></div>
+                </div>
             </div>
 
             <div class="main-columna">
@@ -207,9 +252,16 @@
             </div>
 
             <div class="sidebar-derecha">
+                <!-- 1. SALA DE XAT (ARRIBA) -->
                 <h3 id="titulo-panel-derecho">🌐 SALA DE XAT</h3>
-                <div class="contenedor-iframe-web">
+                <div class="contenedor-iframe-web" id="wrapper-xat">
                     <iframe id="iframe-xat-jugador" src="" title="Sala de Xat"></iframe>
+                </div>
+
+                <!-- 2. ENLACE A BOLA (BAJO EL XAT) -->
+                <h3 id="titulo-panel-bola" style="display:none;">🔗 ENLACE A BOLA</h3>
+                <div class="contenedor-iframe-bola" id="wrapper-bola">
+                    <iframe id="iframe-bola-jugador" src="" title="Enlace a Bola"></iframe>
                 </div>
             </div>
         </div>
@@ -393,6 +445,22 @@
         
         const tiempoInicioCliente = Date.now();
 
+        // Función para alternar el diseño responsivo móvil manualmente
+        window.alternarModoMovil = () => {
+            const body = document.body;
+            body.classList.toggle('modo-movil');
+            const btn = document.getElementById('btn-modo-movil');
+            if (body.classList.contains('modo-movil')) {
+                btn.innerHTML = '<i class="fas fa-desktop"></i> PC';
+                btn.style.borderColor = "var(--cian)";
+                btn.style.color = "var(--cian)";
+            } else {
+                btn.innerHTML = '<i class="fas fa-mobile-alt"></i> MÓVIL';
+                btn.style.borderColor = "var(--verde)";
+                btn.style.color = "var(--verde)";
+            }
+        };
+
         function configurarAutoLiberacion(nick) {
             const refInvUser = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nick}`);
             onDisconnect(refInvUser).remove();
@@ -462,76 +530,96 @@
                                                                         const sacados = Array.isArray(rawSalidos) ? rawSalidos.map(String) : Object.values(rawSalidos).map(String);
                                                                         
                                                                         const contenedorLista = document.getElementById('lista-conectados-jugador');
+                                                                        const contenedorTemporales = document.getElementById('lista-temporales-jugador');
                                                                         const contadorElem = document.getElementById('count-conectados');
+                                                                        const contadorTemporalesElem = document.getElementById('count-temporales-jugador');
                                                                         
-                                                                        let html = "";
+                                                                        let htmlOnline = "";
+                                                                        let htmlTemporal = "";
                                                                         let totalOnline = 0;
+                                                                        let totalTemporal = 0;
 
-                                                                        Object.keys(dataPresencia).forEach(nick => {
-                                                                            if (dataPresencia[nick] && dataPresencia[nick].estado === 'online') {
-                                                                                totalOnline++;
-                                                                                let badgeHtml = "";
-                                                                                
-                                                                                const juegoLower = String(juegoActualGlobal).toLowerCase();
+                                                                        const todosLosNicks = new Set([
+                                                                            ...Object.keys(dataPresencia),
+                                                                            ...Object.keys(dataInv),
+                                                                            ...Object.keys(dataTerna),
+                                                                            ...Object.keys(dataVersus),
+                                                                            ...Object.keys(dataMex),
+                                                                            ...Object.keys(dataPoke),
+                                                                            ...Object.keys(dataPais),
+                                                                            ...Object.keys(dataAutos),
+                                                                            ...Object.keys(dataBebida),
+                                                                            ...Object.keys(dataComidas),
+                                                                            ...Object.keys(dataFiesta),
+                                                                            ...Object.keys(dataPitufo),
+                                                                            ...Object.keys(dataSimp),
+                                                                            ...Object.keys(dataPow)
+                                                                        ]);
 
-                                                                                if (juegoLower === 'inv') {
-                                                                                    const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
-                                                                                    if (seleccionUser) {
-                                                                                        let partes = seleccionUser.split("-");
-                                                                                        let p1 = partes[0];
-                                                                                        let p2 = partes[1];
-                                                                                        let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
-                                                                                        let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
-                                                                                        badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
-                                                                                    } else {
-                                                                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
-                                                                                    }
-                                                                                } else if (juegoLower === 'terna') {
-                                                                                    const seleccionTerna = dataTerna[nick] ? dataTerna[nick].terna : null;
-                                                                                    if (seleccionTerna) {
-                                                                                        let partes = seleccionTerna.split("-");
-                                                                                        let t1 = partes[0], t2 = partes[1], t3 = partes[2];
-                                                                                        let c1 = sacados.includes(t1) ? "num-inv-rojo" : "";
-                                                                                        let c2 = sacados.includes(t2) ? "num-inv-rojo" : "";
-                                                                                        let c3 = sacados.includes(t3) ? "num-inv-rojo" : "";
-                                                                                        badgeHtml = `<span class="badge-invertido"><span class="${c1}">${t1}</span>-<span class="${c2}">${t2}</span>-<span class="${c3}">${t3}</span></span>`;
-                                                                                    } else {
-                                                                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN SELECCIONAR</span>`;
-                                                                                    }
-                                                                                } else if (juegoLower === 'sumarversus') {
-                                                                                    const eqUser = dataVersus[nick] ? dataVersus[nick].equipo : null;
-                                                                                    if (eqUser) {
-                                                                                        let colorEq = eqUser === 'A' ? 'var(--cian)' : 'var(--rosa)';
-                                                                                        badgeHtml = `<span class="badge-invertido" style="color: ${colorEq}; border-color: ${colorEq};">EQUIPO ${eqUser}</span>`;
-                                                                                    } else {
-                                                                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN EQUIPO</span>`;
-                                                                                    }
-                                                                                } else if (['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
-                                                                                    let datasetActual = {};
-                                                                                    if (juegoLower === 'mex') datasetActual = dataMex;
-                                                                                    else if (juegoLower === 'pokemon') datasetActual = dataPoke;
-                                                                                    else if (juegoLower === 'pais') datasetActual = dataPais;
-                                                                                    else if (juegoLower === 'autos') datasetActual = dataAutos;
-                                                                                    else if (juegoLower === 'bebida') datasetActual = dataBebida;
-                                                                                    else if (juegoLower === 'comidas') datasetActual = dataComidas;
-                                                                                    else if (juegoLower === 'fiesta') datasetActual = dataFiesta;
-                                                                                    else if (juegoLower === 'pitufo') datasetActual = dataPitufo;
-                                                                                    else if (juegoLower === 'simpson') datasetActual = dataSimp;
-                                                                                    else if (juegoLower === 'power') datasetActual = dataPow;
+                                                                        todosLosNicks.forEach(nick => {
+                                                                            const infoP = dataPresencia[nick];
+                                                                            const esOnline = infoP && infoP.estado === 'online';
 
-                                                                                    const cartasUser = (datasetActual[nick] && Array.isArray(datasetActual[nick].cartas)) ? datasetActual[nick].cartas : [];
-                                                                                    if (cartasUser.length > 0) {
-                                                                                        let cartasHtmlArr = cartasUser.map(c => {
-                                                                                            let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
-                                                                                            return `<span class="${claseSalida}">${c}</span>`;
-                                                                                        });
-                                                                                        badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
-                                                                                    } else {
-                                                                                        badgeHtml = `<span class="badge-invertido" style="color:#666;">SIN CARTAS</span>`;
-                                                                                    }
+                                                                            let tieneSeleccion = false;
+                                                                            let badgeHtml = "";
+                                                                            const juegoLower = String(juegoActualGlobal).toLowerCase();
+
+                                                                            if (juegoLower === 'inv') {
+                                                                                const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
+                                                                                if (seleccionUser) {
+                                                                                    tieneSeleccion = true;
+                                                                                    let partes = seleccionUser.split("-");
+                                                                                    let p1 = partes[0];
+                                                                                    let p2 = partes[1];
+                                                                                    let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
+                                                                                    let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
+                                                                                    badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
                                                                                 }
+                                                                            } else if (juegoLower === 'terna') {
+                                                                                const seleccionTerna = dataTerna[nick] ? dataTerna[nick].terna : null;
+                                                                                if (seleccionTerna) {
+                                                                                    tieneSeleccion = true;
+                                                                                    let partes = seleccionTerna.split("-");
+                                                                                    let t1 = partes[0], t2 = partes[1], t3 = partes[2];
+                                                                                    let c1 = sacados.includes(t1) ? "num-inv-rojo" : "";
+                                                                                    let c2 = sacados.includes(t2) ? "num-inv-rojo" : "";
+                                                                                    let c3 = sacados.includes(t3) ? "num-inv-rojo" : "";
+                                                                                    badgeHtml = `<span class="badge-invertido"><span class="${c1}">${t1}</span>-<span class="${c2}">${t2}</span>-<span class="${c3}">${t3}</span></span>`;
+                                                                                }
+                                                                            } else if (juegoLower === 'sumarversus') {
+                                                                                const eqUser = dataVersus[nick] ? dataVersus[nick].equipo : null;
+                                                                                if (eqUser) {
+                                                                                    tieneSeleccion = true;
+                                                                                    let colorEq = eqUser === 'A' ? 'var(--cian)' : 'var(--rosa)';
+                                                                                    badgeHtml = `<span class="badge-invertido" style="color: ${colorEq}; border-color: ${colorEq};">EQUIPO ${eqUser}</span>`;
+                                                                                }
+                                                                            } else if (['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
+                                                                                let datasetActual = {};
+                                                                                if (juegoLower === 'mex') datasetActual = dataMex;
+                                                                                else if (juegoLower === 'pokemon') datasetActual = dataPoke;
+                                                                                else if (juegoLower === 'pais') datasetActual = dataPais;
+                                                                                else if (juegoLower === 'autos') datasetActual = dataAutos;
+                                                                                else if (juegoLower === 'bebida') datasetActual = dataBebida;
+                                                                                else if (juegoLower === 'comidas') datasetActual = dataComidas;
+                                                                                else if (juegoLower === 'fiesta') datasetActual = dataFiesta;
+                                                                                else if (juegoLower === 'pitufo') datasetActual = dataPitufo;
+                                                                                else if (juegoLower === 'simpson') datasetActual = dataSimp;
+                                                                                else if (juegoLower === 'power') datasetActual = dataPow;
 
-                                                                                html += `
+                                                                                const cartasUser = (datasetActual[nick] && Array.isArray(datasetActual[nick].cartas)) ? datasetActual[nick].cartas : [];
+                                                                                if (cartasUser.length > 0) {
+                                                                                    tieneSeleccion = true;
+                                                                                    let cartasHtmlArr = cartasUser.map(c => {
+                                                                                        let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
+                                                                                        return `<span class="${claseSalida}">${c}</span>`;
+                                                                                    });
+                                                                                    badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
+                                                                                }
+                                                                            }
+
+                                                                            if (esOnline) {
+                                                                                totalOnline++;
+                                                                                htmlOnline += `
                                                                                 <div class="item-conectado">
                                                                                     <div style="display:flex; align-items:center; gap:6px; width: 100%;">
                                                                                         <span class="punto-online"></span>
@@ -539,12 +627,26 @@
                                                                                     </div>
                                                                                     ${badgeHtml}
                                                                                 </div>`;
+                                                                            } else if (!esOnline && tieneSeleccion) {
+                                                                                totalTemporal++;
+                                                                                htmlTemporal += `
+                                                                                <div class="item-temporal">
+                                                                                    <div style="display:flex; align-items:center; gap:6px; width: 100%;">
+                                                                                        <span class="punto-temporal"></span>
+                                                                                        <span style="font-weight: bold; text-transform: uppercase; color: var(--amarillo); word-break: break-all;">${nick}</span>
+                                                                                    </div>
+                                                                                    ${badgeHtml}
+                                                                                </div>`;
                                                                             }
                                                                         });
 
                                                                         if (contadorElem) contadorElem.innerText = totalOnline;
+                                                                        if (contadorTemporalesElem) contadorTemporalesElem.innerText = totalTemporal;
                                                                         if (contenedorLista) {
-                                                                            contenedorLista.innerHTML = html || '<div style="color: #555; font-size: 11px; text-align: center; padding: 10px;">Nadie conectado</div>';
+                                                                            contenedorLista.innerHTML = htmlOnline || '<div style="color: #555; font-size: 11px; text-align: center; padding: 5px;">Nadie conectado</div>';
+                                                                        }
+                                                                        if (contenedorTemporales) {
+                                                                            contenedorTemporales.innerHTML = htmlTemporal || '<div style="color: #555; font-size: 11px; text-align: center; padding: 5px;">Sin temporales</div>';
                                                                         }
                                                                     });
                                                                 });
@@ -706,10 +808,31 @@
                 const data = snap.data();
                 
                 if (data.urlXat) {
-                    const iframe = document.getElementById('iframe-xat-jugador');
-                    if (iframe && iframe.src !== data.urlXat) {
-                        iframe.src = data.urlXat;
+                    const wrapperXat = document.getElementById('wrapper-xat');
+                    const iframeXat = document.getElementById('iframe-xat-jugador');
+                    if (wrapperXat && iframeXat) {
+                        wrapperXat.style.display = 'block';
+                        if (iframeXat.src !== data.urlXat) iframeXat.src = data.urlXat;
                     }
+                } else {
+                    const wrapperXat = document.getElementById('wrapper-xat');
+                    if (wrapperXat) wrapperXat.style.display = 'none';
+                }
+
+                if (data.urlEnlaceBola) {
+                    const wrapperBola = document.getElementById('wrapper-bola');
+                    const iframeBola = document.getElementById('iframe-bola-jugador');
+                    const tituloBola = document.getElementById('titulo-panel-bola');
+                    if (wrapperBola && iframeBola) {
+                        wrapperBola.style.display = 'block';
+                        if(tituloBola) tituloBola.style.display = 'block';
+                        if (iframeBola.src !== data.urlEnlaceBola) iframeBola.src = data.urlEnlaceBola;
+                    }
+                } else {
+                    const wrapperBola = document.getElementById('wrapper-bola');
+                    const tituloBola = document.getElementById('titulo-panel-bola');
+                    if (wrapperBola) wrapperBola.style.display = 'none';
+                    if(tituloBola) tituloBola.style.display = 'none';
                 }
 
                 maxSeleccionesGlobal = Number(data.maxSelecciones) || 2;
@@ -779,7 +902,6 @@
 
             const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
 
-            // FASE DE SELECCIÓN PARA SUMAR VERSUS (EQUIPO A vs EQUIPO B)
             if (juegoLower === 'sumarversus') {
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusConfig`), (sConfig) => {
                     const configData = sConfig.val() || {};
@@ -802,14 +924,12 @@
                                     ${estaBloqueado ? '<div style="color: var(--rojo); font-weight: bold; font-size: 12px;">🔒 CAMBIO DE EQUIPO BLOQUEADO POR EL ADMINISTRADOR</div>' : ''}
                                     
                                     <div style="display: flex; gap: 20px; width: 100%; justify-content: center; flex-wrap: wrap;">
-                                        <!-- BOTÓN EQUIPO A -->
                                         <div onclick="window.seleccionarEquipoVersus('A', ${estaBloqueado})" style="flex: 1; min-width: 250px; background: ${miEquipo === 'A' ? 'var(--cian)' : '#121212'}; color: ${miEquipo === 'A' ? '#000' : '#fff'}; border: 2px solid var(--cian); padding: 30px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: ${miEquipo === 'A' ? '0 0 25px var(--cian)' : 'none'};">
                                             <h3 style="margin: 0 0 10px 0; font-size: 22px;">EQUIPO A</h3>
                                             <div style="font-size: 40px; font-weight: 900; margin-bottom: 10px;">${pA} PTS</div>
                                             <div style="font-size: 13px; font-weight: bold;">${miEquipo === 'A' ? '✓ TU EQUIPO ACTUAL' : 'HACER CLICK PARA UNIRSE'}</div>
                                         </div>
 
-                                        <!-- BOTÓN EQUIPO B -->
                                         <div onclick="window.seleccionarEquipoVersus('B', ${estaBloqueado})" style="flex: 1; min-width: 250px; background: ${miEquipo === 'B' ? 'var(--rosa)' : '#121212'}; color: ${miEquipo === 'B' ? '#000' : '#fff'}; border: 2px solid var(--rosa); padding: 30px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: ${miEquipo === 'B' ? '0 0 25px var(--rosa)' : 'none'};">
                                             <h3 style="margin: 0 0 10px 0; font-size: 22px;">EQUIPO B</h3>
                                             <div style="font-size: 40px; font-weight: 900; margin-bottom: 10px;">${pB} PTS</div>
@@ -823,7 +943,6 @@
                 return;
             }
 
-            // FASE DE SELECCIÓN PARA INVERTIDOS (INV)
             if (juegosConSeleccion.includes(juegoLower) && !estadosComenzados[juegoLower]) {
                 if (juegoLower === 'inv') {
                     onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
@@ -875,7 +994,6 @@
                     return;
                 }
 
-                // FASE DE SELECCIÓN FIJA Y ESTRUCTURADA PARA TERNAS (TERNA)
                 if (juegoLower === 'terna') {
                     onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (sAllSel) => {
                         if (juegoActualGlobal !== 'terna') return;
@@ -930,7 +1048,6 @@
                     return;
                 }
 
-                // FASE DE SELECCIÓN PARA OTROS JUEGOS
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/${juegoLower}Seleccion`), (sAllSel) => {
                     if (juegoActualGlobal !== juegoLower) return;
 
@@ -970,7 +1087,6 @@
                 return;
             }
 
-            // SI INVERTIDOS YA COMENZÓ LA PARTIDA
             if (juegoLower === 'inv' && estadosComenzados['inv']) {
                 let totalNums = 90;
                 grid.style.gridTemplateColumns = `repeat(10, 1fr)`;
@@ -982,7 +1098,6 @@
                 return;
             }
 
-            // SI TERNAS YA COMENZÓ LA PARTIDA
             if (juegoLower === 'terna' && estadosComenzados['terna']) {
                 let totalNums = 90;
                 grid.style.gridTemplateColumns = `repeat(10, 1fr)`;
@@ -994,7 +1109,6 @@
                 return;
             }
 
-            // SI OTROS JUEGOS CON SELECCIÓN YA COMENZARON
             if (juegosConSeleccion.includes(juegoLower) && estadosComenzados[juegoLower]) {
                 const elementos = listasJuegos[juegoLower];
                 elementos.forEach((el, index) => {
@@ -1006,7 +1120,6 @@
                 return;
             }
 
-            // TABLEROS NUMÉRICOS TRADICIONALES (50, 72, 90, 100)
             let totalNums = 90;
             let columnas = 10;
 
