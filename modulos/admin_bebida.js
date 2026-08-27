@@ -11,7 +11,7 @@ export function iniciar(contenedor, db, miCarpeta, rtdb) {
         "Michelada", "Clamato", "Vino Blanco", "Vino Rosado", "Prosecco", "Cava", "Oporto", "Sherry", "Calvados", "Pacharán", 
         "Chinchón", "Sੋn", "Hidromiel", "Kombucha", "Agua Mineral", "Agua Tónica", "Refresco Cola", "Refresco Limón", "Refresco Naranja", "Agua Horchata", 
         "Agua Jamaica", "Agua Limón", "Jugo de Naranja", "Jugo de Manzana", "Jugo de Piña", "Jugo de Uva", "Jugo de Arándano", "Jugo de Tomate", "Limonada", "Naranjada", 
-        "Café Espresso", "Café Americano", "Café Capuchino", "Café Latte", "Café Mocha", "Café Helado", "Mate", "Mate Cocido", "Té Negro", "Té Verde", 
+        "Café Espresso", "Café Americano", "Café Capuchino", "Café Latte", "Café Mocha", "Café Helado", "Mate", "Mate_Cocido", "Té Negro", "Té Verde", 
         "Té de Manzanilla", "Té de Menta", "Té Chai", "Mate", "Chocolate Caliente", "Atole", "Champurrado", "Licor de Melón", "Licor de Café", "Licor de Cacao", 
         "Licor de Naranja", "Licor de Hierbas", "Cerveza Oscura", "Cerveza Artesanal", "Cerveza IPA", "Cerveza Stout", "Cerveza Porter", "Cerveza Trigo", "Cerveza Sin Alcohol", "Sidra de Manzana", 
         "Vino Espumoso", "Vermut Rojo", "Vermut Blanco", "Punch de Frutas", "Zumo de Limón", "Zumo de Toronja", "Jarabe de Goma", "Granadina", "Bitter Angostura", "Agua de Coco"
