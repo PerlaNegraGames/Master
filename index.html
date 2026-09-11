@@ -612,6 +612,10 @@ function escucharConectadosAdmin() {
         const dataPresencia = snapshot.val() || {};
         window.presenciaGlobal = dataPresencia;
 
+        if (typeof window.renderUsuarios === 'function' && usuariosLocal.length > 0) {
+            window.renderUsuarios(usuariosLocal);
+        }
+
         onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sInv) => {
             const dataInv = sInv.val() || {};
             onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (sTerna) => {
@@ -1011,6 +1015,7 @@ function arrancarTodo() {
         document.getElementById('c-h').innerText = h; 
         document.getElementById('c-m').innerText = m;
         window.renderUsuarios(usuariosLocal);
+        renderizarListasEstado({}, []);
     });
 }
 
@@ -1174,10 +1179,9 @@ window.guardarNuevoPin = async () => {
 window.forzarCierreSesionInmediato = () => { sessionStorage.clear(); location.reload(); };
 window.cambiarSexo = async (id, s) => { const nS = s==='H'?'M':'H'; await updateDoc(doc(db, "proyectos", miCarpeta, "registrados", id), { sexo: nS, genero: nS==='H'?'HOMBRE':'MUJER' }); };
 
-let usuarioAEliminar = null, idUsuarioRealtime = null;
+let usuarioAEliminar = null;
 window.borrarU = (id) => { 
-    usuarioAEliminar = id; idUsuarioRealtime = null;
-    Object.keys(window.presenciaGlobal).forEach(k => { if (k.toLowerCase() === id.trim().toLowerCase()) idUsuarioRealtime = k; });
+    usuarioAEliminar = id; 
     document.getElementById('txt-confirmar-usuario').innerText = "ID: " + id; 
     document.getElementById('modal-confirmar-borrar').style.display = 'flex'; 
 };
@@ -1186,7 +1190,20 @@ window.cerrarModalBorrar = () => document.getElementById('modal-confirmar-borrar
 document.getElementById('btn-si-borrar').onclick = async () => {
     if (usuarioAEliminar) { 
         await deleteDoc(doc(db, "proyectos", miCarpeta, "registrados", usuarioAEliminar));
-        if (idUsuarioRealtime) await remove(ref(rtdb, `proyectos/${miCarpeta}/presencia/${idUsuarioRealtime}`));
+        
+        const idLimpio = usuarioAEliminar.trim();
+        await remove(ref(rtdb, `proyectos/${miCarpeta}/presencia/${idLimpio}`));
+        await remove(ref(rtdb, `proyectos/${miCarpeta}/presencia/${idLimpio.toUpperCase()}`));
+        await remove(ref(rtdb, `proyectos/${miCarpeta}/presencia/${idLimpio.toLowerCase()}`));
+
+        const juegosAEliminarRastro = ['90', 'inv', 'terna', 'sumarversus', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'];
+        juegosAEliminarRastro.forEach(j => {
+            let rutaSeleccion = j === 'inv' ? 'invertidosSeleccion' : j === 'terna' ? 'ternaSeleccion' : `${j}Seleccion`;
+            remove(ref(rtdb, `proyectos/${miCarpeta}/${rutaSeleccion}/${idLimpio}`));
+            remove(ref(rtdb, `proyectos/${miCarpeta}/${rutaSeleccion}/${idLimpio.toUpperCase()}`));
+            remove(ref(rtdb, `proyectos/${miCarpeta}/${rutaSeleccion}/${idLimpio.toLowerCase()}`));
+        });
+
         cerrarModalBorrar();
     }
 };
