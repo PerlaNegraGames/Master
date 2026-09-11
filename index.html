@@ -93,7 +93,6 @@
         .online { background: var(--verde); box-shadow: 0 0 8px var(--verde); }
         .offline { background: #444; }
 
-        /* MODO MÓVIL FORZADO / RESPONSIVO AUTOMÁTICO */
         body.modo-movil .layout-admin-principal {
             flex-direction: column !important;
             align-items: center !important;
@@ -169,6 +168,7 @@
                     <input type="text" id="input-busqueda" placeholder="SELECCIONAR JUEGO..." readonly>
                     <div id="sugerencias"></div>
                     <button id="btn-aplicar-modo" class="btn-abrir" style="background:var(--verde); color:#000;">APLICAR</button>
+                    <button id="btn-iniciar-partida" class="btn-abrir" style="background:var(--rosa); color:#fff; display:none;" title="Inicia la partida y muestra el tablero para jugar">🚀 INICIAR PARTIDA</button>
                     <button id="btn-reabrir-seleccion" class="btn-abrir" style="background:var(--amarillo); color:#000; display:none;" title="Permite que jugadores nuevos elijan carta sin reiniciar bolas">🔓 REABRIR SELECCIÓN</button>
                     
                     <div id="contenedor-limite-elecciones" style="display:none; align-items: center; gap: 5px; background: #111; padding: 5px 10px; border-radius: 8px; border: 1px solid #333;">
@@ -231,7 +231,6 @@
     </div>
 </div>
 
-<!-- MODAL DE DISEÑO / FONDO CON CREADOR DE DEGRADADOS AVANZADO Y ORDEN DE COLORES -->
 <div id="modal-fondo" class="modal-overlay">
     <div style="background: #0a0a0a; border: 2px solid var(--rosa); padding: 20px; border-radius: 15px; width: 440px; display: flex; flex-direction: column; box-shadow: 0 0 30px #000; box-sizing: border-box;">
         <h2 style="color:var(--rosa); text-align:center; margin: 0 0 10px 0; font-size: 18px;">DISEÑO DE FONDO</h2>
@@ -239,7 +238,6 @@
             Crea tu degradado personalizado, añade colores, ordénalos con ⬆️ ⬇️ o ingresa una URL:
         </p>
         
-        <!-- GENERADOR VISUAL DE DEGRADADO AVANZADO -->
         <div style="background: #111; border: 1px dashed var(--rosa); padding: 12px; border-radius: 10px; margin-bottom: 12px; box-sizing: border-box;">
             <div style="font-size: 10px; color: var(--rosa); font-weight: bold; margin-bottom: 8px; text-transform: uppercase;">✨ Creador Avanzado de Degradados</div>
             
@@ -254,9 +252,7 @@
             </div>
 
             <div style="font-size: 10px; color: #aaa; margin-bottom: 5px; font-weight: bold;">COLORES DEL DEGRADADO:</div>
-            <div id="contenedor-selectores-color" style="display: flex; flex-direction: column; gap: 6px; max-height: 140px; overflow-y: auto; margin-bottom: 10px; padding-right: 5px;">
-                <!-- Se inyectan dinámicamente -->
-            </div>
+            <div id="contenedor-selectores-color" style="display: flex; flex-direction: column; gap: 6px; max-height: 140px; overflow-y: auto; margin-bottom: 10px; padding-right: 5px;"></div>
 
             <div style="display: flex; gap: 8px; margin-bottom: 10px;">
                 <button onclick="window.agregarSelectorColor()" class="btn-abrir" style="background: #222; color: var(--rosa); border: 1px solid var(--rosa); padding: 6px 10px; font-size: 10px; flex: 1;"><i class="fas fa-plus"></i> AÑADIR</button>
@@ -373,6 +369,7 @@ window.JUEGOS_CONFIG = {
 };
 
 const listasJuegosAdmin = {
+    "90": Array.from({length: 90}, (_, i) => String(i + 1)),
     "power": [
         "Abas", "Action", "Adele", "Aero", "Aliens", "All", "Alpha", "Always", "Amor", "Animate",
         "Apex", "Aqua", "Arcade", "Arrow", "Art", "Asylum", "Auto", "Avatar", "Baby", "Badge",
@@ -641,18 +638,21 @@ function escucharConectadosAdmin() {
                                                         const dataSimp = sSimp.val() || {};
                                                         onValue(ref(rtdb, `proyectos/${miCarpeta}/powerSeleccion`), (sPow) => {
                                                             const dataPow = sPow.val() || {};
+                                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/90Seleccion`), (s90) => {
+                                                                const data90 = s90.val() || {};
 
-                                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (sSorteo) => {
-                                                                const infoSorteo = sSorteo.val() || {};
-                                                                const rawSalidos = infoSorteo.sacados || [];
-                                                                const sacados = Array.isArray(rawSalidos) ? rawSalidos.map(String) : Object.values(rawSalidos).map(String);
+                                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (sSorteo) => {
+                                                                    const infoSorteo = sSorteo.val() || {};
+                                                                    const rawSalidos = infoSorteo.sacados || [];
+                                                                    const sacados = Array.isArray(rawSalidos) ? rawSalidos.map(String) : Object.values(rawSalidos).map(String);
 
-                                                                renderizarListasEstado({
-                                                                    inv: dataInv, terna: dataTerna, sumarversus: dataVersus,
-                                                                    mex: dataMex, pokemon: dataPoke, pais: dataPais, autos: dataAutos,
-                                                                    bebida: dataBebida, comidas: dataComidas, fiesta: dataFiesta,
-                                                                    pitufo: dataPitufo, simpson: dataSimp, power: dataPow
-                                                                }, sacados);
+                                                                    renderizarListasEstado({
+                                                                        inv: dataInv, terna: dataTerna, sumarversus: dataVersus,
+                                                                        mex: dataMex, pokemon: dataPoke, pais: dataPais, autos: dataAutos,
+                                                                        bebida: dataBebida, comidas: dataComidas, fiesta: dataFiesta,
+                                                                        pitufo: dataPitufo, simpson: dataSimp, power: dataPow, '90': data90
+                                                                    }, sacados);
+                                                                });
                                                             });
                                                         });
                                                     });
@@ -680,23 +680,16 @@ function renderizarListasEstado(todasSelecciones = {}, sacados = []) {
 
     if (!contenedorLista || !contenedorDesconectados) return;
 
-    let htmlOnline = "";
-    let htmlTemporal = "";
-    let htmlOffline = "";
-    let totalOnline = 0;
-    let totalTemporal = 0;
-    let totalOffline = 0;
-
+    let htmlOnline = "", htmlTemporal = "", htmlOffline = "";
+    let totalOnline = 0, totalTemporal = 0, totalOffline = 0;
     const estadosUnicos = new Map();
 
     usuariosLocal.forEach(u => {
         const nickOriginal = String(u.nick || u.id || "").trim();
         if (!nickOriginal) return;
         const nickKey = nickOriginal.toUpperCase();
-        
         const infoPresencia = window.presenciaGlobal[nickOriginal] || window.presenciaGlobal[nickKey] || window.presenciaGlobal[nickOriginal.toLowerCase()];
         const esOnline = infoPresencia && infoPresencia.estado === 'online';
-
         estadosUnicos.set(nickKey, { nick: nickOriginal, online: esOnline });
     });
 
@@ -705,7 +698,6 @@ function renderizarListasEstado(todasSelecciones = {}, sacados = []) {
         if (!nickOriginal) return;
         const nickKey = nickOriginal.toUpperCase();
         const esOnline = window.presenciaGlobal[nickRTDB].estado === 'online';
-
         if (!estadosUnicos.has(nickKey)) {
             estadosUnicos.set(nickKey, { nick: nickOriginal, online: esOnline });
         } else if (esOnline) {
@@ -716,7 +708,6 @@ function renderizarListasEstado(todasSelecciones = {}, sacados = []) {
     estadosUnicos.forEach((data) => {
         const nickOriginal = data.nick;
         const juegoLower = String(juegoActualGlobal).toLowerCase();
-
         let tieneSeleccion = false;
         let badgeHtml = "";
 
@@ -732,22 +723,19 @@ function renderizarListasEstado(todasSelecciones = {}, sacados = []) {
             if (selObj && selObj.par) {
                 tieneSeleccion = true;
                 let partes = selObj.par.split("-");
-                let p1 = partes[0];
-                let p2 = partes[1];
-                let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
-                let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
-                badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
+                let c1 = sacados.includes(partes[0]) ? "num-inv-rojo" : "";
+                let c2 = sacados.includes(partes[1]) ? "num-inv-rojo" : "";
+                badgeHtml = `<span class="badge-invertido"><span class="${c1}">${partes[0]}</span>-<span class="${c2}">${partes[1]}</span></span>`;
             }
         } else if (juegoLower === 'terna') {
             const selObj = buscarSeleccionUsuario(todasSelecciones.terna);
             if (selObj && selObj.terna) {
                 tieneSeleccion = true;
                 let partes = selObj.terna.split("-");
-                let t1 = partes[0], t2 = partes[1], t3 = partes[2];
-                let c1 = sacados.includes(t1) ? "num-inv-rojo" : "";
-                let c2 = sacados.includes(t2) ? "num-inv-rojo" : "";
-                let c3 = sacados.includes(t3) ? "num-inv-rojo" : "";
-                badgeHtml = `<span class="badge-invertido"><span class="${c1}">${t1}</span>-<span class="${c2}">${t2}</span>-<span class="${c3}">${t3}</span></span>`;
+                let c1 = sacados.includes(partes[0]) ? "num-inv-rojo" : "";
+                let c2 = sacados.includes(partes[1]) ? "num-inv-rojo" : "";
+                let c3 = sacados.includes(partes[2]) ? "num-inv-rojo" : "";
+                badgeHtml = `<span class="badge-invertido"><span class="${c1}">${partes[0]}</span>-<span class="${c2}">${partes[1]}</span>-<span class="${c3}">${partes[2]}</span></span>`;
             }
         } else if (juegoLower === 'sumarversus') {
             const selObj = buscarSeleccionUsuario(todasSelecciones.sumarversus);
@@ -756,7 +744,7 @@ function renderizarListasEstado(todasSelecciones = {}, sacados = []) {
                 let colorEq = selObj.equipo === 'A' ? 'var(--cian)' : 'var(--rosa)';
                 badgeHtml = `<span class="badge-invertido" style="color: ${colorEq}; border-color: ${colorEq};">EQUIPO ${selObj.equipo}</span>`;
             }
-        } else if (['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
+        } else if (['90', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
             const dataset = todasSelecciones[juegoLower];
             const selObj = buscarSeleccionUsuario(dataset);
             if (selObj && Array.isArray(selObj.cartas) && selObj.cartas.length > 0) {
@@ -828,17 +816,13 @@ window.abrirModalEleccionAdmin = (nickUsuario) => {
             let strI = i < 10 ? "0" + i : "" + i;
             let invStr = strI.split("").reverse().join("");
             let numInv = parseInt(invStr);
-            if (i !== numInv && i < numInv) {
-                paresGenerados.push(`${strI}-${invStr}`);
-            }
+            if (i !== numInv && i < numInv) paresGenerados.push(`${strI}-${invStr}`);
         }
 
         onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snap) => {
             const allSel = snap.val() || {};
             let ocupados = {};
-            Object.keys(allSel).forEach(u => {
-                if (allSel[u] && allSel[u].par) ocupados[allSel[u].par] = u;
-            });
+            Object.keys(allSel).forEach(u => { if (allSel[u] && allSel[u].par) ocupados[allSel[u].par] = u; });
             let miPar = allSel[nickUsuario] ? allSel[nickUsuario].par : null;
 
             grid.innerHTML = paresGenerados.map(par => {
@@ -862,9 +846,7 @@ window.abrirModalEleccionAdmin = (nickUsuario) => {
         onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (snap) => {
             const allSel = snap.val() || {};
             let ocupados = {};
-            Object.keys(allSel).forEach(u => {
-                if (allSel[u] && allSel[u].terna) ocupados[allSel[u].terna] = u;
-            });
+            Object.keys(allSel).forEach(u => { if (allSel[u] && allSel[u].terna) ocupados[allSel[u].terna] = u; });
             let miTerna = allSel[nickUsuario] ? allSel[nickUsuario].terna : null;
 
             grid.innerHTML = ternasGeneradas.map(terna => {
@@ -876,7 +858,7 @@ window.abrirModalEleccionAdmin = (nickUsuario) => {
         }, { onlyOnce: true });
 
     } else if (listasJuegosAdmin[juegoLower]) {
-        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(60px, 1fr))";
         const elementos = listasJuegosAdmin[juegoLower];
 
         onValue(ref(rtdb, `proyectos/${miCarpeta}/${juegoLower}Seleccion`), (snap) => {
@@ -889,15 +871,15 @@ window.abrirModalEleccionAdmin = (nickUsuario) => {
             });
             let misCartas = (allSel[nickUsuario] && Array.isArray(allSel[nickUsuario].cartas)) ? allSel[nickUsuario].cartas : [];
 
-            grid.innerHTML = elementos.map((elem, idx) => {
+            grid.innerHTML = elementos.map((elem) => {
                 let ocupadoPor = ocupados[elem];
                 let esMio = misCartas.includes(elem);
                 let clase = esMio ? "btn-celda-seleccionada" : (ocupadoPor && ocupadoPor !== nickUsuario ? "btn-celda-ocupada" : "");
-                return `<div class="btn-celda-admin ${clase}" onclick="window.adminSeleccionarCarta('${nickUsuario}', '${juegoLower}', '${elem}')" style="font-size:9px;">#${idx+1}<br>${elem}</div>`;
+                return `<div class="btn-celda-admin ${clase}" onclick="window.adminSeleccionarCarta('${nickUsuario}', '${juegoLower}', '${elem}')" style="font-size:11px;">${elem}</div>`;
             }).join('');
         }, { onlyOnce: true });
     } else {
-        grid.innerHTML = `<div style="padding:20px; text-align:center; color:#888;">Este juego no requiere selección previa de números/cartas.</div>`;
+        grid.innerHTML = `<div style="padding:20px; text-align:center; color:#888;">Este juego no requiere selección previa.</div>`;
     }
 
     modal.style.display = 'flex';
@@ -977,36 +959,37 @@ function arrancarTodo() {
 
         if(d.fondoPersonalizado) {
             const fondo = d.fondoPersonalizado.trim();
-            if (fondo.startsWith('http') || fondo.includes('imgur.com') || fondo.includes('imgur') || fondo.includes('/')) {
+            if (fondo.startsWith('http') || fondo.includes('imgur.com') || fondo.includes('/')) {
                 document.body.style.background = `url('${fondo}') center/cover no-repeat fixed`;
-            } else if (fondo.includes('gradient') || fondo.includes('rgb')) {
-                document.body.style.background = fondo;
             } else {
                 document.body.style.background = fondo;
             }
         }
 
-        if(d.urlXat) {
-            document.getElementById('input-url-xat').value = d.urlXat;
-        }
-
-        if(d.urlEnlaceBola) {
-            document.getElementById('input-url-enlace-bola').value = d.urlEnlaceBola;
-        }
+        if(d.urlXat) document.getElementById('input-url-xat').value = d.urlXat;
+        if(d.urlEnlaceBola) document.getElementById('input-url-enlace-bola').value = d.urlEnlaceBola;
 
         const juegoActivoLimpio = d.juegoActivo ? String(d.juegoActivo).trim() : null;
-        const juegosConSeleccionAdmin = ['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'];
+        const juegosConSeleccionAdmin = ['90', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'];
         const btnReabrir = document.getElementById('btn-reabrir-seleccion');
+        const btnIniciar = document.getElementById('btn-iniciar-partida');
         const contenedorLimite = document.getElementById('contenedor-limite-elecciones');
         const inputMaxCartas = document.getElementById('input-max-cartas');
 
         if (juegosConSeleccionAdmin.includes(juegoActivoLimpio)) {
-            btnReabrir.style.display = 'block';
             contenedorLimite.style.display = 'flex';
-            if (d.maxSelecciones) {
-                inputMaxCartas.value = d.maxSelecciones;
+            if (d.maxSelecciones) inputMaxCartas.value = d.maxSelecciones;
+
+            let campoEstado = juegoActivoLimpio === '90' ? 'estado90Comenzado' : `estado${juegoActivoLimpio.charAt(0).toUpperCase() + juegoActivoLimpio.slice(1)}Comenzado`;
+            if (d[campoEstado]) {
+                btnIniciar.style.display = 'none';
+                btnReabrir.style.display = 'block';
+            } else {
+                btnIniciar.style.display = 'block';
+                btnReabrir.style.display = 'none';
             }
         } else {
+            btnIniciar.style.display = 'none';
             btnReabrir.style.display = 'none';
             contenedorLimite.style.display = 'none';
         }
@@ -1027,7 +1010,6 @@ function arrancarTodo() {
         document.getElementById('count-total').innerText = snap.size;
         document.getElementById('c-h').innerText = h; 
         document.getElementById('c-m').innerText = m;
-        
         window.renderUsuarios(usuariosLocal);
     });
 }
@@ -1037,27 +1019,18 @@ window.renderUsuarios = (lista) => {
         const esH = (u.sexo === 'H' || u.genero === 'HOMBRE');
         const colorG = esH ? 'var(--cian)' : 'var(--rosa)';
         const nickKey = (u.nick || u.id || "").trim().toLowerCase();
-        
         let esOnline = false;
         Object.keys(window.presenciaGlobal).forEach(k => {
-            if (k.toLowerCase() === nickKey && window.presenciaGlobal[k].estado === 'online') {
-                esOnline = true;
-            }
+            if (k.toLowerCase() === nickKey && window.presenciaGlobal[k].estado === 'online') esOnline = true;
         });
-
-        const claseEstado = esOnline ? 'online' : 'offline';
 
         return `
         <div class="item-reg" style="border-left: 4px solid ${colorG}; background:#080808; padding:12px; margin-bottom:10px; border-radius:8px; display:flex; align-items:center;">
-            <span class="status-dot ${claseEstado}" title="${esOnline ? 'CONECTADO' : 'DESCONECTADO'}"></span>
-            <span onclick="window.cambiarSexo('${u.id}', '${u.sexo || (esH?'H':'M')}')" style="color:${colorG}; font-size:26px; cursor:pointer; width:45px; text-align:center;">
-                ${esH ? '♂' : '♀'}
-            </span>
+            <span class="status-dot ${esOnline ? 'online' : 'offline'}" title="${esOnline ? 'CONECTADO' : 'DESCONECTADO'}"></span>
+            <span onclick="window.cambiarSexo('${u.id}', '${u.sexo || (esH?'H':'M')}')" style="color:${colorG}; font-size:26px; cursor:pointer; width:45px; text-align:center;">${esH ? '♂' : '♀'}</span>
             <div style="flex:1; margin-left:12px;">
                 <div style="font-weight:900; font-size:16px; text-transform:uppercase;">${u.nick || u.id}</div>
-                <div style="font-size:11px; margin-top:2px;">
-                    <span>PIN: ${u.pin || '----'}</span> | <span style="color:${esOnline ? 'var(--verde)' : '#666'}">${esOnline ? 'ONLINE' : 'OFFLINE'}</span>
-                </div>
+                <div style="font-size:11px; margin-top:2px;"><span>PIN: ${u.pin || '----'}</span> | <span style="color:${esOnline ? 'var(--verde)' : '#666'}">${esOnline ? 'ONLINE' : 'OFFLINE'}</span></div>
             </div>
             <button onclick="window.borrarU('${u.id}')" style="border:1px solid var(--rojo); color:var(--rojo); background:none; font-size:9px; padding:8px 12px; border-radius:5px; cursor:pointer;">ELIMINAR</button>
         </div>`;
@@ -1066,8 +1039,7 @@ window.renderUsuarios = (lista) => {
 
 window.filtrarReg = () => {
     const bus = document.getElementById('busc-reg').value.toUpperCase();
-    const filtrados = usuariosLocal.filter(u => (u.nick || "").toUpperCase().includes(bus) || u.id.includes(bus));
-    window.renderUsuarios(filtrados);
+    window.renderUsuarios(usuariosLocal.filter(u => (u.nick || "").toUpperCase().includes(bus) || u.id.includes(bus)));
 };
 
 window.crearUsuarioAdmin = async () => {
@@ -1075,12 +1047,9 @@ window.crearUsuarioAdmin = async () => {
     const pin = document.getElementById('nuevo-pin').value.trim();
     const sexo = document.getElementById('nuevo-sexo').value;
     const errDiv = document.getElementById('err-crear-usr');
-
     if (!nick || !pin) { errDiv.innerText = "COMPLETA NICK Y PIN"; return; }
-
     try {
-        const userRef = doc(db, "proyectos", miCarpeta, "registrados", nick);
-        await setDoc(userRef, { nick: nick, pin: pin, sexo: sexo, genero: sexo === 'H' ? 'HOMBRE' : 'MUJER', creado: Date.now() });
+        await setDoc(doc(db, "proyectos", miCarpeta, "registrados", nick), { nick, pin, sexo, genero: sexo === 'H' ? 'HOMBRE' : 'MUJER', creado: Date.now() });
         document.getElementById('nuevo-nick').value = '';
         document.getElementById('nuevo-pin').value = '';
         errDiv.innerText = "";
@@ -1088,34 +1057,27 @@ window.crearUsuarioAdmin = async () => {
     } catch (e) { errDiv.innerText = "ERROR AL CREAR USUARIO"; }
 };
 
-window.abrirModalFondo = () => {
-    document.getElementById('modal-fondo').style.display = 'flex';
-    inicializarSelectoresColorDefault();
-};
+window.abrirModalFondo = () => { document.getElementById('modal-fondo').style.display = 'flex'; inicializarSelectoresColorDefault(); };
 window.cerrarModalFondo = () => document.getElementById('modal-fondo').style.display = 'none';
 window.abrirModalXat = () => document.getElementById('modal-xat').style.display = 'flex';
 window.cerrarModalXat = () => document.getElementById('modal-xat').style.display = 'none';
-
 window.abrirModalEnlaceBola = () => document.getElementById('modal-enlace-bola').style.display = 'flex';
 window.cerrarModalEnlaceBola = () => document.getElementById('modal-enlace-bola').style.display = 'none';
 
 window.guardarUrlXat = async () => {
-    const url = document.getElementById('input-url-xat').value.trim();
-    await updateDoc(doc(db, "proyectos", miCarpeta), { urlXat: url });
+    await updateDoc(doc(db, "proyectos", miCarpeta), { urlXat: document.getElementById('input-url-xat').value.trim() });
     cerrarModalXat();
 };
 
 window.guardarUrlEnlaceBola = async () => {
-    const url = document.getElementById('input-url-enlace-bola').value.trim();
-    await updateDoc(doc(db, "proyectos", miCarpeta), { urlEnlaceBola: url });
+    await updateDoc(doc(db, "proyectos", miCarpeta), { urlEnlaceBola: document.getElementById('input-url-enlace-bola').value.trim() });
     cerrarModalEnlaceBola();
 };
 
 window.abrirPantallaJugador = () => {
-    window.open(`pantalla_jugador.html?p=${miCarpeta}`, "PantallaJugador", "width=1750,height=850");
+    window.open(`pantalla_jugador_8.html?p=${miCarpeta}`, "PantallaJugador", "width=1750,height=850");
 };
 
-// Lógica del Creador Avanzado de Degradados con Subir / Bajar
 const contenedorColores = document.getElementById('contenedor-selectores-color');
 const previewDeg = document.getElementById('preview-degradado');
 const inputFondo = document.getElementById('input-url-fondo');
@@ -1129,138 +1091,63 @@ function inicializarSelectoresColorDefault() {
     }
 }
 
-window.agregarSelectorColor = () => {
-    agregarSelectorColorDefecto('#00f3ff');
-    actualizarPreviewAvanzado();
-};
+window.agregarSelectorColor = () => { agregarSelectorColorDefecto('#00f3ff'); actualizarPreviewAvanzado(); };
 
 function agregarSelectorColorDefecto(hexColor) {
     const div = document.createElement('div');
     div.style.cssText = "display: flex; align-items: center; gap: 5px; background: #151515; padding: 5px; border-radius: 6px; border: 1px solid #222;";
-    
     const inputColor = document.createElement('input');
-    inputColor.type = "color";
-    inputColor.value = hexColor;
-    inputColor.style.cssText = "background:none; border:none; width: 30px; height: 24px; cursor: pointer;";
+    inputColor.type = "color"; inputColor.value = hexColor; inputColor.style.cssText = "background:none; border:none; width: 30px; height: 24px; cursor: pointer;";
     inputColor.oninput = actualizarPreviewAvanzado;
 
-    const span = document.createElement('span');
-    span.style.cssText = "font-size: 10px; color: #ccc; flex: 1;";
-    span.innerText = "Color";
+    const span = document.createElement('span'); span.style.cssText = "font-size: 10px; color: #ccc; flex: 1;"; span.innerText = "Color";
 
-    // Botón Subir ⬆️
-    const btnSubir = document.createElement('button');
-    btnSubir.innerHTML = '⬆️';
-    btnSubir.title = "Subir posición";
+    const btnSubir = document.createElement('button'); btnSubir.innerHTML = '⬆️';
     btnSubir.style.cssText = "background: #222; color: #fff; border: 1px solid #444; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 9px;";
-    btnSubir.onclick = () => {
-        const prev = div.previousElementSibling;
-        if (prev) {
-            contenedorColores.insertBefore(div, prev);
-            actualizarPreviewAvanzado();
-        }
-    };
+    btnSubir.onclick = () => { const prev = div.previousElementSibling; if (prev) { contenedorColores.insertBefore(div, prev); actualizarPreviewAvanzado(); } };
 
-    // Botón Bajar ⬇️
-    const btnBajar = document.createElement('button');
-    btnBajar.innerHTML = '⬇️';
-    btnBajar.title = "Bajar posición";
+    const btnBajar = document.createElement('button'); btnBajar.innerHTML = '⬇️';
     btnBajar.style.cssText = "background: #222; color: #fff; border: 1px solid #444; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 9px;";
-    btnBajar.onclick = () => {
-        const next = div.nextElementSibling;
-        if (next) {
-            contenedorColores.insertBefore(next, div);
-            actualizarPreviewAvanzado();
-        }
-    };
+    btnBajar.onclick = () => { const next = div.nextElementSibling; if (next) { contenedorColores.insertBefore(next, div); actualizarPreviewAvanzado(); } };
 
-    // Botón Borrar 🗑️
-    const btnBorrar = document.createElement('button');
-    btnBorrar.innerHTML = '❌';
-    btnBorrar.title = "Eliminar color";
+    const btnBorrar = document.createElement('button'); btnBorrar.innerHTML = '❌';
     btnBorrar.style.cssText = "background: #300; color: #fff; border: 1px solid #500; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 9px;";
-    btnBorrar.onclick = () => {
-        if (contenedorColores.children.length > 2) {
-            div.remove();
-            actualizarPreviewAvanzado();
-        } else {
-            alert("Se requieren al menos 2 colores para un degradado.");
-        }
-    };
+    btnBorrar.onclick = () => { if (contenedorColores.children.length > 2) { div.remove(); actualizarPreviewAvanzado(); } else alert("Mínimo 2 colores."); };
 
-    div.appendChild(inputColor);
-    div.appendChild(span);
-    div.appendChild(btnSubir);
-    div.appendChild(btnBajar);
-    div.appendChild(btnBorrar);
+    div.appendChild(inputColor); div.appendChild(span); div.appendChild(btnSubir); div.appendChild(btnBajar); div.appendChild(btnBorrar);
     contenedorColores.appendChild(div);
 }
 
 function construirCssDegradado() {
-    const inputs = contenedorColores.querySelectorAll('input[type="color"]');
-    const colores = Array.from(inputs).map(inp => inp.value);
+    const colores = Array.from(contenedorColores.querySelectorAll('input[type="color"]')).map(inp => inp.value);
     const tipo = selectTipoGrad.value;
-    const listaColores = colores.join(', ');
-
-    if (tipo === 'radial-circle') {
-        return `radial-gradient(circle, ${listaColores})`;
-    } else if (tipo === 'linear-to-right') {
-        return `linear-gradient(to right, ${listaColores})`;
-    } else if (tipo === 'linear-to-bottom') {
-        return `linear-gradient(to bottom, ${listaColores})`;
-    } else if (tipo === 'linear-45deg') {
-        return `linear-gradient(45deg, ${listaColores})`;
-    }
-    return `radial-gradient(circle, ${listaColores})`;
+    return tipo === 'radial-circle' ? `radial-gradient(circle, ${colores.join(', ')})` :
+           tipo === 'linear-to-right' ? `linear-gradient(to right, ${colores.join(', ')})` :
+           tipo === 'linear-to-bottom' ? `linear-gradient(to bottom, ${colores.join(', ')})` : `linear-gradient(45deg, ${colores.join(', ')})`;
 }
 
-function actualizarPreviewAvanzado() {
-    const css = construirCssDegradado();
-    previewDeg.style.background = css;
-}
+function actualizarPreviewAvanzado() { previewDeg.style.background = construirCssDegradado(); }
+if (selectTipoGrad) selectTipoGrad.onchange = actualizarPreviewAvanzado;
 
-if (selectTipoGrad) {
-    selectTipoGrad.onchange = actualizarPreviewAvanzado;
-}
-
-window.generarDegradadoAvanzado = () => {
-    const css = construirCssDegradado();
-    inputFondo.value = css;
-};
-
+window.generarDegradadoAvanzado = () => { inputFondo.value = construirCssDegradado(); };
 window.guardarNuevoFondo = async () => { 
-    const valor = document.getElementById('input-url-fondo').value.trim(); 
-    if(valor) { 
-        await updateDoc(doc(db, "proyectos", miCarpeta), { fondoPersonalizado: valor }); 
-        cerrarModalFondo(); 
-    } 
+    const v = inputFondo.value.trim(); 
+    if(v) { await updateDoc(doc(db, "proyectos", miCarpeta), { fondoPersonalizado: v }); cerrarModalFondo(); } 
 };
 
-window.abrirModalPin = () => {
-    document.getElementById('input-verificar-actual').value = '';
-    document.getElementById('err-verif-pin').innerText = '';
-    document.getElementById('modal-verificar-pin').style.display = 'flex';
-};
+window.abrirModalPin = () => { document.getElementById('input-verificar-actual').value = ''; document.getElementById('err-verif-pin').innerText = ''; document.getElementById('modal-verificar-pin').style.display = 'flex'; };
 window.cerrarModalVerificarPin = () => document.getElementById('modal-verificar-pin').style.display = 'none';
 
-window.verificarPinMaestroParaCambio = async () => {
-    const pinIngresado = document.getElementById('input-verificar-actual').value.trim();
-    const errDiv = document.getElementById('err-verif-pin');
-
-    if (!pinIngresado) {
-        errDiv.innerText = "INGRESA EL PIN MAESTRO";
-        return;
-    }
-
-    const esValido = await validarPinMaestro(pinIngresado);
-    if (esValido) {
+window.verificarPinMaestroForChange = async () => {
+    if (await validarPinMaestro(document.getElementById('input-verificar-actual').value.trim())) {
         cerrarModalVerificarPin();
         document.getElementById('nuevo-pin-input').value = '';
         document.getElementById('modal-cambiar-pin').style.display = 'flex';
     } else {
-        errDiv.innerText = "PIN MAESTRO INCORRECTO";
+        document.getElementById('err-verif-pin').innerText = "PIN MAESTRO INCORRECTO";
     }
 };
+window.verificarPinMaestroParaCambio = window.verificarPinMaestroForChange;
 
 window.cerrarModalPin = () => document.getElementById('modal-cambiar-pin').style.display = 'none';
 
@@ -1269,77 +1156,38 @@ window.guardarNuevoPin = async () => {
     if (p.length >= 4) { 
         const btnActualizar = document.getElementById('btn-actualizar-pin');
         try {
-            btnActualizar.disabled = true;
-            btnActualizar.innerText = "GUARDANDO...";
+            btnActualizar.disabled = true; btnActualizar.innerText = "GUARDANDO...";
             cambiandoClaveEnEsteMomento = true;
-
             const nuevoToken = `SES_${Date.now()}_${Math.random()}`;
-            const pRef = doc(db, "proyectos", miCarpeta);
-            await updateDoc(pRef, { 
-                pinAdmin: p,
-                sessionToken: nuevoToken
-            }); 
-            
+            await updateDoc(doc(db, "proyectos", miCarpeta), { pinAdmin: p, sessionToken: nuevoToken }); 
             sessionStorage.setItem(`admin_p_volatil`, p); 
             cerrarModalPin();
             document.getElementById('modal-aviso-personalizado').style.display = 'flex';
-
-            setTimeout(() => {
-                sessionStorage.clear();
-                location.reload(); 
-            }, 5000);
-
+            setTimeout(() => { sessionStorage.clear(); location.reload(); }, 5000);
         } catch (error) {
             cambiandoClaveEnEsteMomento = false;
-            alert("Hubo un error al actualizar la clave en la base de datos.");
-            btnActualizar.innerText = "ACTUALIZAR";
-            btnActualizar.disabled = false;
+            btnActualizar.innerText = "ACTUALIZAR"; btnActualizar.disabled = false;
         }
-    } else {
-        alert("El PIN debe tener al menos 4 dígitos.");
-    }
+    } else alert("Mínimo 4 dígitos.");
 };
 
-window.forzarCierreSesionInmediato = () => {
-    sessionStorage.clear();
-    location.reload();
-};
+window.forzarCierreSesionInmediato = () => { sessionStorage.clear(); location.reload(); };
+window.cambiarSexo = async (id, s) => { const nS = s==='H'?'M':'H'; await updateDoc(doc(db, "proyectos", miCarpeta, "registrados", id), { sexo: nS, genero: nS==='H'?'HOMBRE':'MUJER' }); };
 
-window.cambiarSexo = async (id, s) => { 
-    const nS = s==='H'?'M':'H'; await updateDoc(doc(db, "proyectos", miCarpeta, "registrados", id), { sexo: nS, genero: nS==='H'?'HOMBRE':'MUJER' }); 
-};
-
-let usuarioAEliminar = null;
-let idUsuarioRealtime = null;
-
+let usuarioAEliminar = null, idUsuarioRealtime = null;
 window.borrarU = (id) => { 
-    usuarioAEliminar = id; 
-    idUsuarioRealtime = null;
-    const nickLower = String(id).trim().toLowerCase();
-    
-    Object.keys(window.presenciaGlobal).forEach(k => {
-        if (k.toLowerCase() === nickLower) {
-            idUsuarioRealtime = k;
-        }
-    });
-
+    usuarioAEliminar = id; idUsuarioRealtime = null;
+    Object.keys(window.presenciaGlobal).forEach(k => { if (k.toLowerCase() === id.trim().toLowerCase()) idUsuarioRealtime = k; });
     document.getElementById('txt-confirmar-usuario').innerText = "ID: " + id; 
     document.getElementById('modal-confirmar-borrar').style.display = 'flex'; 
 };
-
 window.cerrarModalBorrar = () => document.getElementById('modal-confirmar-borrar').style.display = 'none';
 
 document.getElementById('btn-si-borrar').onclick = async () => {
     if (usuarioAEliminar) { 
-        try {
-            await deleteDoc(doc(db, "proyectos", miCarpeta, "registrados", usuarioAEliminar));
-            if (idUsuarioRealtime) {
-                await remove(ref(rtdb, `proyectos/${miCarpeta}/presencia/${idUsuarioRealtime}`));
-            }
-            cerrarModalBorrar();
-            usuarioAEliminar = null;
-            idUsuarioRealtime = null;
-        } catch (e) {}
+        await deleteDoc(doc(db, "proyectos", miCarpeta, "registrados", usuarioAEliminar));
+        if (idUsuarioRealtime) await remove(ref(rtdb, `proyectos/${miCarpeta}/presencia/${idUsuarioRealtime}`));
+        cerrarModalBorrar();
     }
 };
 
@@ -1352,24 +1200,15 @@ const sugerenciasDiv = document.getElementById('sugerencias');
 
 inputBusqueda.onclick = (e) => {
     e.stopPropagation();
-    if (sugerenciasDiv.style.display === 'block') {
-        sugerenciasDiv.style.display = 'none';
-    } else {
+    if (sugerenciasDiv.style.display === 'block') sugerenciasDiv.style.display = 'none';
+    else {
         const listaJuegos = (window.misJuegosDB && window.misJuegosDB.length > 0) ? window.misJuegosDB : Object.keys(window.JUEGOS_CONFIG);
-        sugerenciasDiv.innerHTML = listaJuegos.map(id => {
-            const idLimpio = String(id).trim();
-            const nombreLindo = window.JUEGOS_CONFIG[idLimpio] || idLimpio.toUpperCase();
-            return `<div class="sug-item" onclick="window.seleccionarJuego('${idLimpio}')">${nombreLindo}</div>`;
-        }).join('');
+        sugerenciasDiv.innerHTML = listaJuegos.map(id => `<div class="sug-item" onclick="window.seleccionarJuego('${String(id).trim()}')">${window.JUEGOS_CONFIG[String(id).trim()] || String(id).toUpperCase()}</div>`).join('');
         sugerenciasDiv.style.display = 'block';
     }
 };
 
-document.addEventListener('click', (e) => {
-    if (!document.querySelector('.buscador-container').contains(e.target)) {
-        sugerenciasDiv.style.display = 'none';
-    }
-});
+document.addEventListener('click', (e) => { if (!document.querySelector('.buscador-container').contains(e.target)) sugerenciasDiv.style.display = 'none'; });
 
 window.seleccionarJuego = (id) => {
     tempJuego = String(id).trim(); 
@@ -1381,6 +1220,7 @@ document.getElementById('btn-aplicar-modo').onclick = async () => {
     if (tempJuego) {
         await updateDoc(doc(db, "proyectos", miCarpeta), { 
             juegoActivo: tempJuego, 
+            estado90Comenzado: false,
             estadoInvertidosComenzado: false, 
             estadoMexComenzado: false, 
             estadoPokemonComenzado: false, 
@@ -1397,26 +1237,29 @@ document.getElementById('btn-aplicar-modo').onclick = async () => {
     }
 };
 
+document.getElementById('btn-iniciar-partida').onclick = async () => {
+    if (!modoActivo) return;
+    let campoEstado = modoActivo === '90' ? 'estado90Comenzado' : `estado${modoActivo.charAt(0).toUpperCase() + modoActivo.slice(1)}Comenzado`;
+    let objUpdate = {};
+    objUpdate[campoEstado] = true;
+    await updateDoc(doc(db, "proyectos", miCarpeta), objUpdate);
+    alert("¡Partida iniciada y tablero habilitado para jugar!");
+};
+
 document.getElementById('btn-reabrir-seleccion').onclick = async () => {
     if (!modoActivo) return;
-    
-    let campoEstado = "";
-    if (modoActivo === 'inv') campoEstado = "estadoInvertidosComenzado";
-    else if (modoActivo === 'terna') campoEstado = "estadoTernaComenzado";
-    else campoEstado = `estado${modoActivo.charAt(0).toUpperCase() + modoActivo.slice(1)}Comenzado`;
-
-    if (confirm(`¿Deseas reabrir la fase de selección para el juego ${modoActivo.toUpperCase()} sin perder las bolas extraídas?`)) {
-        let objUpdate = {};
-        objUpdate[campoEstado] = false; 
+    let campoEstado = modoActivo === '90' ? 'estado90Comenzado' : `estado${modoActivo.charAt(0).toUpperCase() + modoActivo.slice(1)}Comenzado`;
+    if (confirm(`¿Reabrir selección para ${modoActivo.toUpperCase()} sin perder bolas extraídas?`)) {
+        let objUpdate = {}; objUpdate[campoEstado] = false; 
         await updateDoc(doc(db, "proyectos", miCarpeta), objUpdate);
-        alert("¡Selección reabierta con éxito!");
+        alert("¡Selección reabierta!");
     }
 };
 
 document.getElementById('btn-guardar-limite').onclick = async () => {
     const nuevoLimite = parseInt(document.getElementById('input-max-cartas').value) || 2;
     await updateDoc(doc(db, "proyectos", miCarpeta), { maxSelecciones: nuevoLimite });
-    alert(`¡Límite actualizado a ${nuevoLimite} opciones por jugador!`);
+    alert(`¡Límite actualizado a ${nuevoLimite}!`);
 };
 
 window.cerrarSesion = () => { sessionStorage.clear(); location.reload(); };
@@ -1424,14 +1267,10 @@ window.cerrarSesion = () => { sessionStorage.clear(); location.reload(); };
 async function cargarMod(m) { 
     const p = document.getElementById('panel-juego'); 
     if (!m) return;
-    const juegoLimpio = String(m).trim();
-    const rutaModulo = `./modulos/admin_${encodeURIComponent(juegoLimpio)}.js?v=${Date.now()}`;
     try { 
-        const mod = await import(rutaModulo); 
+        const mod = await import(`./modulos/admin_${encodeURIComponent(String(m).trim())}.js?v=${Date.now()}`); 
         if (mod && mod.iniciar) { p.innerHTML = ''; mod.iniciar(p, db, miCarpeta, rtdb); } 
-    } catch(e) { 
-        p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">⚠️ El módulo "admin_${juegoLimpio}.js" no existe o no tiene exportación válida.</div>`;
-    }
+    } catch(e) { p.innerHTML = `<div style="color:var(--rojo); text-align:center; padding:20px;">Módulo no disponible.</div>`; }
 }
 
 if (pinDeEntrada) arrancarTodo();
@@ -1444,8 +1283,7 @@ async function intentarLogin() {
         sessionStorage.setItem(`admin_p_volatil`, pinIn); 
         await registrarAccesoSeguridad();
         location.reload(); 
-    } 
-    else { document.getElementById('err-log').innerText = resLogin.msg; }
+    } else { document.getElementById('err-log').innerText = resLogin.msg; }
 }
 
 document.getElementById('btn-login').onclick = intentarLogin;

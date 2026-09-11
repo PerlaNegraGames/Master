@@ -7,27 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --fondo: #050505;
-            --panel: #0f0f0f;
-            --verde: #39ff14;
-            --amarillo: #ffcc00;
-            --cian: #00f3ff;
-            --rosa: #ff00ff;
-            --rojo: #ff0055;
-            --texto: #ffffff;
+            --fondo: #050505; --panel: #0f0f0f; --verde: #39ff14;
+            --amarillo: #ffcc00; --cian: #00f3ff; --rosa: #ff00ff;
+            --rojo: #ff0055; --texto: #ffffff;
         }
 
         body {
             background: radial-gradient(circle, #0f0f0f 0%, #000000 100%);
-            color: var(--texto);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
+            color: var(--texto); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; box-sizing: border-box;
         }
 
         @keyframes pulseBall {
@@ -59,16 +47,16 @@
         .login-card h1 { color: var(--verde); font-size: 18px; letter-spacing: 2px; margin-top: 0; margin-bottom: 25px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.4); }
 
         .input-group { width: 100%; margin-bottom: 15px; }
-        .input-group input {
+        .input-group input, .input-group select {
             background: #000; border: 1px solid #333; color: #fff; padding: 12px; text-align: center; font-size: 15px; width: 100%; outline: none; border-radius: 8px; box-sizing: border-box; font-weight: bold; transition: 0.3s;
         }
-        .input-group input:focus { border-color: var(--verde); box-shadow: 0 0 12px rgba(57, 255, 20, 0.4); }
+        .input-group input:focus, .input-group select:focus { border-color: var(--verde); box-shadow: 0 0 12px rgba(57, 255, 20, 0.4); }
 
         .btn-ingresar {
             background: var(--verde); color: #000; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px rgba(57, 255, 20, 0.4); margin-top: 10px; transition: all 0.3s ease;
         }
         .btn-ingresar:hover { box-shadow: 0 0 25px rgba(57, 255, 20, 0.8); transform: scale(1.02); }
-        #err-log-jugador { color: var(--rojo); margin-top: 15px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        #err-log-jugador, #err-reg-jugador { color: var(--rojo); margin-top: 15px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
 
         #contenido-jugador {
             width: 100%; max-width: 1750px; display: none; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease-out;
@@ -86,12 +74,8 @@
         .sidebar-conectados {
             width: 330px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; gap: 15px;
         }
-        .sidebar-conectados h3 {
-            color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px;
-        }
-        .sidebar-conectados h3.temporales-title {
-            color: var(--amarillo);
-        }
+        .sidebar-conectados h3 { color: var(--verde); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; }
+        .sidebar-conectados h3.temporales-title { color: var(--amarillo); }
         #lista-conectados-jugador, #lista-temporales-jugador { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
         .item-conectado, .item-temporal {
             display: flex; flex-direction: column; align-items: flex-start; gap: 6px; background: #111; padding: 10px; border-radius: 6px; font-size: 11px; border: 1px solid #1a1a1a; box-sizing: border-box; width: 100%;
@@ -104,9 +88,7 @@
         .sidebar-derecha {
             width: 650px; background: #080808; border: 1px solid #222; border-radius: 12px; padding: 15px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 15px;
         }
-        .sidebar-derecha h3 {
-            color: var(--cian); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 0; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; width: 100%; text-align: center;
-        }
+        .sidebar-derecha h3 { color: var(--cian); font-size: 12px; text-transform: uppercase; margin-top: 0; margin-bottom: 0; border-bottom: 1px solid #222; padding-bottom: 8px; letter-spacing: 1px; width: 100%; text-align: center; }
         .contenedor-iframe-web { width: 100%; max-width: 650px; height: 486px; border: 1px solid #333; border-radius: 8px; overflow: hidden; background: #000; box-sizing: border-box; }
         .contenedor-iframe-web iframe { width: 100%; height: 100%; border: none; }
 
@@ -139,15 +121,9 @@
         }
         .celda:hover { border-color: var(--amarillo); color: var(--amarillo); }
 
-        .marcada {
-            background: var(--verde); color: #000; box-shadow: 0 0 12px rgba(57, 255, 20, 0.6); border-color: #fff; transform: scale(1.05);
-        }
-        .invertido-seleccionado {
-            background: var(--amarillo); color: #000; border-color: #fff; box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
-        }
-        .invertido-ocupado {
-            background: #220000; color: #666; border-color: #440000; cursor: not-allowed; opacity: 0.5;
-        }
+        .marcada { background: var(--verde); color: #000; box-shadow: 0 0 12px rgba(57, 255, 20, 0.6); border-color: #fff; transform: scale(1.05); }
+        .invertido-seleccionado { background: var(--amarillo); color: #000; border-color: #fff; box-shadow: 0 0 15px rgba(255, 204, 0, 0.7); }
+        .invertido-ocupado { background: #220000; color: #666; border-color: #440000; cursor: not-allowed; opacity: 0.5; }
         .invertido-ocupado:hover { border-color: #440000; color: #666; }
         
         .badge-invertido {
@@ -155,33 +131,18 @@
         }
         .num-inv-rojo { color: var(--rojo) !important; text-decoration: line-through; }
 
-        /* MODO MÓVIL FORZADO O RESPONSIVO AUTOMÁTICO */
         body.modo-movil .layout-principal {
-            flex-direction: column !important;
-            align-items: center !important;
+            flex-direction: column !important; align-items: center !important;
         }
-        body.modo-movil .sidebar-conectados,
-        body.modo-movil .main-columna,
-        body.modo-movil .sidebar-derecha {
-            width: 100% !important;
-            max-width: 100% !important;
+        body.modo-movil .sidebar-conectados, body.modo-movil .main-columna, body.modo-movil .sidebar-derecha {
+            width: 100% !important; max-width: 100% !important;
         }
-        body.modo-movil .contenedor-iframe-web {
-            height: 300px !important;
-        }
+        body.modo-movil .contenedor-iframe-web { height: 300px !important; }
 
         @media (max-width: 1400px) {
-            .layout-principal {
-                flex-direction: column;
-                align-items: center;
-            }
-            .sidebar-conectados, .main-columna, .sidebar-derecha {
-                width: 100%;
-                max-width: 100%;
-            }
-            .contenedor-iframe-web {
-                height: 350px;
-            }
+            .layout-principal { flex-direction: column; align-items: center; }
+            .sidebar-conectados, .main-columna, .sidebar-derecha { width: 100%; max-width: 100%; }
+            .contenedor-iframe-web { height: 350px; }
         }
     </style>
 </head>
@@ -190,15 +151,38 @@
     <div id="capa-login-jugador">
         <div class="login-card">
             <button onclick="window.close()" class="btn-efecto" style="position: absolute; top: 15px; right: 15px; border-color: red; color: red;" title="CERRAR VENTANA"><i class="fas fa-times"></i></button>
-            <h1>ACCESO JUGADOR</h1>
-            <div class="input-group">
-                <input type="text" id="login-nick" placeholder="TU NICK" autocomplete="off">
+            
+            <div id="vista-login">
+                <h1>ACCESO JUGADOR</h1>
+                <div class="input-group">
+                    <input type="text" id="login-nick" placeholder="TU NICK" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-pin" placeholder="PIN" autocomplete="off">
+                </div>
+                <button id="btn-login-jugador" class="btn-ingresar">ENTRAR</button>
+                <div style="margin-top: 15px; font-size: 11px; cursor: pointer; color: var(--cian); font-weight: bold;" onclick="window.mostrarRegistroJugador(true)">¿No tienes cuenta? Regístrate aquí</div>
+                <div id="err-log-jugador"></div>
             </div>
-            <div class="input-group">
-                <input type="password" id="login-pin" placeholder="PIN" autocomplete="off">
+
+            <div id="vista-registro" style="display: none;">
+                <h1>CREAR REGISTRO</h1>
+                <div class="input-group">
+                    <input type="text" id="reg-nick" placeholder="NUEVO NICK" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="reg-pin" placeholder="CREA UN PIN" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <select id="reg-sexo">
+                        <option value="H">♂ HOMBRE</option>
+                        <option value="M">♀ MUJER</option>
+                    </select>
+                </div>
+                <button id="btn-registrarse-jugador" class="btn-ingresar" style="background: var(--cian); color: #000;">REGISTRARME</button>
+                <div style="margin-top: 15px; font-size: 11px; cursor: pointer; color: var(--verde); font-weight: bold;" onclick="window.mostrarRegistroJugador(false)">Ya tengo cuenta, entrar</div>
+                <div id="err-reg-jugador"></div>
             </div>
-            <button id="btn-login-jugador" class="btn-ingresar">ENTRAR</button>
-            <div id="err-log-jugador"></div>
         </div>
     </div>
 
@@ -252,13 +236,11 @@
             </div>
 
             <div class="sidebar-derecha">
-                <!-- 1. SALA DE XAT (ARRIBA) -->
                 <h3 id="titulo-panel-derecho">🌐 SALA DE XAT</h3>
                 <div class="contenedor-iframe-web" id="wrapper-xat">
                     <iframe id="iframe-xat-jugador" src="" title="Sala de Xat"></iframe>
                 </div>
 
-                <!-- 2. ENLACE A BOLA (BAJO EL XAT) -->
                 <h3 id="titulo-panel-bola" style="display:none;">🔗 ENLACE A BOLA</h3>
                 <div class="contenedor-iframe-bola" id="wrapper-bola">
                     <iframe id="iframe-bola-jugador" src="" title="Enlace a Bola"></iframe>
@@ -269,7 +251,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, collection, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getDatabase, ref, onValue, push, onChildAdded, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
         const firebaseConfig = { projectId: "juegos-16e17", databaseURL: "https://juegos-16e17-default-rtdb.europe-west1.firebasedatabase.app" };
@@ -281,6 +263,7 @@
         const miCarpeta = urlParams.get('p') || urlParams.get('proyecto') || 'gh';
 
         const listasJuegos = {
+            "90": Array.from({length: 90}, (_, i) => String(i + 1)),
             "power": [
                 "Abas", "Action", "Adele", "Aero", "Aliens", "All", "Alpha", "Always", "Amor", "Animate",
                 "Apex", "Aqua", "Arcade", "Arrow", "Art", "Asylum", "Auto", "Avatar", "Baby", "Badge",
@@ -430,6 +413,7 @@
         let ultimoValorAnterior = "";
         let juegoActualGlobal = "50";
         let maxSeleccionesGlobal = 2; 
+        let estado90Global = false;
         let estadoInvertidosGlobal = false;
         let estadoMexGlobal = false;
         let estadoPokemonGlobal = false;
@@ -451,44 +435,69 @@
             const btn = document.getElementById('btn-modo-movil');
             if (body.classList.contains('modo-movil')) {
                 btn.innerHTML = '<i class="fas fa-desktop"></i> PC';
-                btn.style.borderColor = "var(--cian)";
-                btn.style.color = "var(--cian)";
+                btn.style.borderColor = "var(--cian)"; btn.style.color = "var(--cian)";
             } else {
                 btn.innerHTML = '<i class="fas fa-mobile-alt"></i> MÓVIL';
-                btn.style.borderColor = "var(--verde)";
-                btn.style.color = "var(--verde)";
+                btn.style.borderColor = "var(--verde)"; btn.style.color = "var(--verde)";
             }
         };
 
+        window.mostrarRegistroJugador = (mostrar) => {
+            document.getElementById('vista-login').style.display = mostrar ? 'none' : 'block';
+            document.getElementById('vista-registro').style.display = mostrar ? 'block' : 'none';
+        };
+
+        async function registrarNuevoJugadorPublico() {
+            const nick = document.getElementById('reg-nick').value.trim().toUpperCase();
+            const pin = document.getElementById('reg-pin').value.trim();
+            const sexo = document.getElementById('reg-sexo').value;
+            const errReg = document.getElementById('err-reg-jugador');
+
+            if (!nick || !pin) {
+                errReg.innerText = "COMPLETA NICK Y PIN";
+                return;
+            }
+
+            try {
+                await setDoc(doc(db, "proyectos", miCarpeta, "registrados", nick), {
+                    nick,
+                    pin,
+                    sexo,
+                    genero: sexo === 'H' ? 'HOMBRE' : 'MUJER',
+                    creado: Date.now()
+                });
+
+                alert("¡Registro creado con éxito! Ahora puedes iniciar sesión.");
+                document.getElementById('reg-nick').value = '';
+                document.getElementById('reg-pin').value = '';
+                errReg.innerText = '';
+                window.mostrarRegistroJugador(false);
+            } catch (e) {
+                errReg.innerText = "ERROR AL CREAR EL REGISTRO";
+            }
+        }
+
+        document.getElementById('btn-registrarse-jugador').onclick = registrarNuevoJugadorPublico;
+
         function configurarAutoLiberacion(nick) {
-            const refInvUser = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nick}`);
-            onDisconnect(refInvUser).remove();
-
-            const refTernaUser = ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion/${nick}`);
-            onDisconnect(refTernaUser).remove();
-
-            ['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].forEach(j => {
-                const refGenUser = ref(rtdb, `proyectos/${miCarpeta}/${j}Seleccion/${nick}`);
-                onDisconnect(refGenUser).remove();
+            ['90', 'inv', 'terna', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].forEach(j => {
+                const ruta = j === 'inv' ? 'invertidosSeleccion' : j === 'terna' ? 'ternaSeleccion' : `${j}Seleccion`;
+                onDisconnect(ref(rtdb, `proyectos/${miCarpeta}/${ruta}/${nick}`)).remove();
             });
         }
 
         function iniciarControlSesionUnica(nick, tokenLocal) {
-            const tokenRef = ref(rtdb, `proyectos/${miCarpeta}/sesionesActivas/${nick}`);
-            onValue(tokenRef, (snapshot) => {
-                const tokenRemoto = snapshot.val();
-                if (tokenRemoto && tokenRemoto !== tokenLocal) {
-                    alert("Tu sesión ha sido abierta en otro dispositivo o navegador.");
+            onValue(ref(rtdb, `proyectos/${miCarpeta}/sesionesActivas/${nick}`), (snapshot) => {
+                if (snapshot.val() && snapshot.val() !== tokenLocal) {
+                    alert("Tu sesión ha sido abierta en otro dispositivo.");
                     window.cerrarSesionJugador(true); 
                 }
             });
         }
 
         function registrarPresencia(nick) {
-            const estadoRef = ref(rtdb, `proyectos/${miCarpeta}/presencia/${nick}`);
-            set(estadoRef, { estado: 'online', timestamp: Date.now() });
-            onDisconnect(estadoRef).set({ estado: 'offline', timestamp: Date.now() });
-
+            set(ref(rtdb, `proyectos/${miCarpeta}/presencia/${nick}`), { estado: 'online', timestamp: Date.now() });
+            onDisconnect(ref(rtdb, `proyectos/${miCarpeta}/presencia/${nick}`)).set({ estado: 'offline', timestamp: Date.now() });
             configurarAutoLiberacion(nick);
         }
 
@@ -496,157 +505,93 @@
             onValue(ref(rtdb, `proyectos/${miCarpeta}/presencia`), (snapshot) => {
                 const dataPresencia = snapshot.val() || {};
                 
-                onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
-                    const dataInv = snapInv.val() || {};
-                    onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (snapTerna) => {
-                        const dataTerna = snapTerna.val() || {};
-                        onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion`), (snapVersus) => {
-                            const dataVersus = snapVersus.val() || {};
-                            onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
-                                const dataMex = snapMex.val() || {};
-                                onValue(ref(rtdb, `proyectos/${miCarpeta}/pokemonSeleccion`), (snapPoke) => {
-                                    const dataPoke = snapPoke.val() || {};
-                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/paisSeleccion`), (snapPais) => {
-                                        const dataPais = snapPais.val() || {};
-                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/autosSeleccion`), (snapAutos) => {
-                                            const dataAutos = snapAutos.val() || {};
-                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/bebidaSeleccion`), (snapBebida) => {
-                                                const dataBebida = snapBebida.val() || {};
-                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/comidasSeleccion`), (snapComidas) => {
-                                                    const dataComidas = snapComidas.val() || {};
-                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/fiestaSeleccion`), (snapFiesta) => {
-                                                        const dataFiesta = snapFiesta.val() || {};
-                                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/pitufoSeleccion`), (snapPitufo) => {
-                                                            const dataPitufo = snapPitufo.val() || {};
-                                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/simpsonSeleccion`), (snapSimp) => {
-                                                                const dataSimp = snapSimp.val() || {};
-                                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/powerSeleccion`), (snapPow) => {
-                                                                    const dataPow = snapPow.val() || {};
+                onValue(ref(rtdb, `proyectos/${miCarpeta}/90Seleccion`), (s90) => {
+                    const data90 = s90.val() || {};
+                    onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snapInv) => {
+                        const dataInv = snapInv.val() || {};
+                        onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (snapTerna) => {
+                            const dataTerna = snapTerna.val() || {};
+                            onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion`), (snapVersus) => {
+                                const dataVersus = snapVersus.val() || {};
+                                onValue(ref(rtdb, `proyectos/${miCarpeta}/mexSeleccion`), (snapMex) => {
+                                    const dataMex = snapMex.val() || {};
+                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/pokemonSeleccion`), (snapPoke) => {
+                                        const dataPoke = snapPoke.val() || {};
+                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/paisSeleccion`), (snapPais) => {
+                                            const dataPais = snapPais.val() || {};
+                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/autosSeleccion`), (snapAutos) => {
+                                                const dataAutos = snapAutos.val() || {};
+                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/bebidaSeleccion`), (snapBebida) => {
+                                                    const dataBebida = snapBebida.val() || {};
+                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/comidasSeleccion`), (snapComidas) => {
+                                                        const dataComidas = snapComidas.val() || {};
+                                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/fiestaSeleccion`), (snapFiesta) => {
+                                                            const dataFiesta = snapFiesta.val() || {};
+                                                            onValue(ref(rtdb, `proyectos/${miCarpeta}/pitufoSeleccion`), (snapPitufo) => {
+                                                                const dataPitufo = snapPitufo.val() || {};
+                                                                onValue(ref(rtdb, `proyectos/${miCarpeta}/simpsonSeleccion`), (snapSimp) => {
+                                                                    const dataSimp = snapSimp.val() || {};
+                                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/powerSeleccion`), (snapPow) => {
+                                                                        const dataPow = snapPow.val() || {};
 
-                                                                    onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
-                                                                        const infoSorteo = snapSorteo.val() || {};
-                                                                        const rawSalidos = infoSorteo.sacados || [];
-                                                                        const sacados = Array.isArray(rawSalidos) ? rawSalidos.map(String) : Object.values(rawSalidos).map(String);
-                                                                        
-                                                                        const contenedorLista = document.getElementById('lista-conectados-jugador');
-                                                                        const contenedorTemporales = document.getElementById('lista-temporales-jugador');
-                                                                        const contadorElem = document.getElementById('count-conectados');
-                                                                        const contadorTemporalesElem = document.getElementById('count-temporales-jugador');
-                                                                        
-                                                                        let htmlOnline = "";
-                                                                        let htmlTemporal = "";
-                                                                        let totalOnline = 0;
-                                                                        let totalTemporal = 0;
+                                                                        onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (snapSorteo) => {
+                                                                            const infoSorteo = snapSorteo.val() || {};
+                                                                            const rawSalidos = infoSorteo.sacados || [];
+                                                                            const sacados = Array.isArray(rawSalidos) ? rawSalidos.map(String) : Object.values(rawSalidos).map(String);
+                                                                            
+                                                                            const contenedorLista = document.getElementById('lista-conectados-jugador');
+                                                                            const contenedorTemporales = document.getElementById('lista-temporales-jugador');
+                                                                            let htmlOnline = "", htmlTemporal = "";
+                                                                            let totalOnline = 0, totalTemporal = 0;
 
-                                                                        const todosLosNicks = new Set([
-                                                                            ...Object.keys(dataPresencia),
-                                                                            ...Object.keys(dataInv),
-                                                                            ...Object.keys(dataTerna),
-                                                                            ...Object.keys(dataVersus),
-                                                                            ...Object.keys(dataMex),
-                                                                            ...Object.keys(dataPoke),
-                                                                            ...Object.keys(dataPais),
-                                                                            ...Object.keys(dataAutos),
-                                                                            ...Object.keys(dataBebida),
-                                                                            ...Object.keys(dataComidas),
-                                                                            ...Object.keys(dataFiesta),
-                                                                            ...Object.keys(dataPitufo),
-                                                                            ...Object.keys(dataSimp),
-                                                                            ...Object.keys(dataPow)
-                                                                        ]);
+                                                                            const todosLosNicks = new Set([
+                                                                                ...Object.keys(dataPresencia), ...Object.keys(data90), ...Object.keys(dataInv),
+                                                                                ...Object.keys(dataTerna), ...Object.keys(dataVersus), ...Object.keys(dataMex),
+                                                                                ...Object.keys(dataPoke), ...Object.keys(dataPais), ...Object.keys(dataAutos),
+                                                                                ...Object.keys(dataBebida), ...Object.keys(dataComidas), ...Object.keys(dataFiesta),
+                                                                                ...Object.keys(dataPitufo), ...Object.keys(dataSimp), ...Object.keys(dataPow)
+                                                                            ]);
 
-                                                                        todosLosNicks.forEach(nick => {
-                                                                            const infoP = dataPresencia[nick];
-                                                                            const esOnline = infoP && infoP.estado === 'online';
+                                                                            todosLosNicks.forEach(nick => {
+                                                                                const esOnline = dataPresencia[nick] && dataPresencia[nick].estado === 'online';
+                                                                                let tieneSeleccion = false; let badgeHtml = "";
+                                                                                const juegoLower = String(juegoActualGlobal).toLowerCase();
 
-                                                                            let tieneSeleccion = false;
-                                                                            let badgeHtml = "";
-                                                                            const juegoLower = String(juegoActualGlobal).toLowerCase();
-
-                                                                            if (juegoLower === 'inv') {
-                                                                                const seleccionUser = dataInv[nick] ? dataInv[nick].par : null;
-                                                                                if (seleccionUser) {
+                                                                                if (juegoLower === 'inv' && dataInv[nick]?.par) {
                                                                                     tieneSeleccion = true;
-                                                                                    let partes = seleccionUser.split("-");
-                                                                                    let p1 = partes[0];
-                                                                                    let p2 = partes[1];
-                                                                                    let class1 = sacados.includes(p1) ? "num-inv-rojo" : "";
-                                                                                    let class2 = sacados.includes(p2) ? "num-inv-rojo" : "";
-                                                                                    badgeHtml = `<span class="badge-invertido"><span class="${class1}">${p1}</span>-<span class="${class2}">${p2}</span></span>`;
-                                                                                }
-                                                                            } else if (juegoLower === 'terna') {
-                                                                                const seleccionTerna = dataTerna[nick] ? dataTerna[nick].terna : null;
-                                                                                if (seleccionTerna) {
+                                                                                    let p = dataInv[nick].par.split("-");
+                                                                                    badgeHtml = `<span class="badge-invertido"><span class="${sacados.includes(p[0])?'num-inv-rojo':''}">${p[0]}</span>-<span class="${sacados.includes(p[1])?'num-inv-rojo':''}">${p[1]}</span></span>`;
+                                                                                } else if (juegoLower === 'terna' && dataTerna[nick]?.terna) {
                                                                                     tieneSeleccion = true;
-                                                                                    let partes = seleccionTerna.split("-");
-                                                                                    let t1 = partes[0], t2 = partes[1], t3 = partes[2];
-                                                                                    let c1 = sacados.includes(t1) ? "num-inv-rojo" : "";
-                                                                                    let c2 = sacados.includes(t2) ? "num-inv-rojo" : "";
-                                                                                    let c3 = sacados.includes(t3) ? "num-inv-rojo" : "";
-                                                                                    badgeHtml = `<span class="badge-invertido"><span class="${c1}">${t1}</span>-<span class="${c2}">${t2}</span>-<span class="${c3}">${t3}</span></span>`;
-                                                                                }
-                                                                            } else if (juegoLower === 'sumarversus') {
-                                                                                const eqUser = dataVersus[nick] ? dataVersus[nick].equipo : null;
-                                                                                if (eqUser) {
+                                                                                    let t = dataTerna[nick].terna.split("-");
+                                                                                    badgeHtml = `<span class="badge-invertido"><span class="${sacados.includes(t[0])?'num-inv-rojo':''}">${t[0]}</span>-<span class="${sacados.includes(t[1])?'num-inv-rojo':''}">${t[1]}</span>-<span class="${sacados.includes(t[2])?'num-inv-rojo':''}">${t[2]}</span></span>`;
+                                                                                } else if (juegoLower === 'sumarversus' && dataVersus[nick]?.equipo) {
                                                                                     tieneSeleccion = true;
-                                                                                    let colorEq = eqUser === 'A' ? 'var(--cian)' : 'var(--rosa)';
-                                                                                    badgeHtml = `<span class="badge-invertido" style="color: ${colorEq}; border-color: ${colorEq};">EQUIPO ${eqUser}</span>`;
+                                                                                    let eq = dataVersus[nick].equipo;
+                                                                                    badgeHtml = `<span class="badge-invertido" style="color: ${eq==='A'?'var(--cian)':'var(--rosa)'};">EQUIPO ${eq}</span>`;
+                                                                                } else if (['90', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
+                                                                                    let ds = juegoLower==='90'?data90:juegoLower==='mex'?dataMex:juegoLower==='pokemon'?dataPoke:juegoLower==='pais'?dataPais:juegoLower==='autos'?dataAutos:juegoLower==='bebida'?dataBebida:juegoLower==='comidas'?dataComidas:juegoLower==='fiesta'?dataFiesta:juegoLower==='pitufo'?dataPitufo:juegoLower==='simpson'?dataSimp:dataPow;
+                                                                                    let cartas = (ds[nick] && Array.isArray(ds[nick].cartas)) ? ds[nick].cartas : [];
+                                                                                    if (cartas.length > 0) {
+                                                                                        tieneSeleccion = true;
+                                                                                        badgeHtml = `<span class="badge-invertido">${cartas.map(c => `<span class="${sacados.includes(c)?'num-inv-rojo':''}">${c}</span>`).join(', ')}</span>`;
+                                                                                    }
                                                                                 }
-                                                                            } else if (['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].includes(juegoLower)) {
-                                                                                let datasetActual = {};
-                                                                                if (juegoLower === 'mex') datasetActual = dataMex;
-                                                                                else if (juegoLower === 'pokemon') datasetActual = dataPoke;
-                                                                                else if (juegoLower === 'pais') datasetActual = dataPais;
-                                                                                else if (juegoLower === 'autos') datasetActual = dataAutos;
-                                                                                else if (juegoLower === 'bebida') datasetActual = dataBebida;
-                                                                                else if (juegoLower === 'comidas') datasetActual = dataComidas;
-                                                                                else if (juegoLower === 'fiesta') datasetActual = dataFiesta;
-                                                                                else if (juegoLower === 'pitufo') datasetActual = dataPitufo;
-                                                                                else if (juegoLower === 'simpson') datasetActual = dataSimp;
-                                                                                else if (juegoLower === 'power') datasetActual = dataPow;
 
-                                                                                const cartasUser = (datasetActual[nick] && Array.isArray(datasetActual[nick].cartas)) ? datasetActual[nick].cartas : [];
-                                                                                if (cartasUser.length > 0) {
-                                                                                    tieneSeleccion = true;
-                                                                                    let cartasHtmlArr = cartasUser.map(c => {
-                                                                                        let claseSalida = sacados.includes(c) ? "num-inv-rojo" : "";
-                                                                                        return `<span class="${claseSalida}">${c}</span>`;
-                                                                                    });
-                                                                                    badgeHtml = `<span class="badge-invertido">${cartasHtmlArr.join(', ')}</span>`;
+                                                                                if (esOnline) {
+                                                                                    totalOnline++;
+                                                                                    htmlOnline += `<div class="item-conectado"><div style="display:flex; align-items:center; gap:6px; width:100%;"><span class="punto-online"></span><span style="font-weight:bold; color:#fff; word-break:break-all;">${nick}</span></div>${badgeHtml}</div>`;
+                                                                                } else if (!esOnline && tieneSeleccion) {
+                                                                                    totalTemporal++;
+                                                                                    htmlTemporal += `<div class="item-temporal"><div style="display:flex; align-items:center; gap:6px; width:100%;"><span class="punto-temporal"></span><span style="font-weight:bold; color:var(--amarillo); word-break:break-all;">${nick}</span></div>${badgeHtml}</div>`;
                                                                                 }
-                                                                            }
+                                                                            });
 
-                                                                            if (esOnline) {
-                                                                                totalOnline++;
-                                                                                htmlOnline += `
-                                                                                <div class="item-conectado">
-                                                                                    <div style="display:flex; align-items:center; gap:6px; width: 100%;">
-                                                                                        <span class="punto-online"></span>
-                                                                                        <span style="font-weight: bold; text-transform: uppercase; color: #fff; word-break: break-all;">${nick}</span>
-                                                                                    </div>
-                                                                                    ${badgeHtml}
-                                                                                </div>`;
-                                                                            } else if (!esOnline && tieneSeleccion) {
-                                                                                totalTemporal++;
-                                                                                htmlTemporal += `
-                                                                                <div class="item-temporal">
-                                                                                    <div style="display:flex; align-items:center; gap:6px; width: 100%;">
-                                                                                        <span class="punto-temporal"></span>
-                                                                                        <span style="font-weight: bold; text-transform: uppercase; color: var(--amarillo); word-break: break-all;">${nick}</span>
-                                                                                    </div>
-                                                                                    ${badgeHtml}
-                                                                                </div>`;
-                                                                            }
+                                                                            document.getElementById('count-conectados').innerText = totalOnline;
+                                                                            document.getElementById('count-temporales-jugador').innerText = totalTemporal;
+                                                                            if (contenedorLista) contenedorLista.innerHTML = htmlOnline || '<div style="color:#555; font-size:11px; text-align:center;">Nadie conectado</div>';
+                                                                            if (contenedorTemporales) contenedorTemporales.innerHTML = htmlTemporal || '<div style="color:#555; font-size:11px; text-align:center;">Sin temporales</div>';
                                                                         });
-
-                                                                        if (contadorElem) contadorElem.innerText = totalOnline;
-                                                                        if (contadorTemporalesElem) contadorTemporalesElem.innerText = totalTemporal;
-                                                                        if (contenedorLista) {
-                                                                            contenedorLista.innerHTML = htmlOnline || '<div style="color: #555; font-size: 11px; text-align: center; padding: 5px;">Nadie conectado</div>';
-                                                                        }
-                                                                        if (contenedorTemporales) {
-                                                                            contenedorTemporales.innerHTML = htmlTemporal || '<div style="color: #555; font-size: 11px; text-align: center; padding: 5px;">Sin temporales</div>';
-                                                                        }
                                                                     });
                                                                 });
                                                             });
@@ -666,180 +611,134 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             escucharConectados();
-            const nickGuardado = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            const tokenGuardado = localStorage.getItem(`jugador_token_${miCarpeta}`);
-            if (nickGuardado && tokenGuardado) {
+            const nick = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            const token = localStorage.getItem(`jugador_token_${miCarpeta}`);
+            if (nick && token) {
                 document.getElementById('capa-login-jugador').style.display = 'none';
                 document.getElementById('contenido-jugador').style.display = 'flex';
-                registrarPresencia(nickGuardado);
-                iniciarControlSesionUnica(nickGuardado, tokenGuardado);
+                registrarPresencia(nick);
+                iniciarControlSesionUnica(nick, token);
                 iniciarSincronizacion();
             }
         });
 
-        window.cerrarSesionJugador = async (expulsadoPorOtro = false) => {
-            const nickGuardado = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            if (nickGuardado && !expulsadoPorOtro) {
-                const estadoRef = ref(rtdb, `proyectos/${miCarpeta}/presencia/${nickGuardado}`);
-                await set(estadoRef, { estado: 'offline', timestamp: Date.now() });
-
-                await set(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nickGuardado}`), null);
-                await set(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion/${nickGuardado}`), null);
-                await set(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion/${nickGuardado}`), null);
-                ['mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].forEach(j => {
-                    set(ref(rtdb, `proyectos/${miCarpeta}/${j}Seleccion/${nickGuardado}`), null);
+        window.cerrarSesionJugador = async (expulsado = false) => {
+            const nick = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            if (nick && !expulsado) {
+                await set(ref(rtdb, `proyectos/${miCarpeta}/presencia/${nick}`), { estado: 'offline', timestamp: Date.now() });
+                ['90', 'inv', 'terna', 'sumarversus', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power'].forEach(j => {
+                    let ruta = j === 'inv' ? 'invertidosSeleccion' : j === 'terna' ? 'ternaSeleccion' : `${j}Seleccion`;
+                    set(ref(rtdb, `proyectos/${miCarpeta}/${ruta}/${nick}`), null);
                 });
-                
-                await set(ref(rtdb, `proyectos/${miCarpeta}/sesionesActivas/${nickGuardado}`), null);
+                await set(ref(rtdb, `proyectos/${miCarpeta}/sesionesActivas/${nick}`), null);
             }
-            localStorage.removeItem(`jugador_sesion_${miCarpeta}`);
-            localStorage.removeItem(`jugador_genero_${miCarpeta}`);
-            localStorage.removeItem(`jugador_token_${miCarpeta}`);
+            localStorage.clear();
             location.reload();
         };
 
         async function intentarLoginJugador() {
-            const nick = document.getElementById('login-nick').value.trim().toLowerCase();
+            const nick = document.getElementById('login-nick').value.trim().toUpperCase();
             const pin = document.getElementById('login-pin').value.trim();
             const errLog = document.getElementById('err-log-jugador');
-
-            if (!nick || !pin) {
-                errLog.innerText = "INGRESA NICK Y PIN";
-                return;
-            }
+            if (!nick || !pin) { errLog.innerText = "INGRESA NICK Y PIN"; return; }
 
             try {
-                const regRef = collection(db, "proyectos", miCarpeta, "registrados");
-                const snap = await getDocs(regRef);
-                
-                let aut = false;
-                let genero = 'H';
+                const snap = await getDocs(collection(db, "proyectos", miCarpeta, "registrados"));
+                let aut = false, genero = 'H';
                 snap.forEach(d => { 
-                    const userData = d.data();
-                    const nickDb = (userData.nick || d.id).trim().toLowerCase();
-                    const pinDb = String(userData.pin || '').trim();
-                    if(nickDb === nick && pinDb === pin) {
-                        aut = true;
-                        genero = userData.sexo || 'H';
+                    const ud = d.data();
+                    if((ud.nick || d.id).trim().toUpperCase() === nick && String(ud.pin||'').trim() === pin) {
+                        aut = true; genero = ud.sexo || 'H';
                     }
                 });
 
                 if(aut) {
                     const tokenUnico = 'tok_' + Math.random().toString(36.2) + Date.now();
                     await set(ref(rtdb, `proyectos/${miCarpeta}/sesionesActivas/${nick}`), tokenUnico);
-
                     localStorage.setItem(`jugador_sesion_${miCarpeta}`, nick);
                     localStorage.setItem(`jugador_genero_${miCarpeta}`, genero);
                     localStorage.setItem(`jugador_token_${miCarpeta}`, tokenUnico);
-                    
                     registrarPresencia(nick);
 
                     document.getElementById('capa-login-jugador').style.display = 'none';
                     document.getElementById('contenido-jugador').style.display = 'flex';
                     iniciarControlSesionUnica(nick, tokenUnico);
                     iniciarSincronizacion();
-                } else {
-                    errLog.innerText = "DATOS INCORRECTOS";
-                }
-            } catch (e) {
-                errLog.innerText = "ERROR DE CONEXIÓN";
-            }
+                } else errLog.innerText = "DATOS INCORRECTOS";
+            } catch (e) { errLog.innerText = "ERROR DE CONEXIÓN"; }
         }
 
         document.getElementById('btn-login-jugador').onclick = intentarLoginJugador;
-
         document.getElementById('login-nick').onkeydown = (e) => { if (e.key === 'Enter') intentarLoginJugador(); };
         document.getElementById('login-pin').onkeydown = (e) => { if (e.key === 'Enter') intentarLoginJugador(); };
 
         function hablarTexto(texto) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(texto);
-                utterance.lang = 'es-ES';
-                utterance.rate = 1.0;
-                utterance.pitch = 1.0;
-                window.speechSynthesis.speak(utterance);
+                const u = new SpeechSynthesisUtterance(texto);
+                u.lang = 'es-ES'; window.speechSynthesis.speak(u);
             }
         }
 
         const chatRef = ref(rtdb, `proyectos/${miCarpeta}/chat/mensajes`);
-
         function enviarMensajeChat() {
             const input = document.getElementById('input-chat');
             const texto = input.value.trim();
             if (!texto) return;
-
-            push(chatRef, {
-                nick: localStorage.getItem(`jugador_sesion_${miCarpeta}`),
-                genero: localStorage.getItem(`jugador_genero_${miCarpeta}`) || 'H',
-                texto: texto,
-                timestamp: Date.now()
-            });
+            push(chatRef, { nick: localStorage.getItem(`jugador_sesion_${miCarpeta}`), genero: localStorage.getItem(`jugador_genero_${miCarpeta}`) || 'H', texto, timestamp: Date.now() });
             input.value = '';
         }
 
         document.getElementById('btn-enviar-chat').onclick = enviarMensajeChat;
-
-        document.getElementById('input-chat').onkeydown = (e) => {
-            if (e.key === 'Enter') {
-                enviarMensajeChat();
-            }
-        };
-
-        document.getElementById('btn-limpiar-chat').onclick = () => {
-            document.getElementById('mensajes-chat').innerHTML = "";
-        };
+        document.getElementById('input-chat').onkeydown = (e) => { if (e.key === 'Enter') enviarMensajeChat(); };
+        document.getElementById('btn-limpiar-chat').onclick = () => { document.getElementById('mensajes-chat').innerHTML = ""; };
 
         onChildAdded(chatRef, (snapshot) => {
             const msg = snapshot.val();
-            if (!msg) return;
-            if (msg.timestamp && msg.timestamp < tiempoInicioCliente) return;
-
+            if (!msg || (msg.timestamp && msg.timestamp < tiempoInicioCliente)) return;
             const chat = document.getElementById('mensajes-chat');
-            const color = (msg.genero === 'H') ? '#00f3ff' : '#ff00ff';
-            chat.innerHTML += `<div><span style="color:${color}; font-weight:bold;">${msg.nick}:</span> ${msg.texto}</div>`;
+            chat.innerHTML += `<div><span style="color:${msg.genero === 'H' ? '#00f3ff' : '#ff00ff'}; font-weight:bold;">${msg.nick}:</span> ${msg.texto}</div>`;
             chat.scrollTop = chat.scrollHeight;
         });
 
         function iniciarSincronizacion() {
+            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            
+            if (nickActual) {
+                onSnapshot(doc(db, "proyectos", miCarpeta, "registrados", nickActual), (docSnap) => {
+                    if (!docSnap.exists()) {
+                        alert("Tu cuenta ha sido eliminada por el administrador.");
+                        window.cerrarSesionJugador(true);
+                    }
+                });
+            }
+
             onSnapshot(doc(db, "proyectos", miCarpeta), (snap) => {
                 if (!snap.exists()) return;
                 const data = snap.data();
                 
                 if (data.urlXat) {
-                    const wrapperXat = document.getElementById('wrapper-xat');
-                    const iframeXat = document.getElementById('iframe-xat-jugador');
-                    if (wrapperXat && iframeXat) {
-                        wrapperXat.style.display = 'block';
-                        if (iframeXat.src !== data.urlXat) iframeXat.src = data.urlXat;
-                    }
-                } else {
-                    const wrapperXat = document.getElementById('wrapper-xat');
-                    if (wrapperXat) wrapperXat.style.display = 'none';
-                }
+                    document.getElementById('wrapper-xat').style.display = 'block';
+                    const iframe = document.getElementById('iframe-xat-jugador');
+                    if (iframe.src !== data.urlXat) iframe.src = data.urlXat;
+                } else document.getElementById('wrapper-xat').style.display = 'none';
 
                 if (data.urlEnlaceBola) {
-                    const wrapperBola = document.getElementById('wrapper-bola');
-                    const iframeBola = document.getElementById('iframe-bola-jugador');
-                    const tituloBola = document.getElementById('titulo-panel-bola');
-                    if (wrapperBola && iframeBola) {
-                        wrapperBola.style.display = 'block';
-                        if(tituloBola) tituloBola.style.display = 'block';
-                        if (iframeBola.src !== data.urlEnlaceBola) iframeBola.src = data.urlEnlaceBola;
-                    }
+                    document.getElementById('wrapper-bola').style.display = 'block';
+                    document.getElementById('titulo-panel-bola').style.display = 'block';
+                    const iframe = document.getElementById('iframe-bola-jugador');
+                    if (iframe.src !== data.urlEnlaceBola) iframe.src = data.urlEnlaceBola;
                 } else {
-                    const wrapperBola = document.getElementById('wrapper-bola');
-                    const tituloBola = document.getElementById('titulo-panel-bola');
-                    if (wrapperBola) wrapperBola.style.display = 'none';
-                    if(tituloBola) tituloBola.style.display = 'none';
+                    document.getElementById('wrapper-bola').style.display = 'none';
+                    document.getElementById('titulo-panel-bola').style.display = 'none';
                 }
 
                 maxSeleccionesGlobal = Number(data.maxSelecciones) || 2;
-
                 const nuevoJuego = data.juegoActivo || '50';
                 const cambioDeJuego = (juegoActualGlobal !== nuevoJuego);
                 juegoActualGlobal = nuevoJuego;
                 
+                estado90Global = Boolean(data.estado90Comenzado);
                 estadoInvertidosGlobal = Boolean(data.estadoInvertidosComenzado);
                 estadoMexGlobal = Boolean(data.estadoMexComenzado);
                 estadoPokemonGlobal = Boolean(data.estadoPokemonComenzado);
@@ -853,16 +752,12 @@
                 estadoPowerGlobal = Boolean(data.estadoPowerComenzado);
                 estadoTernaGlobal = Boolean(data.estadoTernaComenzado);
                 
-                if (cambioDeJuego) {
-                    escucharConectados();
-                }
-
+                if (cambioDeJuego) escucharConectados();
                 if (unsubscribeJuego) unsubscribeJuego();
 
                 unsubscribeJuego = onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/${juegoActualGlobal}`), (sSnap) => {
                     const info = sSnap.val() || {};
-                    const rawSalidos = info.sacados || [];
-                    const sacados = Array.isArray(rawSalidos) ? rawSalidos : Object.values(rawSalidos);
+                    const sacados = Array.isArray(info.sacados) ? info.sacados : Object.values(info.sacados || {});
                     const ultimoVal = info.ultimo || sacados[sacados.length - 1] || "--";
                     
                     document.getElementById('titulo-juego-vivo').innerText = `JUEGO: ${juegoActualGlobal.toUpperCase()}`;
@@ -872,11 +767,8 @@
                     if (ultimoVal !== ultimoValorAnterior && ultimoVal !== "--") {
                         ultimoValorAnterior = ultimoVal;
                         hablarTexto(String(ultimoVal));
-
                         const bola = document.getElementById('bola-animacion');
-                        bola.classList.remove('animar-bola');
-                        void bola.offsetWidth; 
-                        bola.classList.add('animar-bola');
+                        bola.classList.remove('animar-bola'); void bola.offsetWidth; bola.classList.add('animar-bola');
                     }
 
                     renderizarTablero(juegoActualGlobal, sacados);
@@ -888,51 +780,40 @@
             const grid = document.getElementById('tablero-grid-jugador');
             if (!grid) return;
             const juegoLower = String(juego).toLowerCase();
+            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
             let html = "";
 
-            const juegosConSeleccion = ['inv', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power', 'terna', 'sumarversus'];
+            const juegosConSeleccion = ['90', 'inv', 'mex', 'pokemon', 'pais', 'autos', 'bebida', 'comidas', 'fiesta', 'pitufo', 'simpson', 'power', 'terna', 'sumarversus'];
             const estadosComenzados = {
-                'inv': estadoInvertidosGlobal,
-                'mex': estadoMexGlobal, 'pokemon': estadoPokemonGlobal, 'pais': estadoPaisGlobal,
-                'autos': estadoAutosGlobal, 'bebida': estadoBebidaGlobal, 'comidas': estadoComidasGlobal,
-                'fiesta': estadoFiestaGlobal, 'pitufo': estadoPitufoGlobal, 'simpson': estadoSimpsonGlobal,
-                'power': estadoPowerGlobal, 'terna': estadoTernaGlobal, 'sumarversus': false
+                '90': estado90Global, 'inv': estadoInvertidosGlobal, 'mex': estadoMexGlobal, 'pokemon': estadoPokemonGlobal,
+                'pais': estadoPaisGlobal, 'autos': estadoAutosGlobal, 'bebida': estadoBebidaGlobal, 'comidas': estadoComidasGlobal,
+                'fiesta': estadoFiestaGlobal, 'pitufo': estadoPitufoGlobal, 'simpson': estadoSimpsonGlobal, 'power': estadoPowerGlobal,
+                'terna': estadoTernaGlobal, 'sumarversus': false
             };
-
-            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
 
             if (juegoLower === 'sumarversus') {
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusConfig`), (sConfig) => {
-                    const configData = sConfig.val() || {};
-                    const estaBloqueado = Boolean(configData.bloqueado);
-
+                    const bloqueado = Boolean(sConfig.val()?.bloqueado);
                     onValue(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion`), (sAllSel) => {
                         if (juegoActualGlobal !== 'sumarversus') return;
-                        const allSelections = sAllSel.val() || {};
-                        let miEquipo = allSelections[nickActual] ? allSelections[nickActual].equipo : null;
-
+                        let miEquipo = sAllSel.val()?.[nickActual]?.equipo;
                         onValue(ref(rtdb, `proyectos/${miCarpeta}/sorteos/sumarversus`), (sSorteo) => {
-                            const infoSorteo = sSorteo.val() || {};
-                            let pA = infoSorteo.puntosA || 0;
-                            let pB = infoSorteo.puntosB || 0;
-
+                            let pA = sSorteo.val()?.puntosA || 0, pB = sSorteo.val()?.puntosB || 0;
                             grid.style.gridTemplateColumns = "1fr";
                             grid.innerHTML = `
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 10px;">
                                     <h2 style="color: var(--violeta); margin: 0; text-transform: uppercase;">SELECCIONA TU EQUIPO</h2>
-                                    ${estaBloqueado ? '<div style="color: var(--rojo); font-weight: bold; font-size: 12px;">🔒 CAMBIO DE EQUIPO BLOQUEADO POR EL ADMINISTRADOR</div>' : ''}
-                                    
+                                    ${bloqueado ? '<div style="color: var(--rojo); font-weight: bold; font-size: 12px;">🔒 CAMBIO BLOQUEADO</div>' : ''}
                                     <div style="display: flex; gap: 20px; width: 100%; justify-content: center; flex-wrap: wrap;">
-                                        <div onclick="window.seleccionarEquipoVersus('A', ${estaBloqueado})" style="flex: 1; min-width: 250px; background: ${miEquipo === 'A' ? 'var(--cian)' : '#121212'}; color: ${miEquipo === 'A' ? '#000' : '#fff'}; border: 2px solid var(--cian); padding: 30px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: ${miEquipo === 'A' ? '0 0 25px var(--cian)' : 'none'};">
+                                        <div onclick="window.seleccionarEquipoVersus('A', ${bloqueado})" style="flex: 1; min-width: 250px; background: ${miEquipo === 'A' ? 'var(--cian)' : '#121212'}; color: ${miEquipo === 'A' ? '#000' : '#fff'}; border: 2px solid var(--cian); padding: 30px; border-radius: 15px; text-align: center; cursor: pointer;">
                                             <h3 style="margin: 0 0 10px 0; font-size: 22px;">EQUIPO A</h3>
                                             <div style="font-size: 40px; font-weight: 900; margin-bottom: 10px;">${pA} PTS</div>
-                                            <div style="font-size: 13px; font-weight: bold;">${miEquipo === 'A' ? '✓ TU EQUIPO ACTUAL' : 'HACER CLICK PARA UNIRSE'}</div>
+                                            <div>${miEquipo === 'A' ? '✓ TU EQUIPO' : 'UNIRSE'}</div>
                                         </div>
-
-                                        <div onclick="window.seleccionarEquipoVersus('B', ${estaBloqueado})" style="flex: 1; min-width: 250px; background: ${miEquipo === 'B' ? 'var(--rosa)' : '#121212'}; color: ${miEquipo === 'B' ? '#000' : '#fff'}; border: 2px solid var(--rosa); padding: 30px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: ${miEquipo === 'B' ? '0 0 25px var(--rosa)' : 'none'};">
+                                        <div onclick="window.seleccionarEquipoVersus('B', ${bloqueado})" style="flex: 1; min-width: 250px; background: ${miEquipo === 'B' ? 'var(--rosa)' : '#121212'}; color: ${miEquipo === 'B' ? '#000' : '#fff'}; border: 2px solid var(--rosa); padding: 30px; border-radius: 15px; text-align: center; cursor: pointer;">
                                             <h3 style="margin: 0 0 10px 0; font-size: 22px;">EQUIPO B</h3>
                                             <div style="font-size: 40px; font-weight: 900; margin-bottom: 10px;">${pB} PTS</div>
-                                            <div style="font-size: 13px; font-weight: bold;">${miEquipo === 'B' ? '✓ TU EQUIPO ACTUAL' : 'HACER CLICK PARA UNIRSE'}</div>
+                                            <div>${miEquipo === 'B' ? '✓ TU EQUIPO' : 'UNIRSE'}</div>
                                         </div>
                                     </div>
                                 </div>`;
@@ -946,47 +827,23 @@
                 if (juegoLower === 'inv') {
                     onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (sAllSel) => {
                         if (juegoActualGlobal !== 'inv') return;
-                        const allSelections = sAllSel.val() || {};
-                        let Ocupados = {};
-                        Object.keys(allSelections).forEach(user => {
-                            if (allSelections[user] && allSelections[user].par) {
-                                Ocupados[allSelections[user].par] = user;
-                            }
-                        });
-
-                        let miParSeleccionado = allSelections[nickActual] ? allSelections[nickActual].par : null;
+                        const allSel = sAllSel.val() || {};
+                        let ocupados = {}; Object.keys(allSel).forEach(u => { if (allSel[u]?.par) ocupados[allSel[u].par] = u; });
+                        let miPar = allSel[nickActual]?.par;
                         let gridHtml = "";
 
-                        let paresGenerados = [];
                         for (let i = 1; i <= 89; i++) {
                             let strI = i < 10 ? "0" + i : "" + i;
                             let invStr = strI.split("").reverse().join("");
                             let numInv = parseInt(invStr);
-                            
                             if (i !== numInv && i < numInv) {
                                 let parStr = `${strI}-${invStr}`;
-                                paresGenerados.push(parStr);
+                                let ocupadoPor = ocupados[parStr];
+                                let clase = miPar === parStr ? "invertido-seleccionado" : (ocupadoPor && ocupadoPor !== nickActual ? "invertido-ocupado" : "");
+                                let attr = clase === "invertido-ocupado" ? `title="Ocupado"` : `onclick="window.seleccionarParInvertido('${parStr}')"`;
+                                gridHtml += `<div class="celda ${clase}" ${attr} style="font-size: 13px; padding: 14px 4px; font-weight: 900;">${parStr}</div>`;
                             }
                         }
-
-                        paresGenerados.forEach((parStr) => {
-                            let ocupadoPor = Ocupados[parStr];
-                            let esMio = (miParSeleccionado === parStr);
-                            let estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
-
-                            let claseCss = "";
-                            let onclickAttr = `onclick="window.seleccionarParInvertido('${parStr}')"`;
-
-                            if (esMio) {
-                                claseCss = "invertido-seleccionado";
-                            } else if (estaOcupadoPorOtro) {
-                                claseCss = "invertido-ocupado";
-                                onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
-                            }
-
-                            gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 13px; padding: 14px 4px; font-weight: 900;">${parStr}</div>`;
-                        });
-
                         grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(90px, 1fr))";
                         grid.innerHTML = gridHtml;
                     });
@@ -996,52 +853,25 @@
                 if (juegoLower === 'terna') {
                     onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (sAllSel) => {
                         if (juegoActualGlobal !== 'terna') return;
-                        const allSelections = sAllSel.val() || {};
-                        let Ocupados = {};
-                        Object.keys(allSelections).forEach(user => {
-                            if (allSelections[user] && allSelections[user].terna) {
-                                Ocupados[allSelections[user].terna] = user;
-                            }
-                        });
-
-                        let miTernaSeleccionada = allSelections[nickActual] ? allSelections[nickActual].terna : null;
+                        const allSel = sAllSel.val() || {};
+                        let ocupados = {}; Object.keys(allSel).forEach(u => { if (allSel[u]?.terna) ocupados[allSel[u].terna] = u; });
+                        let miTerna = allSel[nickActual]?.terna;
                         let gridHtml = "";
 
-                        let ternasGeneradas = [];
+                        let ternas = [];
                         for (let i = 1; i <= 88; i += 3) {
                             let t1 = i < 10 ? "0" + i : "" + i;
                             let t2 = (i+1) < 10 ? "0" + (i+1) : "" + (i+1);
                             let t3 = (i+2) < 10 ? "0" + (i+2) : "" + (i+2);
-                            let tStr = `${t1}-${t2}-${t3}`;
-                            ternasGeneradas.push(tStr);
+                            ternas.push(`${t1}-${t2}-${t3}`);
                         }
-                        for (let i = 1; i <= 50; i += 5) {
-                            let t1 = i < 10 ? "0" + i : "" + i;
-                            let nMed = i + 20;
-                            let nTer = i + 40;
-                            let tStr = `${t1}-${nMed}-${nTer}`;
-                            if(!ternasGeneradas.includes(tStr)) ternasGeneradas.push(tStr);
-                        }
-
-                        ternasGeneradas.forEach((ternaStr) => {
-                            let ocupadoPor = Ocupados[ternaStr];
-                            let esMio = (miTernaSeleccionada === ternaStr);
-                            let estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
-
-                            let claseCss = "";
-                            let onclickAttr = `onclick="window.seleccionarTernaUnica('${ternaStr}')"`;
-
-                            if (esMio) {
-                                claseCss = "invertido-seleccionado";
-                            } else if (estaOcupadoPorOtro) {
-                                claseCss = "invertido-ocupado";
-                                onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
-                            }
-
-                            gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 11px; padding: 12px 4px; font-weight: 900;">[ ${ternaStr.replace(/-/g, ' - ')} ]</div>`;
+                        ternas.forEach((ternaStr) => {
+                            let ocupadoPor = ocupados[ternaStr];
+                            let clase = miTerna === ternaStr ? "invertido-seleccionado" : (ocupadoPor && ocupadoPor !== nickActual ? "invertido-ocupado" : "");
+                            let attr = clase === "invertido-ocupado" ? `title="Ocupado"` : `onclick="window.seleccionarTernaUnica('${ternaStr}')"`;
+                            gridHtml += `<div class="celda ${clase}" ${attr} style="font-size: 11px; padding: 12px 4px; font-weight: 900;">${ternaStr}</div>`;
                         });
-
-                        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(130px, 1fr))";
+                        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
                         grid.innerHTML = gridHtml;
                     });
                     return;
@@ -1049,195 +879,77 @@
 
                 onValue(ref(rtdb, `proyectos/${miCarpeta}/${juegoLower}Seleccion`), (sAllSel) => {
                     if (juegoActualGlobal !== juegoLower) return;
-
-                    const allSelections = sAllSel.val() || {};
-                    let cartasOcupadas = {}; 
-                    Object.keys(allSelections).forEach(user => {
-                        if (allSelections[user] && Array.isArray(allSelections[user].cartas)) {
-                            allSelections[user].cartas.forEach(c => { cartasOcupadas[c] = user; });
-                        }
-                    });
-
-                    const misCartas = (allSelections[nickActual] && Array.isArray(allSelections[nickActual].cartas)) ? allSelections[nickActual].cartas : [];
-                    const elementos = listasJuegos[juegoLower];
+                    const allSel = sAllSel.val() || {};
+                    let ocupados = {}; Object.keys(allSel).forEach(u => { if (Array.isArray(allSel[u]?.cartas)) allSel[u].cartas.forEach(c => ocupados[c] = u); });
+                    let misCartas = Array.isArray(allSel[nickActual]?.cartas) ? allSel[nickActual].cartas : [];
                     let gridHtml = "";
 
-                    elementos.forEach((carta, index) => {
-                        const ocupadoPor = cartasOcupadas[carta];
-                        const esMia = misCartas.includes(carta);
-                        const estaOcupadoPorOtro = (ocupadoPor && ocupadoPor !== nickActual);
-
-                        let claseCss = "";
-                        let onclickAttr = `onclick="window.seleccionarCartaGenerica('${juegoLower}', '${carta}')"`;
-
-                        if (esMia) {
-                            claseCss = "invertido-seleccionado";
-                        } else if (estaOcupadoPorOtro) {
-                            claseCss = "invertido-ocupado";
-                            onclickAttr = `title="Ocupado por ${ocupadoPor.toUpperCase()}"`;
-                        }
-
-                        gridHtml += `<div class="celda ${claseCss}" ${onclickAttr} style="font-size: 9px; padding: 10px 2px; font-weight: 900;">#${index + 1} ${carta}</div>`;
+                    listasJuegos[juegoLower].forEach((elem, index) => {
+                        let ocupadoPor = ocupados[elem];
+                        let clase = misCartas.includes(elem) ? "invertido-seleccionado" : (ocupadoPor && ocupadoPor !== nickActual ? "invertido-ocupado" : "");
+                        let attr = clase === "invertido-ocupado" ? `title="Ocupado"` : `onclick="window.seleccionarCartaGenerica('${juegoLower}', '${elem}')"`;
+                        gridHtml += `<div class="celda ${clase}" ${attr} style="font-size: 10px; padding: 10px 2px; font-weight: 900;">${juegoLower==='90'?elem:'#'+(index+1)+' '+elem}</div>`;
                     });
-
-                    grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
+                    grid.style.gridTemplateColumns = juegoLower==='90' ? "repeat(10, 1fr)" : "repeat(auto-fill, minmax(110px, 1fr))";
                     grid.innerHTML = gridHtml;
                 });
                 return;
             }
 
-            if (juegoLower === 'inv' && estadosComenzados['inv']) {
-                let totalNums = 90;
-                grid.style.gridTemplateColumns = `repeat(10, 1fr)`;
-                for(let i=1; i<=totalNums; i++) {
-                    const esta = sacados.includes(String(i)) || sacados.includes(Number(i));
-                    html += `<div class="celda ${esta ? 'marcada' : ''}">${i}</div>`;
-                }
-                grid.innerHTML = html;
-                return;
-            }
-
-            if (juegoLower === 'terna' && estadosComenzados['terna']) {
-                let totalNums = 90;
-                grid.style.gridTemplateColumns = `repeat(10, 1fr)`;
-                for(let i=1; i<=totalNums; i++) {
-                    const esta = sacados.includes(String(i)) || sacados.includes(Number(i));
-                    html += `<div class="celda ${esta ? 'marcada' : ''}">${i}</div>`;
-                }
-                grid.innerHTML = html;
-                return;
-            }
-
-            if (juegosConSeleccion.includes(juegoLower) && estadosComenzados[juegoLower]) {
-                const elementos = listasJuegos[juegoLower];
-                elementos.forEach((el, index) => {
-                    const esta = sacados.includes(el);
-                    html += `<div class="celda ${esta ? 'marcada' : ''}" style="font-size: 9px; padding: 10px 2px;">#${index + 1} ${el}</div>`;
-                });
-                grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(110px, 1fr))";
-                grid.innerHTML = html;
-                return;
-            }
-
-            let totalNums = 90;
-            let columnas = 10;
-
-            if (juegoLower === '72' || juegoLower === 'bingo72') { totalNums = 72; columnas = 9; }
-            else if (juegoLower === '100' || juegoLower === 'bingo100') { totalNums = 100; }
+            let totalNums = 90, columnas = 10;
+            if (juegoLower === '72') { totalNums = 72; columnas = 9; }
+            else if (juegoLower === '100') { totalNums = 100; }
 
             grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
             for(let i=1; i<=totalNums; i++) {
-                const esta = sacados.includes(i) || sacados.includes(String(i)) || sacados.includes(Number(i));
+                const esta = sacados.includes(String(i)) || sacados.includes(Number(i));
                 html += `<div class="celda ${esta ? 'marcada' : ''}">${i}</div>`;
             }
             grid.innerHTML = html;
         }
 
         window.seleccionarParInvertido = (par) => {
-            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            const refGlobal = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`);
-
-            onValue(refGlobal, (snapshot) => {
-                const data = snapshot.val() || {};
+            const nick = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            onValue(ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion`), (snap) => {
                 let ocupado = false;
-                Object.keys(data).forEach(user => {
-                    if (user !== nickActual && data[user] && data[user].par === par) {
-                        ocupado = true;
-                    }
-                });
-
-                if (ocupado) {
-                    alert("¡Este par ya ha sido elegido por otro jugador!");
-                    return;
-                }
-
-                const refUser = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nickActual}`);
-                onValue(refUser, (snapUsr) => {
-                    let actual = snapUsr.val() || {};
-                    let nuevoPar = (actual.par === par) ? null : par;
-
-                    set(refUser, nuevoPar ? { par: nuevoPar, timestamp: Date.now() } : null);
-                }, { onlyOnce: true });
+                Object.keys(snap.val() || {}).forEach(u => { if (u !== nick && snap.val()[u]?.par === par) ocupado = true; });
+                if (ocupado) { alert("¡Ocupado!"); return; }
+                const refUser = ref(rtdb, `proyectos/${miCarpeta}/invertidosSeleccion/${nick}`);
+                onValue(refUser, (s) => set(refUser, s.val()?.par === par ? null : { par, timestamp: Date.now() }), { onlyOnce: true });
             }, { onlyOnce: true });
         };
 
         window.seleccionarTernaUnica = (terna) => {
-            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            const refGlobal = ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`);
-
-            onValue(refGlobal, (snapshot) => {
-                const data = snapshot.val() || {};
+            const nick = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            onValue(ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion`), (snap) => {
                 let ocupado = false;
-                Object.keys(data).forEach(user => {
-                    if (user !== nickActual && data[user] && data[user].terna === terna) {
-                        ocupado = true;
-                    }
-                });
-
-                if (ocupado) {
-                    alert("¡Esta terna ya ha sido elegida por otro jugador!");
-                    return;
-                }
-
-                const refUser = ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion/${nickActual}`);
-                onValue(refUser, (snapUsr) => {
-                    let actual = snapUsr.val() || {};
-                    let nuevaTerna = (actual.terna === terna) ? null : terna;
-
-                    set(refUser, nuevaTerna ? { terna: nuevaTerna, timestamp: Date.now() } : null);
-                }, { onlyOnce: true });
+                Object.keys(snap.val() || {}).forEach(u => { if (u !== nick && snap.val()[u]?.terna === terna) ocupado = true; });
+                if (ocupado) { alert("¡Ocupado!"); return; }
+                const refUser = ref(rtdb, `proyectos/${miCarpeta}/ternaSeleccion/${nick}`);
+                onValue(refUser, (s) => set(refUser, s.val()?.terna === terna ? null : { terna, timestamp: Date.now() }), { onlyOnce: true });
             }, { onlyOnce: true });
         };
 
-        window.seleccionarEquipoVersus = (equipo, bloqueado) => {
-            if (bloqueado) {
-                alert("El administrador ha bloqueado el cambio de equipos en este momento.");
-                return;
-            }
-            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            const refUser = ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion/${nickActual}`);
-            
-            set(refUser, { equipo: equipo, timestamp: Date.now() });
+        window.seleccionarEquipoVersus = (eq, bloqueado) => {
+            if (bloqueado) { alert("Bloqueado por admin."); return; }
+            set(ref(rtdb, `proyectos/${miCarpeta}/sumarversusSeleccion/${localStorage.getItem(`jugador_sesion_${miCarpeta}`)}`), { equipo: eq, timestamp: Date.now() });
         };
 
         window.seleccionarCartaGenerica = (juego, carta) => {
-            const nickActual = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
-            const refSel = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion/${nickActual}/cartas`);
-            const refGlobal = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion`);
-
-            onValue(refGlobal, (snapshot) => {
-                const data = snapshot.val() || {};
-                let ocupadaPorOtro = false;
-                Object.keys(data).forEach(user => {
-                    if (user !== nickActual && data[user] && Array.isArray(data[user].cartas)) {
-                        if (data[user].cartas.includes(carta)) ocupadaPorOtro = true;
+            const nick = localStorage.getItem(`jugador_sesion_${miCarpeta}`);
+            onValue(ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion`), (snap) => {
+                let ocupada = false;
+                Object.keys(snap.val() || {}).forEach(u => { if (u !== nick && Array.isArray(snap.val()[u]?.cartas) && snap.val()[u].cartas.includes(carta)) ocupada = true; });
+                if (ocupada) { alert("¡Ocupada!"); return; }
+                const refSel = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion/${nick}/cartas`);
+                onValue(refSel, (s) => {
+                    let mis = s.val() || []; if (!Array.isArray(mis)) mis = Object.values(mis);
+                    if (mis.includes(carta)) mis = mis.filter(c => c !== carta);
+                    else {
+                        if (mis.length >= maxSeleccionesGlobal) { alert(`Máximo ${maxSeleccionesGlobal} opciones.`); return; }
+                        mis.push(carta);
                     }
-                });
-
-                if (ocupadaPorOtro) {
-                    alert("¡Esta opción ya ha sido elegida por otro jugador!");
-                    return;
-                }
-
-                onValue(refSel, (snapCartas) => {
-                    let misCartas = snapCartas.val() || [];
-                    if (!Array.isArray(misCartas)) misCartas = Object.values(misCartas);
-
-                    if (misCartas.includes(carta)) {
-                        misCartas = misCartas.filter(c => c !== carta);
-                    } else {
-                        if (misCartas.length >= maxSeleccionesGlobal) {
-                            alert(`¡Solo puedes seleccionar un máximo de ${maxSeleccionesGlobal} opciones distintas!`);
-                            return;
-                        }
-                        misCartas.push(carta);
-                    }
-
-                    const refUserGen = ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion/${nickActual}`);
-                    set(refUserGen, {
-                        cartas: misCartas,
-                        timestamp: Date.now()
-                    });
+                    set(ref(rtdb, `proyectos/${miCarpeta}/${juego}Seleccion/${nick}`), mis.length > 0 ? { cartas: mis, timestamp: Date.now() } : null);
                 }, { onlyOnce: true });
             }, { onlyOnce: true });
         };
